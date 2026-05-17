@@ -1,16 +1,14 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useTheme } from '@/hooks/useTheme';
 
 export default function ThemeToggle() {
   const { theme, toggleTheme, isDark } = useTheme();
 
   return (
-    <motion.button
+    <button
       onClick={toggleTheme}
-      className="theme-toggle-btn relative flex items-center justify-center w-9 h-9 rounded-xl bg-ktv-surface hover:bg-ktv-surface-hover border border-ktv-border transition-colors duration-300"
-      whileTap={{ scale: 0.9 }}
+      className="theme-toggle-btn relative flex items-center justify-center w-9 h-9 rounded-xl bg-ktv-surface hover:bg-ktv-surface-hover border border-ktv-border transition-colors duration-300 active:scale-90"
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       title={isDark ? 'الوضع الفاتح' : 'Dark Mode'}
     >
@@ -46,6 +44,6 @@ export default function ThemeToggle() {
       >
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
       </svg>
-    </motion.button>
+    </button>
   );
 }

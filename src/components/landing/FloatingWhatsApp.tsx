@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import { MessageCircle } from 'lucide-react';
 
@@ -8,12 +7,7 @@ export default function FloatingWhatsApp() {
   const { t } = useLanguage();
 
   return (
-    <motion.div
-      className="fixed bottom-6 right-6 z-50 rtl:right-auto rtl:left-6"
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ delay: 1.5, type: 'spring', stiffness: 200 }}
-    >
+    <div className="fixed bottom-6 right-6 z-50 rtl:right-auto rtl:left-6 animate-fade-in-up" style={{ animationDelay: '1s' }}>
       <a
         href="https://wa.me/212602251813"
         target="_blank"
@@ -22,12 +16,12 @@ export default function FloatingWhatsApp() {
         aria-label={t('whatsappTooltip')}
       >
         <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8 text-white" fill="white" />
-        
+
         {/* Tooltip */}
         <span className="absolute right-full rtl:right-auto rtl:left-full mr-3 rtl:mr-0 rtl:ml-3 whitespace-nowrap bg-ktv-bg-card text-ktv-text text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border border-ktv-border">
           {t('whatsappTooltip')}
         </span>
       </a>
-    </motion.div>
+    </div>
   );
 }

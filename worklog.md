@@ -114,3 +114,42 @@ Stage Summary:
 - Eliminated loading screen delay (was 1.5s artificial wait)
 - All animations now use CSS transitions + IntersectionObserver (GPU-accelerated, no JS overhead)
 - Page is now significantly smoother and lighter
+
+---
+Task ID: rev-slider-and-perf
+Agent: Main Agent
+Task: Replace AutoScrollGallery with Revolution Slider style + optimize performance
+
+Work Log:
+- Created new RevSliderGallery.tsx component with Revolution Slider-style features:
+  - Full-width slides with smooth CSS transitions (600ms)
+  - Left/right navigation arrows with RTL support
+  - Dot pagination indicators (active dot is wider pill shape)
+  - Ken Burns subtle zoom effect on active slide (8s ease-out)
+  - Auto-play with 4.5s interval, pause on hover/touch
+  - Touch/swipe support for mobile (50px threshold)
+  - Text overlay with animated entrance per slide
+  - Progress bar at top of slider
+  - Pause indicator overlay
+- Removed old AutoScrollGallery.tsx component
+- Removed Framer Motion from ALL components:
+  - ThemeToggle.tsx: Replaced motion.button with plain button + active:scale-90
+  - LanguageToggle.tsx: Replaced motion.button with plain button + active:scale-95
+  - FloatingWhatsApp.tsx: Replaced motion.div with div + CSS animate-fade-in-up
+- Removed framer-motion from package.json dependencies
+- Removed unused ParticleBackground.tsx (was still in filesystem)
+- Optimized CSS for performance:
+  - Added will-change: transform to hero-bg::before animation
+  - Added will-change: opacity, transform to scroll-reveal (auto after revealed)
+  - Added will-change: transform to rev-kenburns animation
+  - Reduced blur values: hero circles from 60px/50px to 40px/30px
+  - Reduced logo blur from blur-xl to blur-lg
+  - Reduced showcase blur from blur-2xl to blur-xl
+- Build succeeds with no errors
+
+Stage Summary:
+- Framer Motion completely removed from codebase (0 imports remaining)
+- New RevSliderGallery replaces AutoScrollGallery with premium slider experience
+- All animations are now CSS-only (GPU-accelerated, zero JS animation overhead)
+- Package size reduced by removing framer-motion dependency
+- Build passes, all features preserved

@@ -25,7 +25,7 @@ import { ThemeProvider } from '@/hooks/useTheme';
 import FloatingWhatsApp from '@/components/landing/FloatingWhatsApp';
 import LanguageToggle from '@/components/landing/LanguageToggle';
 import ThemeToggle from '@/components/landing/ThemeToggle';
-import AutoScrollGallery from '@/components/landing/AutoScrollGallery';
+import RevSliderGallery from '@/components/landing/RevSliderGallery';
 
 /* ========== CSS-based fade-in on scroll (IntersectionObserver) ========== */
 function useScrollReveal() {
@@ -387,14 +387,14 @@ function LandingContent() {
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-ktv-red/5 via-transparent to-ktv-gold/5 z-[1]" />
 
         {/* Decorative blurred circles */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-80 sm:h-80 bg-ktv-red/10 rounded-full blur-[60px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-ktv-gold/10 rounded-full blur-[50px]" />
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-80 sm:h-80 bg-ktv-red/10 rounded-full blur-[40px] will-change-transform" />
+        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-ktv-gold/10 rounded-full blur-[30px] will-change-transform" />
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center">
           {/* Logo */}
           <div className="mb-6 sm:mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
             <div className="relative inline-block">
-              <div className="absolute inset-0 bg-ktv-red/20 rounded-3xl blur-xl" />
+              <div className="absolute inset-0 bg-ktv-red/20 rounded-3xl blur-lg" />
               <img
                 src="/ktv-logo.webp"
                 alt="KTV Player"
@@ -526,7 +526,7 @@ function LandingContent() {
                       className="w-full h-auto object-cover"
                     />
                   </div>
-                  <div className="absolute -inset-4 bg-ktv-red/10 rounded-3xl blur-2xl -z-10" />
+                  <div className="absolute -inset-4 bg-ktv-red/10 rounded-3xl blur-xl -z-10" />
                 </div>
 
                 {/* Phone Frame 3 */}
@@ -775,8 +775,8 @@ function LandingContent() {
             </div>
           </div>
 
-          {/* Auto-Scrolling Gallery */}
-          <AutoScrollGallery lang={lang} isRTL={isRTL} />
+          {/* Revolution Slider Gallery */}
+          <RevSliderGallery lang={lang} isRTL={isRTL} />
         </div>
       </section>
 
