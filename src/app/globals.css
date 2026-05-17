@@ -473,37 +473,7 @@ html {
   box-shadow: 0 0 25px rgba(224, 0, 0, 0.4);
 }
 
-/* ==================== MARQUEE GALLERY ANIMATIONS ==================== */
-@keyframes marqueeLtr {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-@keyframes marqueeRtl {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
-}
-
-.marquee-track {
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  will-change: transform;
-}
-
-.marquee-ltr {
-  animation-name: marqueeLtr;
-  animation-duration: 22s;
-}
-
-.marquee-rtl {
-  animation-name: marqueeRtl;
-  animation-duration: 22s;
-}
-
-/* Pause marquee on hover */
-.marquee-track:hover {
-  animation-play-state: paused;
-}
+/* ==================== MARQUEE GALLERY (JS-driven, no CSS animation needed) ==================== */
 
 /* ==================== PREMIUM ANIMATION EFFECTS (CSS-only, no Framer Motion) ==================== */
 

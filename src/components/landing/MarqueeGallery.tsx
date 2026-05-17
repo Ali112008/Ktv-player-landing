@@ -1,5 +1,7 @@
 'use client';
 
+import { useRef, useState, useEffect, useCallback } from 'react';
+
 interface MarqueeGalleryProps {
   lang: string;
   isRTL: boolean;
@@ -28,25 +30,87 @@ const screenshots = [
   },
 ];
 
+const SPEED = 0.6; // pixels per frame (~40px/s at 60fps)
+
 export default function MarqueeGallery({ lang, isRTL }: MarqueeGalleryProps) {
-  // 4 copies: 2 visible + 2 offscreen for seamless infinite loop
-  const items = [...screenshots, ...screenshots, ...screenshots, ...screenshots];
+  const trackRef = useRef<HTMLDivElement>(null);
+  const setRef = useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = useState(0);
+  const [setWidth, setSetWidth] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const offsetRef = useRef(0);
+  const rafRef = useRef<number>(0);
+
+  // Measure the actual width of one set of items
+  useEffect(() => {
+    const measure = () => {
+      if (setRef.current) {
+        const width = setRef.current.offsetWidth;
+        if (width > 0) setSetWidth(width);
+      }
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, []);
+
+  // Animation loop
+  const animate = useCallback(() => {
+    if (isPaused || setWidth === 0) {
+      rafRef.current = requestAnimationFrame(animate);
+      return;
+    }
+
+    offsetRef.current += SPEED;
+
+    // Seamless reset: when we've scrolled exactly one set width, reset to 0
+    if (offsetRef.current >= setWidth) {
+      offsetRef.current -= setWidth;
+    }
+
+    setOffset(offsetRef.current);
+    rafRef.current = requestAnimationFrame(animate);
+  }, [isPaused, setWidth]);
+
+  useEffect(() => {
+    rafRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [animate]);
+
+  // 3 copies for smooth buffer during reset
+  const items = [...screenshots, ...screenshots, ...screenshots];
+
+  // Always LTR direction on the inner track so translateX(-) moves right-to-left
+  const translateX = -offset;
 
   return (
-    <div className="relative w-full overflow-hidden">
+    <div
+      className="relative w-full overflow-hidden"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => setIsPaused(false)}
+    >
       {/* Gradient fade edges */}
       <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 bg-gradient-to-r from-ktv-bg-dark to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 bg-gradient-to-l from-ktv-bg-dark to-transparent z-10 pointer-events-none" />
 
-      {/* Marquee track */}
+      {/* Marquee track - forced LTR so translateX works consistently */}
       <div
-        className={`flex items-center gap-5 sm:gap-7 md:gap-9 marquee-track ${
-          isRTL ? 'marquee-rtl' : 'marquee-ltr'
-        }`}
+        ref={trackRef}
+        className="flex items-center gap-5 sm:gap-7 md:gap-9"
+        style={{
+          direction: 'ltr',
+          transform: `translateX(${translateX}px)`,
+          willChange: 'transform',
+        }}
       >
         {items.map((item, index) => (
           <div
             key={index}
+            ref={index === 0 ? setRef : undefined}
             className="shrink-0 group"
           >
             {/* Phone frame */}
