@@ -36,19 +36,29 @@ yarn-error.log*
 # vercel
 .vercel
 
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-local-*
+
+# Platform / IDE
 .claude
 .z-ai-config
 *.log
 dev.log
 dev.out.log
+server.log
+
+# Platform directories (not part of the Next.js project)
+/skills/
+/.zscripts/
+/mini-services/
+/upload/
+/download/
+/examples/
+/db/
+/prisma/
+
+# Misc
+local-*
 test
 prompt
-
-server.log
-# Skills directory
-/skills/
