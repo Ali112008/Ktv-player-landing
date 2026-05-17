@@ -532,8 +532,7 @@ function LandingContent() {
                 rel="noopener noreferrer"
                 className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-red hover:bg-ktv-red-light text-white font-bold text-base sm:text-lg transition-all duration-300 red-glow hover:scale-105"
               >
-                <Play className="w-5 h-5" />
-                <ExternalLink className="w-4 h-4" />
+                <Play className="w-5 h-5" fill="white" />
                 {t('heroCta')}
               </a>
               <a
