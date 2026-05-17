@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import {
   Tv,
   Film,
@@ -16,6 +16,8 @@ import {
   MessageCircle,
   ExternalLink,
   Play,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/hooks/useLanguage';
 import ParticleBackground from '@/components/landing/ParticleBackground';
@@ -363,99 +365,70 @@ function LandingContent() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            {/* Left - App showcase mockup */}
+            {/* Left - Real App Screenshots in Phone Frames */}
             <div className="flex-1 w-full">
-              <div className="relative max-w-sm mx-auto">
-                {/* Phone mockup */}
-                <div className="relative w-full aspect-[9/16] rounded-[2rem] border-2 border-white/10 bg-gradient-to-b from-ktv-bg-card to-ktv-bg-dark overflow-hidden shadow-2xl">
-                  {/* Status bar */}
-                  <div className="flex items-center justify-between px-6 py-2 bg-black/40">
-                    <span className="text-xs text-white/50">9:41</span>
-                    <div className="flex items-center gap-1">
-                      <div className="w-4 h-2 rounded-sm bg-white/30" />
-                      <div className="w-3 h-2 rounded-sm bg-white/20" />
-                    </div>
+              <div className="relative flex items-center justify-center gap-3 sm:gap-4">
+                {/* Phone Frame 1 - Movie Detail */}
+                <motion.div
+                  className="relative w-[42%]"
+                  initial={{ opacity: 0, x: isRTL ? 30 : -30, rotate: -3 }}
+                  whileInView={{ opacity: 1, x: 0, rotate: -3 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: 0.2 }}
+                  whileHover={{ rotate: 0, scale: 1.05, zIndex: 10 }}
+                >
+                  <div className="relative w-full rounded-[1.5rem] border-2 border-white/15 bg-black overflow-hidden shadow-2xl shadow-ktv-red/20">
+                    {/* Phone notch */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
+                    <img
+                      src="/screen-movie-detail.webp"
+                      alt={lang === 'ar' ? 'تفاصيل الفيلم في KTV Player' : 'Movie Details in KTV Player'}
+                      className="w-full h-auto object-cover"
+                    />
                   </div>
+                </motion.div>
 
-                  {/* App content mockup */}
-                  <div className="p-4">
-                    {/* Logo area */}
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="w-8 h-8 rounded-lg bg-ktv-red flex items-center justify-center">
-                        <span className="text-white text-xs font-bold">KTV</span>
-                      </div>
-                      <span className="text-white/80 text-sm font-semibold">KTV Player</span>
-                    </div>
-
-                    {/* Live badge */}
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="px-2 py-0.5 bg-ktv-red rounded text-[10px] text-white font-bold animate-pulse">
-                        LIVE
-                      </div>
-                      <span className="text-white/50 text-xs">
-                        {lang === 'ar' ? 'قنوات مباشرة' : 'Live Channels'}
-                      </span>
-                    </div>
-
-                    {/* Thumbnail grid */}
-                    <div className="grid grid-cols-2 gap-2 mb-3">
-                      {[
-                        'bg-gradient-to-br from-red-900 to-red-700',
-                        'bg-gradient-to-br from-amber-900 to-amber-700',
-                        'bg-gradient-to-br from-purple-900 to-purple-700',
-                        'bg-gradient-to-br from-cyan-900 to-cyan-700',
-                      ].map((color, i) => (
-                        <div
-                          key={i}
-                          className={`aspect-video rounded-lg ${color} flex items-center justify-center`}
-                        >
-                          <Play className="w-4 h-4 text-white/60" />
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Movie section */}
-                    <div className="mb-3">
-                      <div className="text-white/60 text-xs mb-2">
-                        {lang === 'ar' ? 'أحدث الأفلام' : 'Latest Movies'}
-                      </div>
-                      <div className="flex gap-2 overflow-hidden">
-                        {[0, 1, 3].map((i) => (
-                          <div
-                            key={i}
-                            className="w-14 h-20 rounded-lg bg-gradient-to-b from-gray-700 to-gray-900 flex-shrink-0"
-                          />
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Series section */}
-                    <div>
-                      <div className="text-white/60 text-xs mb-2">
-                        {lang === 'ar' ? 'مسلسلات مميزة' : 'Featured Series'}
-                      </div>
-                      <div className="flex gap-2 overflow-hidden">
-                        {[0, 1, 3].map((i) => (
-                          <div
-                            key={i}
-                            className="w-14 h-20 rounded-lg bg-gradient-to-b from-rose-800 to-rose-950 flex-shrink-0"
-                          />
-                        ))}
-                      </div>
-                    </div>
+                {/* Phone Frame 2 - Series List (center, slightly forward) */}
+                <motion.div
+                  className="relative w-[46%] z-10"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: 0.4 }}
+                  whileHover={{ scale: 1.05, zIndex: 20 }}
+                >
+                  <div className="relative w-full rounded-[1.5rem] border-2 border-white/15 bg-black overflow-hidden shadow-2xl shadow-ktv-red/30">
+                    {/* Phone notch */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
+                    <img
+                      src="/screen-series.webp"
+                      alt={lang === 'ar' ? 'مسلسلات TV في KTV Player' : 'TV Series in KTV Player'}
+                      className="w-full h-auto object-cover"
+                    />
                   </div>
+                  {/* Glow behind center phone */}
+                  <div className="absolute -inset-6 bg-ktv-red/15 rounded-3xl blur-3xl -z-10" />
+                </motion.div>
 
-                  {/* Bottom nav */}
-                  <div className="absolute bottom-0 left-0 right-0 flex items-center justify-around py-3 bg-black/60 backdrop-blur-sm border-t border-white/5">
-                    <Tv className="w-4 h-4 text-ktv-red" />
-                    <Film className="w-4 h-4 text-white/30" />
-                    <Drama className="w-4 h-4 text-white/30" />
-                    <Sparkles className="w-4 h-4 text-white/30" />
+                {/* Phone Frame 3 - Series Grid (behind, tilted) */}
+                <motion.div
+                  className="relative w-[42%] hidden sm:block"
+                  initial={{ opacity: 0, x: isRTL ? -30 : 30, rotate: 3 }}
+                  whileInView={{ opacity: 1, x: 0, rotate: 3 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: 0.6 }}
+                  whileHover={{ rotate: 0, scale: 1.05, zIndex: 10 }}
+                >
+                  <div className="relative w-full rounded-[1.5rem] border-2 border-white/15 bg-black overflow-hidden shadow-2xl shadow-ktv-red/20">
+                    {/* Phone notch */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
+                    <img
+                      src="/screen-series-list.webp"
+                      alt={lang === 'ar' ? 'قائمة المسلسلات في KTV Player' : 'Series List in KTV Player'}
+                      className="w-full h-auto object-cover"
+                    />
                   </div>
-                </div>
-
-                {/* Glow effect behind phone */}
-                <div className="absolute -inset-4 bg-ktv-red/10 rounded-3xl blur-3xl -z-10" />
+                </motion.div>
               </div>
             </div>
 
@@ -502,6 +475,168 @@ function LandingContent() {
                   </motion.div>
                 ))}
               </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ==================== APP GALLERY SECTION ==================== */}
+      <section className="relative py-16 sm:py-20 md:py-24 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
+
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <motion.div
+            className="text-center mb-10 sm:mb-14"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+              {lang === 'ar' ? (
+                <>
+                  لمحة عن{' '}
+                  <span className="gradient-text-red">التطبيق</span>
+                </>
+              ) : (
+                <>
+                  App{' '}
+                  <span className="gradient-text-red">Preview</span>
+                </>
+              )}
+            </h2>
+            <p className="text-white/50 text-base sm:text-lg max-w-xl mx-auto">
+              {lang === 'ar'
+                ? 'شاهد بنفسك كيف يبدو تطبيق KTV Player من الداخل'
+                : 'See for yourself what KTV Player looks like from the inside'}
+            </p>
+          </motion.div>
+
+          {/* Wide Feature Screenshot */}
+          <motion.div
+            className="mb-8 sm:mb-10"
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
+            <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-2xl shadow-ktv-red/10 group">
+              <img
+                src="/screen-features-wide.webp"
+                alt={lang === 'ar' ? 'مميزات KTV Player - بث سلس وأفلام ومسلسلات' : 'KTV Player Features - Smooth Streaming, Movies & Series'}
+                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+              />
+              {/* Overlay gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-ktv-bg-dark/40 via-transparent to-transparent pointer-events-none" />
+            </div>
+          </motion.div>
+
+          {/* Scrollable Gallery Row */}
+          <motion.div
+            className="relative"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {/* Gallery container with scroll */}
+            <div
+              id="app-gallery"
+              className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide"
+              style={{
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch',
+              }}
+            >
+              {/* Screenshot 1 - Movies Promo */}
+              <motion.div
+                className="flex-shrink-0 w-[260px] sm:w-[300px] snap-center"
+                whileHover={{ scale: 1.03 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl bg-ktv-bg-card group">
+                  <img
+                    src="/screen-movies.webp"
+                    alt={lang === 'ar' ? 'أفلام ومسلسلات بلا حدود' : 'Unlimited Movies & Series'}
+                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                    <span className="text-white/80 text-xs sm:text-sm font-medium">
+                      {lang === 'ar' ? '📺 أفلام ومسلسلات بلا حدود' : '📺 Unlimited Movies & Series'}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Screenshot 2 - Movie Detail */}
+              <motion.div
+                className="flex-shrink-0 w-[260px] sm:w-[300px] snap-center"
+                whileHover={{ scale: 1.03 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl bg-ktv-bg-card group">
+                  <img
+                    src="/screen-movie-detail.webp"
+                    alt={lang === 'ar' ? 'تفاصيل الفيلم الكاملة' : 'Full Movie Details'}
+                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                    <span className="text-white/80 text-xs sm:text-sm font-medium">
+                      {lang === 'ar' ? '🎬 تفاصيل الفيلم الكاملة' : '🎬 Full Movie Details'}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Screenshot 3 - TV Series */}
+              <motion.div
+                className="flex-shrink-0 w-[260px] sm:w-[300px] snap-center"
+                whileHover={{ scale: 1.03 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl bg-ktv-bg-card group">
+                  <img
+                    src="/screen-series.webp"
+                    alt={lang === 'ar' ? 'أفضل مسلسلات TV' : 'Top TV Series'}
+                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                    <span className="text-white/80 text-xs sm:text-sm font-medium">
+                      {lang === 'ar' ? '🎭 أفضل مسلسلات TV' : '🎭 Top TV Series'}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Screenshot 4 - Series List */}
+              <motion.div
+                className="flex-shrink-0 w-[260px] sm:w-[300px] snap-center"
+                whileHover={{ scale: 1.03 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl bg-ktv-bg-card group">
+                  <img
+                    src="/screen-series-list.webp"
+                    alt={lang === 'ar' ? 'تصفح المسلسلات' : 'Browse Series'}
+                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                    <span className="text-white/80 text-xs sm:text-sm font-medium">
+                      {lang === 'ar' ? '📱 تصفح المسلسلات' : '📱 Browse Series'}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Scroll hint arrows */}
+            <div className="flex items-center justify-center gap-3 mt-4 sm:hidden">
+              <span className="text-white/30 text-xs">
+                {lang === 'ar' ? '← اسحب للمزيد →' : '← Swipe for more →'}
+              </span>
             </div>
           </motion.div>
         </div>
