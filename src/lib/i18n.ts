@@ -55,6 +55,10 @@ export const translations = {
     navFeatures: 'المميزات',
     navDownload: 'التحميل',
     navContact: 'تواصل معنا',
+
+    // Testimonials
+    testimonialsTitle: 'ماذا يقول عملاؤنا',
+    testimonialsSubtitle: 'آراء حقيقية من مشاهدين يستمتعون بـ KTV Player كل يوم',
   },
   en: {
     // Hero Section
@@ -110,6 +114,10 @@ export const translations = {
     navFeatures: 'Features',
     navDownload: 'Download',
     navContact: 'Contact Us',
+
+    // Testimonials
+    testimonialsTitle: 'What Our Customers Say',
+    testimonialsSubtitle: 'Real reviews from viewers enjoying KTV Player every day',
   },
 } as const;
 
