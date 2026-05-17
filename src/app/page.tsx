@@ -167,7 +167,7 @@ function LandingContent() {
       {/* ==================== HERO SECTION ==================== */}
       <section
         ref={heroRef}
-        className="relative min-h-screen flex items-center justify-center hero-bg pt-16"
+        className="relative min-h-[110vh] sm:min-h-[115vh] flex flex-col items-center justify-center hero-bg pt-20 pb-10"
       >
         <ParticleBackground />
 
@@ -251,14 +251,15 @@ function LandingContent() {
             </a>
           </motion.div>
 
-          {/* Scroll indicator */}
-          <motion.div
-            className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2"
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <ChevronDown className="w-6 h-6 text-white/30" />
-          </motion.div>
+        </motion.div>
+
+        {/* Scroll indicator - below content */}
+        <motion.div
+          className="relative z-10 mt-8 sm:mt-12"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <ChevronDown className="w-6 h-6 sm:w-7 sm:h-7 text-white/30" />
         </motion.div>
       </section>
 
