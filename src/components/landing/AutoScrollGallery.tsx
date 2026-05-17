@@ -33,39 +33,56 @@ const galleryItems = [
 
 export default function AutoScrollGallery({ lang, isRTL }: AutoScrollGalleryProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const firstSetRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const animFrameRef = useRef<number>(0);
   const scrollPosRef = useRef(0);
-  const speed = 0.6; // pixels per frame (~60fps)
+  const setWidthRef = useRef(0);
+  const speed = 0.5; // pixels per frame
+
+  // Measure one set width after mount
+  useEffect(() => {
+    const measure = () => {
+      if (firstSetRef.current) {
+        setWidthRef.current = firstSetRef.current.offsetWidth;
+        setIsReady(true);
+      }
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, []);
 
   const tick = useCallback(() => {
     const el = scrollerRef.current;
-    if (!el) return;
+    if (!el || !isReady) {
+      animFrameRef.current = requestAnimationFrame(tick);
+      return;
+    }
 
     if (!isPaused) {
-      // In RTL, scroll from right to left (same visual direction)
-      // In LTR, scroll from right to left too
       scrollPosRef.current += speed;
 
-      // When we've scrolled past the first set, reset seamlessly
-      const halfWidth = el.scrollWidth / 2;
-      if (scrollPosRef.current >= halfWidth) {
-        scrollPosRef.current -= halfWidth;
+      // Reset when one full set has scrolled past - seamless infinite
+      if (setWidthRef.current > 0 && scrollPosRef.current >= setWidthRef.current) {
+        scrollPosRef.current -= setWidthRef.current;
       }
 
+      // Move container to the left = images scroll from right to left
       el.style.transform = `translateX(${-scrollPosRef.current}px)`;
     }
 
     animFrameRef.current = requestAnimationFrame(tick);
-  }, [isPaused]);
+  }, [isPaused, isReady]);
 
   useEffect(() => {
     animFrameRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(animFrameRef.current);
   }, [tick]);
 
-  const renderCard = (item: typeof galleryItems[0], index: number) => (
-    <div key={index} className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px]">
+  const renderCard = (item: typeof galleryItems[0], key: string) => (
+    <div key={key} className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px]">
       <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl shadow-ktv-red/5 bg-ktv-bg-card group/card transition-all duration-500 hover:border-ktv-red/30 hover:shadow-ktv-red/20">
         <img
           src={item.src}
@@ -102,19 +119,30 @@ export default function AutoScrollGallery({ lang, isRTL }: AutoScrollGalleryProp
         onTouchStart={() => setIsPaused(true)}
         onTouchEnd={() => setIsPaused(false)}
       >
+        {/* Force LTR direction so flex always lays out left-to-right,
+            then translateX(-) always moves items from right to left = correct marquee direction */}
         <div
           ref={scrollerRef}
           className="flex gap-4 sm:gap-6 will-change-transform"
+          style={{ direction: 'ltr' }}
         >
-          {/* Original set */}
-          {galleryItems.map((item, i) => renderCard(item, i))}
-          {/* Duplicate set for seamless loop */}
-          {galleryItems.map((item, i) => renderCard(item, i + 100))}
+          {/* First set - we measure this one's width */}
+          <div ref={firstSetRef} className="flex gap-4 sm:gap-6">
+            {galleryItems.map((item, i) => renderCard(item, `a-${i}`))}
+          </div>
+          {/* Duplicate set for seamless infinite loop */}
+          <div className="flex gap-4 sm:gap-6">
+            {galleryItems.map((item, i) => renderCard(item, `b-${i}`))}
+          </div>
+          {/* Third duplicate as buffer during transition */}
+          <div className="flex gap-4 sm:gap-6">
+            {galleryItems.map((item, i) => renderCard(item, `c-${i}`))}
+          </div>
         </div>
       </div>
 
       {/* Pause indicator */}
-      <div className={`flex items-center justify-center mt-3 transition-opacity duration-300 ${isPaused ? 'opacity-60' : 'opacity-0'}`}>
+      <div className={`flex items-center justify-center mt-3 transition-opacity duration-300 ${isPaused ? 'opacity-50' : 'opacity-0'}`}>
         <span className="text-white/30 text-[10px] sm:text-xs flex items-center gap-1.5">
           <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
             {isPaused ? (
@@ -127,8 +155,8 @@ export default function AutoScrollGallery({ lang, isRTL }: AutoScrollGalleryProp
             )}
           </svg>
           {isPaused
-            ? (lang === 'ar' ? 'متوقف - حرك الماوس للخارج للاستمرار' : 'Paused - move cursor away to resume')
-            : (lang === 'ar' ? 'يتحرك تلقائياً' : 'Auto-scrolling')}
+            ? (lang === 'ar' ? 'متوقف - شيل الماوس للاستمرار' : 'Paused - move cursor away to resume')
+            : ''}
         </span>
       </div>
     </motion.div>
