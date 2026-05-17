@@ -543,7 +543,7 @@ function LandingContent() {
             </div>
           </motion.div>
 
-          {/* Scrollable Gallery Row */}
+          {/* Auto-Scrolling Gallery Marquee */}
           <motion.div
             className="relative"
             initial={{ opacity: 0, y: 20 }}
@@ -551,102 +551,148 @@ function LandingContent() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            {/* Gallery container with scroll */}
-            <div
-              id="app-gallery"
-              className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide"
-              style={{
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none',
-                WebkitOverflowScrolling: 'touch',
-              }}
-            >
-              {/* Screenshot 1 - Movies Promo */}
-              <motion.div
-                className="flex-shrink-0 w-[260px] sm:w-[300px] snap-center"
-                whileHover={{ scale: 1.03 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl bg-ktv-bg-card group">
-                  <img
-                    src="/screen-movies.webp"
-                    alt={lang === 'ar' ? 'أفلام ومسلسلات بلا حدود' : 'Unlimited Movies & Series'}
-                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
-                    <span className="text-white/80 text-xs sm:text-sm font-medium">
-                      {lang === 'ar' ? '📺 أفلام ومسلسلات بلا حدود' : '📺 Unlimited Movies & Series'}
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
+            {/* Fade edges */}
+            <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-r from-ktv-bg-dark to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-l from-ktv-bg-dark to-transparent z-10 pointer-events-none" />
 
-              {/* Screenshot 2 - Movie Detail */}
-              <motion.div
-                className="flex-shrink-0 w-[260px] sm:w-[300px] snap-center"
-                whileHover={{ scale: 1.03 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl bg-ktv-bg-card group">
-                  <img
-                    src="/screen-movie-detail.webp"
-                    alt={lang === 'ar' ? 'تفاصيل الفيلم الكاملة' : 'Full Movie Details'}
-                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
-                    <span className="text-white/80 text-xs sm:text-sm font-medium">
-                      {lang === 'ar' ? '🎬 تفاصيل الفيلم الكاملة' : '🎬 Full Movie Details'}
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
+            {/* Marquee container - pause on hover */}
+            <div className="group/marquee overflow-hidden">
+              <div className="flex gap-4 sm:gap-6 animate-marquee group-hover/marquee:[animation-play-state:paused]">
+                {/* Original set */}
+                {[0].map(() => (
+                  <>
+                    {/* Screenshot 1 - Movies Promo */}
+                    <div className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px]">
+                      <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl shadow-ktv-red/5 bg-ktv-bg-card group/card transition-all duration-500 hover:border-ktv-red/30 hover:shadow-ktv-red/20">
+                        <img
+                          src="/screen-movies.webp"
+                          alt={lang === 'ar' ? 'أفلام ومسلسلات بلا حدود' : 'Unlimited Movies & Series'}
+                          className="w-full h-auto object-cover transition-transform duration-500 group-hover/card:scale-105"
+                        />
+                        <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                          <span className="text-white/80 text-xs sm:text-sm font-medium">
+                            {lang === 'ar' ? '📺 أفلام ومسلسلات بلا حدود' : '📺 Unlimited Movies & Series'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
-              {/* Screenshot 3 - TV Series */}
-              <motion.div
-                className="flex-shrink-0 w-[260px] sm:w-[300px] snap-center"
-                whileHover={{ scale: 1.03 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl bg-ktv-bg-card group">
-                  <img
-                    src="/screen-series.webp"
-                    alt={lang === 'ar' ? 'أفضل مسلسلات TV' : 'Top TV Series'}
-                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
-                    <span className="text-white/80 text-xs sm:text-sm font-medium">
-                      {lang === 'ar' ? '🎭 أفضل مسلسلات TV' : '🎭 Top TV Series'}
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
+                    {/* Screenshot 2 - Movie Detail */}
+                    <div className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px]">
+                      <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl shadow-ktv-red/5 bg-ktv-bg-card group/card transition-all duration-500 hover:border-ktv-red/30 hover:shadow-ktv-red/20">
+                        <img
+                          src="/screen-movie-detail.webp"
+                          alt={lang === 'ar' ? 'تفاصيل الفيلم الكاملة' : 'Full Movie Details'}
+                          className="w-full h-auto object-cover transition-transform duration-500 group-hover/card:scale-105"
+                        />
+                        <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                          <span className="text-white/80 text-xs sm:text-sm font-medium">
+                            {lang === 'ar' ? '🎬 تفاصيل الفيلم الكاملة' : '🎬 Full Movie Details'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
-              {/* Screenshot 4 - Series List */}
-              <motion.div
-                className="flex-shrink-0 w-[260px] sm:w-[300px] snap-center"
-                whileHover={{ scale: 1.03 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl bg-ktv-bg-card group">
-                  <img
-                    src="/screen-series-list.webp"
-                    alt={lang === 'ar' ? 'تصفح المسلسلات' : 'Browse Series'}
-                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
-                    <span className="text-white/80 text-xs sm:text-sm font-medium">
-                      {lang === 'ar' ? '📱 تصفح المسلسلات' : '📱 Browse Series'}
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
+                    {/* Screenshot 3 - TV Series */}
+                    <div className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px]">
+                      <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl shadow-ktv-red/5 bg-ktv-bg-card group/card transition-all duration-500 hover:border-ktv-red/30 hover:shadow-ktv-red/20">
+                        <img
+                          src="/screen-series.webp"
+                          alt={lang === 'ar' ? 'أفضل مسلسلات TV' : 'Top TV Series'}
+                          className="w-full h-auto object-cover transition-transform duration-500 group-hover/card:scale-105"
+                        />
+                        <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                          <span className="text-white/80 text-xs sm:text-sm font-medium">
+                            {lang === 'ar' ? '🎭 أفضل مسلسلات TV' : '🎭 Top TV Series'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
-            {/* Scroll hint arrows */}
-            <div className="flex items-center justify-center gap-3 mt-4 sm:hidden">
-              <span className="text-white/30 text-xs">
-                {lang === 'ar' ? '← اسحب للمزيد →' : '← Swipe for more →'}
-              </span>
+                    {/* Screenshot 4 - Series List */}
+                    <div className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px]">
+                      <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl shadow-ktv-red/5 bg-ktv-bg-card group/card transition-all duration-500 hover:border-ktv-red/30 hover:shadow-ktv-red/20">
+                        <img
+                          src="/screen-series-list.webp"
+                          alt={lang === 'ar' ? 'تصفح المسلسلات' : 'Browse Series'}
+                          className="w-full h-auto object-cover transition-transform duration-500 group-hover/card:scale-105"
+                        />
+                        <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                          <span className="text-white/80 text-xs sm:text-sm font-medium">
+                            {lang === 'ar' ? '📱 تصفح المسلسلات' : '📱 Browse Series'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ))}
+                {/* Duplicate set for seamless loop */}
+                <>
+                  {/* Screenshot 1 - Duplicate */}
+                  <div className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px]">
+                    <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl shadow-ktv-red/5 bg-ktv-bg-card group/card transition-all duration-500 hover:border-ktv-red/30 hover:shadow-ktv-red/20">
+                      <img
+                        src="/screen-movies.webp"
+                        alt={lang === 'ar' ? 'أفلام ومسلسلات بلا حدود' : 'Unlimited Movies & Series'}
+                        className="w-full h-auto object-cover transition-transform duration-500 group-hover/card:scale-105"
+                      />
+                      <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                        <span className="text-white/80 text-xs sm:text-sm font-medium">
+                          {lang === 'ar' ? '📺 أفلام ومسلسلات بلا حدود' : '📺 Unlimited Movies & Series'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Screenshot 2 - Duplicate */}
+                  <div className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px]">
+                    <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl shadow-ktv-red/5 bg-ktv-bg-card group/card transition-all duration-500 hover:border-ktv-red/30 hover:shadow-ktv-red/20">
+                      <img
+                        src="/screen-movie-detail.webp"
+                        alt={lang === 'ar' ? 'تفاصيل الفيلم الكاملة' : 'Full Movie Details'}
+                        className="w-full h-auto object-cover transition-transform duration-500 group-hover/card:scale-105"
+                      />
+                      <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                        <span className="text-white/80 text-xs sm:text-sm font-medium">
+                          {lang === 'ar' ? '🎬 تفاصيل الفيلم الكاملة' : '🎬 Full Movie Details'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Screenshot 3 - Duplicate */}
+                  <div className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px]">
+                    <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl shadow-ktv-red/5 bg-ktv-bg-card group/card transition-all duration-500 hover:border-ktv-red/30 hover:shadow-ktv-red/20">
+                      <img
+                        src="/screen-series.webp"
+                        alt={lang === 'ar' ? 'أفضل مسلسلات TV' : 'Top TV Series'}
+                        className="w-full h-auto object-cover transition-transform duration-500 group-hover/card:scale-105"
+                      />
+                      <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                        <span className="text-white/80 text-xs sm:text-sm font-medium">
+                          {lang === 'ar' ? '🎭 أفضل مسلسلات TV' : '🎭 Top TV Series'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Screenshot 4 - Duplicate */}
+                  <div className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px]">
+                    <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl shadow-ktv-red/5 bg-ktv-bg-card group/card transition-all duration-500 hover:border-ktv-red/30 hover:shadow-ktv-red/20">
+                      <img
+                        src="/screen-series-list.webp"
+                        alt={lang === 'ar' ? 'تصفح المسلسلات' : 'Browse Series'}
+                        className="w-full h-auto object-cover transition-transform duration-500 group-hover/card:scale-105"
+                      />
+                      <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                        <span className="text-white/80 text-xs sm:text-sm font-medium">
+                          {lang === 'ar' ? '📱 تصفح المسلسلات' : '📱 Browse Series'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -951,7 +997,7 @@ function LandingContent() {
                   KTV <span className="text-ktv-red">Player</span>
                 </span>
                 <p className="text-white/30 text-xs">
-                  © 2025 KTV Player. {t('footerRights')}.
+                  © 2026 KTV Player. {t('footerRights')}.
                 </p>
               </div>
             </div>
