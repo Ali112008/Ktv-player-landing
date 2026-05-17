@@ -48,6 +48,25 @@ function useScrollReveal() {
   return ref;
 }
 
+/* ========== Card Spotlight Mouse Tracker ========== */
+function useCardSpotlight() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const handleMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      el.style.setProperty('--mouse-x', `${x}px`);
+      el.style.setProperty('--mouse-y', `${y}px`);
+    };
+    el.addEventListener('mousemove', handleMove);
+    return () => el.removeEventListener('mousemove', handleMove);
+  }, []);
+  return ref;
+}
+
 /* ========== Animated Counter Component ========== */
 function AnimatedCounter({ target, suffix, duration = 2000 }: { target: number; suffix: string; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -71,6 +90,11 @@ function AnimatedCounter({ target, suffix, duration = 2000 }: { target: number; 
               requestAnimationFrame(step);
             } else {
               setCount(target);
+              // Add glow burst when count finishes
+              if (el) el.classList.add('count-glow-active');
+              setTimeout(() => {
+                if (el) el.classList.remove('count-glow-active');
+              }, 600);
             }
           };
           requestAnimationFrame(step);
@@ -103,6 +127,10 @@ function LandingContent() {
   const revealGallery = useScrollReveal();
   const revealTestimonials = useScrollReveal();
   const revealDownload = useScrollReveal();
+
+  // ========== Card spotlight refs ==========
+  const spotlightFeatures = useCardSpotlight();
+  const spotlightTestimonials = useCardSpotlight();
 
   // ========== Mobile menu state ==========
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -284,6 +312,9 @@ function LandingContent() {
       }`}
       dir={isRTL ? 'rtl' : 'ltr'}
     >
+      {/* ========== FILM GRAIN OVERLAY ========== */}
+      <div className="film-grain" />
+
       {/* Navigation Bar */}
       <nav id="main-nav" className="fixed top-0 left-0 right-0 z-40 bg-ktv-bg-dark/80 backdrop-blur-xl border-b border-ktv-border-faint transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -389,15 +420,24 @@ function LandingContent() {
       {/* ==================== HERO SECTION ==================== */}
       <section
         ref={revealHero}
-        className="relative min-h-screen flex flex-col items-center justify-center hero-bg pt-20 pb-10 scroll-reveal"
+        className="relative min-h-screen flex flex-col items-center justify-center hero-bg pt-20 pb-10 scroll-reveal overflow-hidden"
       >
+        {/* Aurora Borealis Effect */}
+        <div className="aurora-bg z-[0]" />
+
+        {/* Glowing Orbs - Premium floating cells */}
+        <div className="glow-orb glow-orb-1" style={{ top: '15%', left: '10%' }} />
+        <div className="glow-orb glow-orb-2" style={{ top: '60%', right: '5%' }} />
+        <div className="glow-orb glow-orb-3" style={{ bottom: '20%', left: '30%' }} />
+        <div className="glow-orb glow-orb-4" style={{ top: '30%', right: '25%' }} />
+
         {/* Gradient overlays */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-ktv-bg-dark/50 to-ktv-bg-dark z-[1]" />
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-ktv-red/5 via-transparent to-ktv-gold/5 z-[1]" />
 
         {/* Decorative blurred circles */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-80 sm:h-80 bg-ktv-red/10 rounded-full blur-[40px] will-change-transform" />
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-ktv-gold/10 rounded-full blur-[30px] will-change-transform" />
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-80 sm:h-80 bg-ktv-red/10 rounded-full blur-[40px] will-change-transform parallax-slow" />
+        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-ktv-gold/10 rounded-full blur-[30px] will-change-transform parallax-medium" />
 
         {/* Hero sparkles */}
         <div className="hero-sparkle z-[2]" />
@@ -406,6 +446,22 @@ function LandingContent() {
         <div className="hero-sparkle z-[2]" />
         <div className="hero-sparkle z-[2]" />
         <div className="hero-sparkle z-[2]" />
+
+        {/* Particle dots */}
+        <div className="particle particle-1 z-[2]" style={{ top: '25%', left: '20%' }} />
+        <div className="particle particle-2 z-[2]" style={{ top: '45%', right: '15%' }} />
+        <div className="particle particle-3 z-[2]" style={{ bottom: '30%', left: '40%' }} />
+        <div className="particle particle-4 z-[2]" style={{ top: '70%', left: '65%' }} />
+        <div className="particle particle-5 z-[2]" style={{ top: '15%', right: '35%' }} />
+        <div className="particle particle-6 z-[2]" style={{ bottom: '45%', right: '25%' }} />
+
+        {/* Orbit decoration around logo area */}
+        <div className="absolute top-[18%] left-1/2 -translate-x-1/2 w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] z-[2] pointer-events-none">
+          <div className="rotating-ring w-full h-full" />
+          <div className="orbit-dot" style={{ top: '50%', left: '50%' }} />
+          <div className="orbit-dot" style={{ top: '50%', left: '50%' }} />
+          <div className="orbit-dot" style={{ top: '50%', left: '50%' }} />
+        </div>
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center">
           {/* Logo */}
@@ -417,6 +473,8 @@ function LandingContent() {
                 alt="KTV Player"
                 className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-2xl drop-shadow-2xl"
               />
+              {/* Floating shadow under logo */}
+              <div className="float-shadow" />
             </div>
           </div>
 
@@ -425,10 +483,10 @@ function LandingContent() {
             className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 sm:mb-6 leading-tight animate-fade-in-up"
             style={{ animationDelay: '0.2s' }}
           >
-            <span className="text-shimmer">KTV</span>
+            <span className="text-shimmer glitch-text" data-text="KTV">KTV</span>
             <span className="text-ktv-text"> — </span>
             <br className="sm:hidden" />
-            <span className="text-ktv-text-strong">
+            <span className="text-ktv-text-strong typing-cursor">
               {lang === 'ar' ? 'عالم الترفيه بين يديك' : 'Entertainment at Your Fingertips'}
             </span>
           </h1>
@@ -446,7 +504,7 @@ function LandingContent() {
             className="flex justify-center mb-4 sm:mb-6 animate-fade-in-up"
             style={{ animationDelay: '0.4s' }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ktv-surface/80 backdrop-blur border border-ktv-red/20 text-xs sm:text-sm text-ktv-text-secondary animate-pulse-subtle">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ktv-surface/80 backdrop-blur border border-ktv-red/20 text-xs sm:text-sm text-ktv-text-secondary animate-pulse-subtle badge-premium">
               {lang === 'ar' ? '🔥 انضم لأكتر من 50,000 مستخدم نشط' : '🔥 Join 50,000+ Active Users'}
             </div>
           </div>
@@ -460,16 +518,20 @@ function LandingContent() {
               href="https://play.google.com/store/apps/details?id=com.ktvplayer.ktv"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-red hover:bg-ktv-red-light text-white font-bold text-base sm:text-lg transition-all duration-300 red-glow glow-pulse hover:scale-105"
+              className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-red hover:bg-ktv-red-light text-white font-bold text-base sm:text-lg transition-all duration-300 red-glow glow-pulse hover:scale-105 magnetic-btn"
             >
-              <Play className="w-5 h-5" fill="white" />
-              {t('heroCta')}
+              {/* Ripple rings */}
+              <span className="ripple-ring" />
+              <span className="ripple-ring" />
+              <span className="ripple-ring" />
+              <Play className="w-5 h-5 relative z-10" fill="white" />
+              <span className="relative z-10">{t('heroCta')}</span>
             </a>
             <a
               href="https://wa.me/212602251813"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-surface hover:bg-ktv-surface-hover border border-ktv-border hover:border-ktv-gold/50 text-ktv-text font-bold text-base sm:text-lg transition-all duration-300 hover:scale-105"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-surface hover:bg-ktv-surface-hover border border-ktv-border hover:border-ktv-gold/50 text-ktv-text font-bold text-base sm:text-lg transition-all duration-300 hover:scale-105 neon-pulse"
             >
               <MessageCircle className="w-5 h-5 text-[#25D366]" />
               {t('heroContact')}
@@ -513,13 +575,17 @@ function LandingContent() {
       </section>
 
       {/* ==================== SHOWCASE SECTION ==================== */}
-      <section ref={revealShowcase} className="relative py-16 sm:py-20 overflow-hidden scroll-reveal">
+      <section ref={revealShowcase} className="relative py-16 sm:py-20 overflow-hidden scroll-reveal hex-pattern">
         <div className="absolute inset-0 bg-gradient-to-r from-ktv-red/5 via-ktv-bg-dark to-ktv-gold/5" />
+
+        {/* Floating orbs in showcase */}
+        <div className="glow-orb glow-orb-3" style={{ top: '20%', right: '10%' }} />
+        <div className="glow-orb glow-orb-4" style={{ bottom: '10%', left: '5%' }} />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
             {/* Left - Real App Screenshots in Phone Frames */}
-            <div className="flex-1 w-full">
+            <div className="flex-1 w-full slide-in-left">
               <div className="relative flex items-center justify-center gap-3 sm:gap-4">
                 {/* Phone Frame 1 */}
                 <div className="relative w-[42%] float-phone-1 hover:rotate-0 hover:scale-105 transition-transform duration-500">
@@ -531,11 +597,12 @@ function LandingContent() {
                       className="w-full h-auto object-cover"
                     />
                   </div>
+                  <div className="float-shadow" />
                 </div>
 
                 {/* Phone Frame 2 (center) */}
                 <div className="relative w-[46%] z-10 float-phone-2 hover:scale-105 transition-transform duration-500">
-                  <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/30">
+                  <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/30 neon-pulse">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
                     <img
                       src="/screen-series.webp"
@@ -544,6 +611,7 @@ function LandingContent() {
                     />
                   </div>
                   <div className="absolute -inset-4 bg-ktv-red/10 rounded-3xl blur-xl -z-10" />
+                  <div className="float-shadow" />
                 </div>
 
                 {/* Phone Frame 3 */}
@@ -556,22 +624,23 @@ function LandingContent() {
                       className="w-full h-auto object-cover"
                     />
                   </div>
+                  <div className="float-shadow" />
                 </div>
               </div>
             </div>
 
             {/* Right - Content */}
-            <div className="flex-1 text-center md:text-start">
+            <div className="flex-1 text-center md:text-start slide-in-right">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">
                 {lang === 'ar' ? (
                   <>
                     كل الترفيه{' '}
-                    <span className="gradient-text">في مكان واحد</span>
+                    <span className="gradient-text glow-highlight">في مكان واحد</span>
                   </>
                 ) : (
                   <>
                     All Entertainment{' '}
-                    <span className="gradient-text">in One Place</span>
+                    <span className="gradient-text glow-highlight">in One Place</span>
                   </>
                 )}
               </h2>
@@ -590,7 +659,7 @@ function LandingContent() {
                 ].map((stat, i) => (
                   <div
                     key={i}
-                    className="text-center md:text-start p-3 sm:p-4 rounded-xl bg-ktv-surface border border-ktv-border-faint stagger-child stat-glow"
+                    className="text-center md:text-start p-3 sm:p-4 rounded-xl bg-ktv-surface border border-ktv-border-faint stagger-child stat-glow hover-lift"
                     style={{ animationDelay: `${i * 0.1}s` }}
                   >
                     <div className="text-xl sm:text-2xl font-black text-ktv-red">
@@ -606,27 +675,30 @@ function LandingContent() {
       </section>
 
       {/* ==================== HOW IT WORKS SECTION ==================== */}
-      <section ref={revealHowItWorks} className="relative py-16 sm:py-20 md:py-24 scroll-reveal">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent" />
+      <section ref={revealHowItWorks} className="relative py-16 sm:py-20 md:py-24 scroll-reveal grid-pattern">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent diagonal-reveal" />
         <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
+
+        {/* Floating orb */}
+        <div className="glow-orb glow-orb-2" style={{ top: '30%', left: '5%' }} />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20 badge-premium">
               {lang === 'ar' ? 'كيف يعمل' : 'How It Works'}
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
               {lang === 'ar' ? (
                 <>
                   ابدأ في{' '}
-                  <span className="gradient-text-red">ثلاث خطوات</span>{' '}
+                  <span className="gradient-text-red glow-highlight">ثلاث خطوات</span>{' '}
                   بسيطة
                 </>
               ) : (
                 <>
                   Get Started in{' '}
-                  <span className="gradient-text-red">3 Simple</span>{' '}
+                  <span className="gradient-text-red glow-highlight">3 Simple</span>{' '}
                   Steps
                 </>
               )}
@@ -648,7 +720,7 @@ function LandingContent() {
                 className="relative z-10 stagger-child"
                 style={{ animationDelay: `${index * 0.15}s` }}
               >
-                <div className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center tilt-card icon-bounce-hover">
+                <div className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center tilt-card icon-bounce-hover card-spotlight hover-lift">
                   <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                   <div className="relative flex flex-col items-center">
@@ -680,26 +752,34 @@ function LandingContent() {
 
       {/* ==================== FEATURES SECTION ==================== */}
       <section ref={revealFeatures} id="features" className="relative py-16 sm:py-20 md:py-28 scroll-reveal">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/30 to-ktv-bg-dark" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent diagonal-reveal" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/30 to-ktv-bg-dark hex-pattern" />
 
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Morphing blob in features */}
+        <div className="morph-blob" style={{ top: '10%', right: '-5%' }} />
+
+        {/* Floating particles */}
+        <div className="particle particle-1 z-[2]" style={{ top: '15%', right: '20%' }} />
+        <div className="particle particle-3 z-[2]" style={{ bottom: '20%', left: '10%' }} />
+        <div className="particle particle-5 z-[2]" style={{ top: '50%', left: '80%' }} />
+
+        <div ref={spotlightFeatures} className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 card-spotlight">
           {/* Section Header */}
           <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20 badge-premium">
               {t('featuresTitle')}
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
               {lang === 'ar' ? (
                 <>
                   تجربة مشاهدة{' '}
-                  <span className="gradient-text-red">استثنائية</span> تجمع بين
+                  <span className="gradient-text-red glow-highlight">استثنائية</span> تجمع بين
                   كل ما تحب
                 </>
               ) : (
                 <>
                   An{' '}
-                  <span className="gradient-text-red">Exceptional</span>{' '}
+                  <span className="gradient-text-red glow-highlight">Exceptional</span>{' '}
                   Viewing Experience
                 </>
               )}
@@ -714,7 +794,7 @@ function LandingContent() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center stagger-child tilt-card icon-bounce-hover"
+                className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center stagger-child tilt-card icon-bounce-hover hover-lift"
                 style={{ animationDelay: `${index * 0.08}s` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -743,7 +823,7 @@ function LandingContent() {
           <div className="mt-8 sm:mt-10 text-center stagger-child" style={{ animationDelay: '0.5s' }}>
             <a
               href="#download"
-              className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-ktv-red hover:bg-ktv-red-light text-white font-bold text-sm sm:text-base transition-all duration-300 red-glow-sm hover:scale-105"
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-ktv-red hover:bg-ktv-red-light text-white font-bold text-sm sm:text-base transition-all duration-300 red-glow-sm hover:scale-105 magnetic-btn"
             >
               {lang === 'ar' ? 'جربها بنفسك الآن' : 'Try It Yourself Now'}
               <ChevronDown className="w-4 h-4 rotate-[-90deg] rtl:rotate-90 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform" />
@@ -755,7 +835,10 @@ function LandingContent() {
       {/* ==================== APP GALLERY SECTION ==================== */}
       <section ref={revealGallery} className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-reveal">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark grid-pattern" />
+
+        {/* Floating orb */}
+        <div className="glow-orb glow-orb-1" style={{ top: '40%', right: '5%' }} />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
@@ -764,12 +847,12 @@ function LandingContent() {
               {lang === 'ar' ? (
                 <>
                   لمحة عن{' '}
-                  <span className="gradient-text-red">التطبيق</span>
+                  <span className="gradient-text-red glow-highlight">التطبيق</span>
                 </>
               ) : (
                 <>
                   App{' '}
-                  <span className="gradient-text-red">Preview</span>
+                  <span className="gradient-text-red glow-highlight">Preview</span>
                 </>
               )}
             </h2>
@@ -782,13 +865,15 @@ function LandingContent() {
 
           {/* Wide Feature Screenshot */}
           <div className="mb-8 sm:mb-10 stagger-child">
-            <div className="relative rounded-2xl border border-ktv-border overflow-hidden shadow-2xl shadow-ktv-red/10 group">
+            <div className="relative rounded-2xl border border-ktv-border overflow-hidden shadow-2xl shadow-ktv-red/10 group scale-reveal">
               <img
                 src="/screen-features-wide.webp"
                 alt={lang === 'ar' ? 'مميزات KTV Player - بث سلس وأفلام ومسلسلات' : 'KTV Player Features - Smooth Streaming, Movies & Series'}
                 className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ktv-bg-dark/40 via-transparent to-transparent pointer-events-none" />
+              {/* Animated border glow on hover */}
+              <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-ktv-red/20 transition-colors duration-500 pointer-events-none" />
             </div>
           </div>
 
@@ -799,25 +884,29 @@ function LandingContent() {
 
       {/* ==================== TESTIMONIALS SECTION ==================== */}
       <section ref={revealTestimonials} id="testimonials" className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-reveal">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent diagonal-reveal" />
         <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
 
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Floating orbs in testimonials */}
+        <div className="glow-orb glow-orb-2" style={{ top: '20%', left: '3%' }} />
+        <div className="glow-orb glow-orb-3" style={{ bottom: '15%', right: '5%' }} />
+
+        <div ref={spotlightTestimonials} className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 card-spotlight">
           {/* Section Header */}
           <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20 badge-premium">
               ⭐ {t('testimonialsTitle')}
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
               {lang === 'ar' ? (
                 <>
                   ماذا يقول{' '}
-                  <span className="gradient-text-red">عملاؤنا</span>
+                  <span className="gradient-text-red glow-highlight">عملاؤنا</span>
                 </>
               ) : (
                 <>
                   What Our{' '}
-                  <span className="gradient-text-red">Customers</span>{' '}
+                  <span className="gradient-text-red glow-highlight">Customers</span>{' '}
                   Say
                 </>
               )}
@@ -832,7 +921,7 @@ function LandingContent() {
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/20 p-6 sm:p-7 transition-all duration-300 stagger-child"
+                className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/20 p-6 sm:p-7 transition-all duration-300 stagger-child hover-lift"
                 style={{ animationDelay: `${index * 0.08}s` }}
               >
                 <div className="flex items-center gap-3 mb-4">
@@ -868,30 +957,41 @@ function LandingContent() {
       </section>
 
       {/* ==================== DOWNLOAD SECTION ==================== */}
-      <section ref={revealDownload} id="download" className="relative py-16 sm:py-20 md:py-28 scroll-reveal">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-gold/30 to-transparent" />
+      <section ref={revealDownload} id="download" className="relative py-16 sm:py-20 md:py-28 scroll-reveal overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-gold/30 to-transparent diagonal-reveal" />
 
         {/* Background effects */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 grid-pattern">
+          {/* Morphing blob */}
+          <div className="morph-blob" style={{ top: '20%', left: '-10%' }} />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-ktv-red/5 rounded-full blur-[60px]" />
         </div>
+
+        {/* Floating particles in download */}
+        <div className="particle particle-2 z-[2]" style={{ top: '20%', left: '15%' }} />
+        <div className="particle particle-4 z-[2]" style={{ bottom: '25%', right: '10%' }} />
+        <div className="particle particle-6 z-[2]" style={{ top: '60%', left: '75%' }} />
+
+        {/* Floating orbs */}
+        <div className="glow-orb glow-orb-1" style={{ top: '10%', right: '5%' }} />
+        <div className="glow-orb glow-orb-4" style={{ bottom: '10%', left: '8%' }} />
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-gold/10 text-ktv-gold text-xs sm:text-sm font-semibold mb-4 border border-ktv-gold/20">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-gold/10 text-ktv-gold text-xs sm:text-sm font-semibold mb-4 border border-ktv-gold/20 badge-premium">
               {t('downloadTitle')}
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
               {lang === 'ar' ? (
                 <>
                   حمّل التطبيق{' '}
-                  <span className="gradient-text-red">مجاناً</span>
+                  <span className="gradient-text-red glow-highlight">مجاناً</span>
                 </>
               ) : (
                 <>
                   Download the App for{' '}
-                  <span className="gradient-text-red">Free</span>
+                  <span className="gradient-text-red glow-highlight">Free</span>
                 </>
               )}
             </h2>
@@ -911,7 +1011,7 @@ function LandingContent() {
               href="https://play.google.com/store/apps/details?id=com.ktvplayer.ktv"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-green-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child"
+              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-green-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child hover-lift"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-green-500/[0.06] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -935,7 +1035,7 @@ function LandingContent() {
                 </h3>
                 <p className="text-ktv-text-weak text-xs sm:text-sm mb-4">{lang === 'ar' ? 'لأجهزة أندرويد 5.0+' : 'For Android 5.0+'}</p>
 
-                <div className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-green-500/10 text-green-400 text-sm font-bold border border-green-500/20 group-hover:bg-green-500/20 group-hover:border-green-500/40 transition-all duration-300">
+                <div className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-green-500/10 text-green-400 text-sm font-bold border border-green-500/20 group-hover:bg-green-500/20 group-hover:border-green-500/40 transition-all duration-300 magnetic-btn">
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                   {lang === 'ar' ? 'تحميل مجاني' : 'Free Download'}
                 </div>
@@ -947,7 +1047,7 @@ function LandingContent() {
               href="https://apps.apple.com/us/app/ktv-player/id6764389973?l=ar"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-blue-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child"
+              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-blue-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child hover-lift"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-blue-500/[0.06] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -968,7 +1068,7 @@ function LandingContent() {
                 </h3>
                 <p className="text-ktv-text-weak text-xs sm:text-sm mb-4">{lang === 'ar' ? 'لأجهزة iPhone و iPad' : 'For iPhone & iPad'}</p>
 
-                <div className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-blue-500/10 text-blue-400 text-sm font-bold border border-blue-500/20 group-hover:bg-blue-500/20 group-hover:border-blue-500/40 transition-all duration-300">
+                <div className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-blue-500/10 text-blue-400 text-sm font-bold border border-blue-500/20 group-hover:bg-blue-500/20 group-hover:border-blue-500/40 transition-all duration-300 magnetic-btn">
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                   {lang === 'ar' ? 'تحميل مجاني' : 'Free Download'}
                 </div>
@@ -977,7 +1077,7 @@ function LandingContent() {
 
             {/* TV */}
             <div
-              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-amber-500/40 p-6 sm:p-7 text-center cursor-pointer sm:col-span-2 lg:col-span-1 overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child"
+              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-amber-500/40 p-6 sm:p-7 text-center cursor-pointer sm:col-span-2 lg:col-span-1 overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child hover-lift"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-amber-500/[0.06] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -1008,7 +1108,7 @@ function LandingContent() {
 
           {/* WhatsApp CTA */}
           <div className="mt-10 sm:mt-14 text-center">
-            <div className="inline-flex flex-col items-center gap-4 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#25D366]/10 to-[#25D366]/5 border border-[#25D366]/20">
+            <div className="inline-flex flex-col items-center gap-4 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#25D366]/10 to-[#25D366]/5 border border-[#25D366]/20 hover-lift">
               <p className="text-ktv-text-medium text-base sm:text-lg font-medium">
                 📲 {t('heroContact')}
               </p>
@@ -1016,7 +1116,7 @@ function LandingContent() {
                 href="https://wa.me/212602251813"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-base sm:text-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-[#25D366]/20"
+                className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-base sm:text-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-[#25D366]/20 magnetic-btn"
               >
                 <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
                 WhatsApp
@@ -1068,7 +1168,7 @@ function LandingContent() {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className={`fixed bottom-24 ${isRTL ? 'left-6' : 'right-6'} z-30 w-11 h-11 rounded-full bg-ktv-surface border border-ktv-border hover:bg-ktv-surface-hover hover:border-ktv-red/30 flex items-center justify-center transition-all duration-300 shadow-lg animate-fade-in`}
+          className={`fixed bottom-24 ${isRTL ? 'left-6' : 'right-6'} z-30 w-11 h-11 rounded-full bg-ktv-surface border border-ktv-border hover:bg-ktv-surface-hover hover:border-ktv-red/30 flex items-center justify-center transition-all duration-300 shadow-lg animate-fade-in magnetic-btn`}
           aria-label="Scroll to top"
         >
           <ArrowUp className="w-5 h-5 text-ktv-text" />

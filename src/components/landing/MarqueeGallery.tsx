@@ -34,22 +34,29 @@ const SPEED = 0.7; // pixels per frame
 
 export default function MarqueeGallery({ lang, isRTL }: MarqueeGalleryProps) {
   const setRef = useRef<HTMLDivElement>(null);
+  const set2Ref = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
   const offsetRef = useRef(0);
   const setWidthRef = useRef(0);
   const rafRef = useRef<number>(0);
 
-  // Measure the actual width of one full set of items (4 images + gaps)
+  // Measure the actual width of one full set INCLUDING the gap after it
+  // by measuring the distance from start of set1 to start of set2
   useEffect(() => {
     const measure = () => {
-      if (setRef.current) {
-        const width = setRef.current.offsetWidth;
-        if (width > 0) setWidthRef.current = width;
+      if (setRef.current && set2Ref.current) {
+        const oneSetWidth = set2Ref.current.offsetLeft - setRef.current.offsetLeft;
+        if (oneSetWidth > 0) setWidthRef.current = oneSetWidth;
       }
     };
-    measure();
+    // Small delay to ensure layout is complete
+    const timer = setTimeout(measure, 100);
     window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', measure);
+    };
   }, []);
 
   // Animation loop - uses refs only, no state updates for smooth 60fps
@@ -57,15 +64,15 @@ export default function MarqueeGallery({ lang, isRTL }: MarqueeGalleryProps) {
     if (!isPaused && setWidthRef.current > 0) {
       offsetRef.current += SPEED;
 
-      // Seamless reset: when we've scrolled exactly one set width, jump back
-      // Since set2 starts where set1 ends, and set3 starts where set2 ends,
-      // resetting by one setWidth is invisible to the user
+      // Seamless reset: when we've scrolled exactly one set width (including gap),
+      // reset back. Since set2 starts where set1+gap ends, and they have identical content,
+      // resetting by exactly one set width is completely invisible to the user.
       if (offsetRef.current >= setWidthRef.current) {
         offsetRef.current -= setWidthRef.current;
       }
 
-      if (setRef.current?.parentElement) {
-        setRef.current.parentElement.style.transform = `translateX(${-offsetRef.current}px)`;
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translateX(${-offsetRef.current}px)`;
       }
     }
     rafRef.current = requestAnimationFrame(animate);
@@ -118,6 +125,7 @@ export default function MarqueeGallery({ lang, isRTL }: MarqueeGalleryProps) {
 
       {/* Marquee track - forced LTR so translateX(-) always moves right-to-left */}
       <div
+        ref={trackRef}
         className="flex items-center gap-5 sm:gap-7 md:gap-9"
         style={{
           direction: 'ltr',
@@ -129,7 +137,7 @@ export default function MarqueeGallery({ lang, isRTL }: MarqueeGalleryProps) {
           {screenshots.map((item, i) => renderPhone(item, `s1-${i}`))}
         </div>
         {/* Set 2 - identical, provides seamless continuation */}
-        <div className="flex items-center gap-5 sm:gap-7 md:gap-9">
+        <div ref={set2Ref} className="flex items-center gap-5 sm:gap-7 md:gap-9">
           {screenshots.map((item, i) => renderPhone(item, `s2-${i}`))}
         </div>
         {/* Set 3 - buffer so reset is never visible */}

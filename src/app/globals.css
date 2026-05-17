@@ -732,3 +732,651 @@ html {
   animation: lineGrow 1.5s ease-out forwards;
   transform-origin: center;
 }
+
+/* ==================== ULTRA PREMIUM ANIMATION EFFECTS ==================== */
+
+/* 15. Glowing Orbs / Cells - Floating blurred circles that drift around */
+@keyframes orbDrift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(60px, -40px) scale(1.1); }
+  50% { transform: translate(-30px, 60px) scale(0.95); }
+  75% { transform: translate(-50px, -20px) scale(1.05); }
+}
+
+@keyframes orbDrift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-50px, 30px) scale(1.08); }
+  50% { transform: translate(40px, -50px) scale(0.92); }
+  75% { transform: translate(20px, 40px) scale(1.12); }
+}
+
+@keyframes orbDrift3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-40px, -60px) scale(1.15); }
+  66% { transform: translate(50px, 20px) scale(0.9); }
+}
+
+@keyframes orbDrift4 {
+  0%, 100% { transform: translate(0, 0) scale(1.05); }
+  20% { transform: translate(30px, 50px) scale(0.95); }
+  40% { transform: translate(-60px, 10px) scale(1.1); }
+  60% { transform: translate(10px, -40px) scale(1); }
+  80% { transform: translate(40px, 30px) scale(1.08); }
+}
+
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+  z-index: 0;
+}
+
+.glow-orb-1 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(224, 0, 0, 0.15) 0%, transparent 70%);
+  animation: orbDrift1 12s ease-in-out infinite;
+  filter: blur(40px);
+}
+
+.glow-orb-2 {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(212, 160, 23, 0.12) 0%, transparent 70%);
+  animation: orbDrift2 15s ease-in-out infinite;
+  filter: blur(35px);
+}
+
+.glow-orb-3 {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(224, 0, 0, 0.1) 0%, transparent 70%);
+  animation: orbDrift3 18s ease-in-out infinite;
+  filter: blur(30px);
+}
+
+.glow-orb-4 {
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(212, 160, 23, 0.08) 0%, transparent 70%);
+  animation: orbDrift4 20s ease-in-out infinite;
+  filter: blur(25px);
+}
+
+/* 16. Aurora Borealis Effect - Moving gradient bands */
+@keyframes aurora {
+  0% { transform: translateX(-30%) rotate(0deg) scale(1); }
+  33% { transform: translateX(10%) rotate(3deg) scale(1.1); }
+  66% { transform: translateX(-10%) rotate(-2deg) scale(0.95); }
+  100% { transform: translateX(-30%) rotate(0deg) scale(1); }
+}
+
+.aurora-bg {
+  position: absolute;
+  inset: -50%;
+  background: 
+    linear-gradient(135deg, 
+      transparent 0%,
+      rgba(224, 0, 0, 0.06) 20%,
+      rgba(212, 160, 23, 0.04) 40%,
+      rgba(139, 0, 0, 0.05) 60%,
+      rgba(224, 0, 0, 0.03) 80%,
+      transparent 100%
+    );
+  animation: aurora 20s ease-in-out infinite;
+  pointer-events: none;
+  will-change: transform;
+  filter: blur(60px);
+}
+
+/* 17. Morphing Blob - Continuously shape-shifting background element */
+@keyframes morphBlob {
+  0%, 100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  25% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    transform: translate(20px, -30px) rotate(90deg) scale(1.05);
+  }
+  50% {
+    border-radius: 50% 60% 30% 60% / 30% 50% 70% 60%;
+    transform: translate(-20px, 20px) rotate(180deg) scale(0.95);
+  }
+  75% {
+    border-radius: 60% 30% 50% 40% / 70% 40% 60% 30%;
+    transform: translate(10px, 10px) rotate(270deg) scale(1.08);
+  }
+}
+
+.morph-blob {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, rgba(224, 0, 0, 0.08), rgba(212, 160, 23, 0.06));
+  animation: morphBlob 15s ease-in-out infinite;
+  pointer-events: none;
+  will-change: transform, border-radius;
+  filter: blur(50px);
+}
+
+/* 18. Film Grain Overlay - Subtle cinematic noise */
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
+
+.film-grain {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  animation: grain 0.5s steps(6) infinite;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+[data-theme="light"] .film-grain {
+  opacity: 0.2;
+}
+
+/* 19. Particle Dots - Tiny twinkling particles */
+@keyframes particleFloat1 {
+  0%, 100% { opacity: 0; transform: translateY(0) translateX(0); }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-80px) translateX(20px); }
+}
+
+@keyframes particleFloat2 {
+  0%, 100% { opacity: 0; transform: translateY(0) translateX(0); }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.8; }
+  100% { opacity: 0; transform: translateY(-60px) translateX(-30px); }
+}
+
+@keyframes particleFloat3 {
+  0%, 100% { opacity: 0; transform: translateY(0) translateX(0); }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-100px) translateX(10px); }
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: rgba(212, 160, 23, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: 0 0 6px rgba(212, 160, 23, 0.3);
+}
+
+.particle:nth-child(odd) {
+  background: rgba(224, 0, 0, 0.5);
+  box-shadow: 0 0 6px rgba(224, 0, 0, 0.3);
+}
+
+.particle-1 { animation: particleFloat1 6s ease-in-out infinite; }
+.particle-2 { animation: particleFloat2 8s ease-in-out infinite 1s; }
+.particle-3 { animation: particleFloat3 7s ease-in-out infinite 2s; }
+.particle-4 { animation: particleFloat1 9s ease-in-out infinite 0.5s; }
+.particle-5 { animation: particleFloat2 6.5s ease-in-out infinite 3s; }
+.particle-6 { animation: particleFloat3 8.5s ease-in-out infinite 1.5s; }
+.particle-7 { animation: particleFloat1 7.5s ease-in-out infinite 4s; }
+.particle-8 { animation: particleFloat2 10s ease-in-out infinite 2.5s; }
+
+/* 20. Ripple Pulse - Expanding rings from CTA buttons */
+@keyframes rippleExpand {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.ripple-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid rgba(224, 0, 0, 0.3);
+  animation: rippleExpand 2s ease-out infinite;
+  pointer-events: none;
+}
+
+.ripple-ring:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.ripple-ring:nth-child(3) {
+  animation-delay: 1s;
+}
+
+/* 21. Card Inner Glow - Spotlight gradient that moves on hover */
+.card-spotlight {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-spotlight::before {
+  content: '';
+  position: absolute;
+  top: var(--mouse-y, -100%);
+  left: var(--mouse-x, -100%);
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(224, 0, 0, 0.12) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card-spotlight:hover::before {
+  opacity: 1;
+}
+
+/* 22. Glitch Text Effect - Premium digital glitch on hover */
+@keyframes glitch1 {
+  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+  20% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 2px); }
+  40% { clip-path: inset(60% 0 10% 0); transform: translate(3px, -1px); }
+  60% { clip-path: inset(40% 0 30% 0); transform: translate(-2px, 1px); }
+  80% { clip-path: inset(10% 0 70% 0); transform: translate(2px, -2px); }
+}
+
+@keyframes glitch2 {
+  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+  20% { clip-path: inset(70% 0 5% 0); transform: translate(3px, -2px); }
+  40% { clip-path: inset(10% 0 60% 0); transform: translate(-3px, 1px); }
+  60% { clip-path: inset(50% 0 20% 0); transform: translate(2px, -1px); }
+  80% { clip-path: inset(30% 0 40% 0); transform: translate(-1px, 2px); }
+}
+
+.glitch-text {
+  position: relative;
+}
+
+.glitch-text:hover {
+  animation: glitch1 0.3s linear;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.glitch-text:hover::before {
+  color: rgba(224, 0, 0, 0.8);
+  opacity: 0.8;
+  animation: glitch1 0.3s linear;
+}
+
+.glitch-text:hover::after {
+  color: rgba(212, 160, 23, 0.8);
+  opacity: 0.8;
+  animation: glitch2 0.3s linear;
+}
+
+/* 23. Parallax Float - Different speed floating for depth */
+@keyframes parallaxSlow {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-15px) translateX(5px); }
+}
+
+@keyframes parallaxMedium {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-25px) translateX(-8px); }
+}
+
+@keyframes parallaxFast {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-35px) translateX(12px); }
+}
+
+.parallax-slow { animation: parallaxSlow 8s ease-in-out infinite; }
+.parallax-medium { animation: parallaxMedium 6s ease-in-out infinite; }
+.parallax-fast { animation: parallaxFast 4s ease-in-out infinite; }
+
+/* 24. Typing Cursor Blink */
+@keyframes cursorBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.typing-cursor::after {
+  content: '|';
+  color: #e00000;
+  font-weight: 100;
+  animation: cursorBlink 1s step-end infinite;
+  margin-left: 2px;
+}
+
+/* 25. Diagonal Section Transition */
+@keyframes diagonalSlide {
+  from { transform: translateX(-100%) skewX(-3deg); }
+  to { transform: translateX(0) skewX(-3deg); }
+}
+
+.diagonal-reveal {
+  position: relative;
+}
+
+.diagonal-reveal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -5%;
+  width: 110%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(224, 0, 0, 0.5), rgba(212, 160, 23, 0.3), rgba(224, 0, 0, 0.5), transparent);
+  transform-origin: left center;
+  animation: diagonalSlide 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 26. Neon Pulse - Border neon glow animation */
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(224, 0, 0, 0.3),
+                0 0 10px rgba(224, 0, 0, 0.2),
+                inset 0 0 5px rgba(224, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(224, 0, 0, 0.5),
+                0 0 20px rgba(224, 0, 0, 0.3),
+                0 0 40px rgba(224, 0, 0, 0.1),
+                inset 0 0 10px rgba(224, 0, 0, 0.15);
+  }
+}
+
+.neon-pulse {
+  animation: neonPulse 3s ease-in-out infinite;
+}
+
+/* 27. Magnetic Button - Subtle hover scale with shadow expansion */
+.magnetic-btn {
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+              box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.magnetic-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(224, 0, 0, 0.3),
+              0 0 0 1px rgba(224, 0, 0, 0.1);
+}
+
+.magnetic-btn:active {
+  transform: translateY(-1px) scale(1.01);
+}
+
+/* 28. Count-up glow burst */
+@keyframes countGlow {
+  0% { text-shadow: 0 0 0 transparent; }
+  50% { text-shadow: 0 0 20px rgba(224, 0, 0, 0.6), 0 0 40px rgba(224, 0, 0, 0.3); }
+  100% { text-shadow: 0 0 0 transparent; }
+}
+
+.count-glow-active {
+  animation: countGlow 0.6s ease-out;
+}
+
+/* 29. Section background grid pattern */
+.grid-pattern {
+  background-image: 
+    linear-gradient(rgba(224, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(224, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+[data-theme="light"] .grid-pattern {
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* 30. Hex pattern overlay for premium tech feel */
+.hex-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z' fill='none' stroke='rgba(224,0,0,0.04)' stroke-width='0.5'/%3E%3C/svg%3E");
+  background-size: 60px 52px;
+}
+
+[data-theme="light"] .hex-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z' fill='none' stroke='rgba(0,0,0,0.04)' stroke-width='0.5'/%3E%3C/svg%3E");
+}
+
+/* 31. Animated progress line for step connectors */
+@keyframes progressDraw {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+.progress-line {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+
+.revealed .progress-line {
+  animation: progressDraw 1.5s ease-out forwards;
+}
+
+/* 32. Hover lift with shadow cascade */
+.hover-lift {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+              box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 10px 20px rgba(0, 0, 0, 0.1),
+    0 20px 40px rgba(224, 0, 0, 0.1),
+    0 0 0 1px rgba(224, 0, 0, 0.05);
+}
+
+/* 33. Rotating ring decoration */
+@keyframes rotateRing {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.rotating-ring {
+  animation: rotateRing 20s linear infinite;
+}
+
+.rotating-ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px dashed rgba(224, 0, 0, 0.15);
+  animation: rotateRing 30s linear infinite reverse;
+}
+
+/* 34. Slide in from sides */
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.slide-in-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slide-in-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.revealed .slide-in-left {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.revealed .slide-in-right {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 35. Glow text highlight on scroll */
+@keyframes glowHighlight {
+  0% { background-size: 0% 100%; }
+  100% { background-size: 100% 100%; }
+}
+
+.glow-highlight {
+  background: linear-gradient(90deg, rgba(224, 0, 0, 0.2), rgba(224, 0, 0, 0.05));
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
+  transition: background-size 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.revealed .glow-highlight {
+  background-size: 100% 100%;
+}
+
+/* 36. Orbit decoration */
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(80px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(80px) rotate(-360deg); }
+}
+
+.orbit-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(212, 160, 23, 0.6);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(212, 160, 23, 0.4);
+  animation: orbit 8s linear infinite;
+  pointer-events: none;
+}
+
+.orbit-dot:nth-child(2) {
+  animation-duration: 12s;
+  animation-direction: reverse;
+  background: rgba(224, 0, 0, 0.5);
+  box-shadow: 0 0 10px rgba(224, 0, 0, 0.3);
+  width: 4px;
+  height: 4px;
+}
+
+.orbit-dot:nth-child(3) {
+  animation-duration: 16s;
+  animation-delay: -4s;
+  width: 3px;
+  height: 3px;
+}
+
+/* 37. Water wave at section bottom */
+@keyframes waveFloat {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(-25px) translateY(-3px); }
+}
+
+.wave-decoration {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 40px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.wave-decoration svg {
+  position: absolute;
+  bottom: 0;
+  animation: waveFloat 6s ease-in-out infinite;
+}
+
+/* 38. Premium badge shimmer */
+@keyframes badgeShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.badge-premium {
+  background: linear-gradient(90deg, 
+    rgba(224, 0, 0, 0.1) 0%, 
+    rgba(224, 0, 0, 0.2) 25%, 
+    rgba(212, 160, 23, 0.15) 50%, 
+    rgba(224, 0, 0, 0.2) 75%, 
+    rgba(224, 0, 0, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: badgeShimmer 4s linear infinite;
+}
+
+/* 39. Scale reveal for images */
+@keyframes scaleReveal {
+  from { transform: scale(1.1); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.scale-reveal {
+  opacity: 0;
+  transform: scale(1.1);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.revealed .scale-reveal {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 40. Floating shadow under elements */
+@keyframes floatShadow {
+  0%, 100% { 
+    transform: scaleX(1) translateY(0);
+    opacity: 0.3;
+  }
+  50% { 
+    transform: scaleX(0.8) translateY(5px);
+    opacity: 0.15;
+  }
+}
+
+.float-shadow {
+  position: absolute;
+  bottom: -15px;
+  left: 10%;
+  right: 10%;
+  height: 15px;
+  background: radial-gradient(ellipse, rgba(224, 0, 0, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: floatShadow 4s ease-in-out infinite;
+  pointer-events: none;
+}
