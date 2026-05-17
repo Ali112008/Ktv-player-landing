@@ -153,3 +153,26 @@ Stage Summary:
 - All animations are now CSS-only (GPU-accelerated, zero JS animation overhead)
 - Package size reduced by removing framer-motion dependency
 - Build passes, all features preserved
+
+---
+Task ID: 6
+Agent: Main Agent
+Task: Clean up unused dependencies and push to GitHub
+
+Work Log:
+- Removed 59 unused npm packages from package.json (template leftovers)
+- Removed: @radix-ui/* (all), @dnd-kit/*, @mdxeditor/*, @prisma/client, @tanstack/*, 
+  cmdk, date-fns, embla-carousel-react, input-otp, next-auth, next-intl, next-themes,
+  prisma, react-day-picker, react-hook-form, react-markdown, react-resizable-panels,
+  react-syntax-highlighter, recharts, sharp, sonner, uuid, vaul, z-ai-web-dev-sdk, zod, zustand
+- Removed unused UI components: toast.tsx, toaster.tsx
+- Removed template files: components.json, .env, utils.ts
+- Removed Toaster import from layout.tsx
+- Kept only essential deps: next, react, react-dom, lucide-react, tailwind-merge, class-variance-authority, clsx
+- Build verified successfully
+- Pushed to GitHub: AliMahmoudDev/ktv-player-landing (main branch)
+
+Stage Summary:
+- 59 unused packages removed (1,520 lines of code deleted)
+- Build succeeds with only 7 production dependencies
+- Code pushed to GitHub repo
