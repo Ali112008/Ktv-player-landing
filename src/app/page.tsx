@@ -99,13 +99,13 @@ function LandingContent() {
 
   return (
     <div
-      className={`min-h-screen bg-ktv-bg-dark text-white overflow-x-hidden ${
+      className={`min-h-screen bg-ktv-bg-dark text-ktv-text overflow-x-hidden ${
         isRTL ? 'rtl' : 'ltr'
       }`}
       dir={isRTL ? 'rtl' : 'ltr'}
     >
       {/* Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 z-40 bg-ktv-bg-dark/80 backdrop-blur-xl border-b border-white/5">
+      <nav className="fixed top-0 left-0 right-0 z-40 bg-ktv-bg-dark/80 backdrop-blur-xl border-b border-ktv-border-faint">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
@@ -129,13 +129,13 @@ function LandingContent() {
             <div className="hidden md:flex items-center gap-8">
               <a
                 href="#features"
-                className="text-white/60 hover:text-white transition-colors text-sm"
+                className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm"
               >
                 {t('navFeatures')}
               </a>
               <a
                 href="#download"
-                className="text-white/60 hover:text-white transition-colors text-sm"
+                className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm"
               >
                 {t('navDownload')}
               </a>
@@ -143,7 +143,7 @@ function LandingContent() {
                 href="https://wa.me/212602251813"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white/60 hover:text-white transition-colors text-sm flex items-center gap-1"
+                className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm flex items-center gap-1"
               >
                 {t('navContact')}
                 <ExternalLink className="w-3 h-3" />
@@ -209,16 +209,16 @@ function LandingContent() {
             transition={{ duration: 0.7, delay: 0.3 }}
           >
             <span className="gradient-text">KTV</span>
-            <span className="text-white"> — </span>
+            <span className="text-ktv-text"> — </span>
             <br className="sm:hidden" />
-            <span className="text-white/90">
+            <span className="text-ktv-text-strong">
               {lang === 'ar' ? 'عالم الترفيه بين يديك' : 'Entertainment at Your Fingertips'}
             </span>
           </motion.h1>
 
           {/* Subtitle */}
           <motion.p
-            className="text-base sm:text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed"
+            className="text-base sm:text-lg md:text-xl text-ktv-text-secondary max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}
@@ -239,13 +239,13 @@ function LandingContent() {
             >
               <Play className="w-5 h-5" fill="white" />
               {t('heroCta')}
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-ktv-surface-hover to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
             </a>
             <a
               href="https://wa.me/212602251813"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-ktv-gold/50 text-white font-bold text-base sm:text-lg transition-all duration-300 hover:scale-105"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-surface hover:bg-ktv-surface-hover border border-ktv-border hover:border-ktv-gold/50 text-ktv-text font-bold text-base sm:text-lg transition-all duration-300 hover:scale-105"
             >
               <MessageCircle className="w-5 h-5 text-[#25D366]" />
               {t('heroContact')}
@@ -260,7 +260,7 @@ function LandingContent() {
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          <ChevronDown className="w-6 h-6 sm:w-7 sm:h-7 text-white/30" />
+          <ChevronDown className="w-6 h-6 sm:w-7 sm:h-7 text-ktv-text-ghost" />
         </motion.div>
       </section>
 
@@ -302,7 +302,7 @@ function LandingContent() {
                 </>
               )}
             </h2>
-            <p className="text-white/50 text-base sm:text-lg max-w-2xl mx-auto">
+            <p className="text-ktv-text-muted text-base sm:text-lg max-w-2xl mx-auto">
               {t('featuresSubtitle')}
             </p>
           </motion.div>
@@ -319,7 +319,7 @@ function LandingContent() {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="group relative rounded-2xl bg-ktv-bg-card border border-white/[0.06] hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-500 overflow-hidden cursor-default text-center"
+                className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-500 overflow-hidden cursor-default text-center"
               >
                 {/* Hover gradient sweep */}
                 <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -331,14 +331,14 @@ function LandingContent() {
                   >
                     <span className="text-2xl sm:text-3xl">{feature.emoji}</span>
                     {/* Glow ring on hover */}
-                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-ktv-surface-active to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
 
                   {/* Text - centered below icon */}
                   <h3 className="text-base sm:text-lg font-bold mb-2 group-hover:text-ktv-red transition-colors duration-300">
                     {feature.title}
                   </h3>
-                  <p className="text-white/45 text-xs sm:text-sm leading-relaxed">
+                  <p className="text-ktv-text-dim text-xs sm:text-sm leading-relaxed">
                     {feature.desc}
                   </p>
                 </div>
@@ -393,7 +393,7 @@ function LandingContent() {
                   transition={{ duration: 0.7, delay: 0.2 }}
                   whileHover={{ rotate: 0, scale: 1.05, zIndex: 10 }}
                 >
-                  <div className="relative w-full rounded-[1.5rem] border-2 border-white/15 bg-black overflow-hidden shadow-2xl shadow-ktv-red/20">
+                  <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/20">
                     {/* Phone notch */}
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
                     <img
@@ -413,7 +413,7 @@ function LandingContent() {
                   transition={{ duration: 0.7, delay: 0.4 }}
                   whileHover={{ scale: 1.05, zIndex: 20 }}
                 >
-                  <div className="relative w-full rounded-[1.5rem] border-2 border-white/15 bg-black overflow-hidden shadow-2xl shadow-ktv-red/30">
+                  <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/30">
                     {/* Phone notch */}
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
                     <img
@@ -435,7 +435,7 @@ function LandingContent() {
                   transition={{ duration: 0.7, delay: 0.6 }}
                   whileHover={{ rotate: 0, scale: 1.05, zIndex: 10 }}
                 >
-                  <div className="relative w-full rounded-[1.5rem] border-2 border-white/15 bg-black overflow-hidden shadow-2xl shadow-ktv-red/20">
+                  <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/20">
                     {/* Phone notch */}
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
                     <img
@@ -463,7 +463,7 @@ function LandingContent() {
                   </>
                 )}
               </h2>
-              <p className="text-white/50 text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed">
+              <p className="text-ktv-text-muted text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed">
                 {lang === 'ar'
                   ? 'مع KTV Player، لن تحتاج لتطبيقات متعددة. كل ما تبحث عنه من ترفيه موجود في تطبيق واحد بتصميم أنيق وسهل الاستخدام. قنوات مباشرة، أفلام، مسلسلات، والمزيد.'
                   : 'With KTV Player, you won\'t need multiple apps. Everything you\'re looking for in entertainment is available in one app with an elegant, easy-to-use design. Live channels, movies, series, and more.'}
@@ -478,7 +478,7 @@ function LandingContent() {
                 ].map((stat, i) => (
                   <motion.div
                     key={i}
-                    className="text-center md:text-start p-3 sm:p-4 rounded-xl bg-white/5 border border-white/5"
+                    className="text-center md:text-start p-3 sm:p-4 rounded-xl bg-ktv-surface border border-ktv-border-faint"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -487,7 +487,7 @@ function LandingContent() {
                     <div className="text-xl sm:text-2xl font-black text-ktv-red">
                       {stat.num}
                     </div>
-                    <div className="text-xs sm:text-sm text-white/50">{stat.label}</div>
+                    <div className="text-xs sm:text-sm text-ktv-text-muted">{stat.label}</div>
                   </motion.div>
                 ))}
               </div>
@@ -523,7 +523,7 @@ function LandingContent() {
                 </>
               )}
             </h2>
-            <p className="text-white/50 text-base sm:text-lg max-w-xl mx-auto">
+            <p className="text-ktv-text-muted text-base sm:text-lg max-w-xl mx-auto">
               {lang === 'ar'
                 ? 'شاهد بنفسك كيف يبدو تطبيق KTV Player من الداخل'
                 : 'See for yourself what KTV Player looks like from the inside'}
@@ -538,7 +538,7 @@ function LandingContent() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-2xl shadow-ktv-red/10 group">
+            <div className="relative rounded-2xl border border-ktv-border overflow-hidden shadow-2xl shadow-ktv-red/10 group">
               <img
                 src="/screen-features-wide.webp"
                 alt={lang === 'ar' ? 'مميزات KTV Player - بث سلس وأفلام ومسلسلات' : 'KTV Player Features - Smooth Streaming, Movies & Series'}
@@ -593,7 +593,7 @@ function LandingContent() {
                 </>
               )}
             </h2>
-            <p className="text-white/50 text-base sm:text-lg">
+            <p className="text-ktv-text-muted text-base sm:text-lg">
               {t('downloadSubtitle')}
             </p>
           </motion.div>
@@ -605,7 +605,7 @@ function LandingContent() {
               href="https://play.google.com/store/apps/details?id=com.ktvplayer.ktv"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative rounded-2xl bg-ktv-bg-card border border-white/[0.06] hover:border-green-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-500"
+              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-green-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-500"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -628,15 +628,15 @@ function LandingContent() {
                     <path d="M460.8 228.8L370.4 164.8L279.2 256L370.4 347.2L460.8 283.2C474.4 275.2 483.2 263.2 483.2 256C483.2 248.8 474.4 236.8 460.8 228.8Z" fill="#FFC107"/>
                   </svg>
                   <div className="text-left">
-                    <div className="text-[10px] sm:text-xs text-white/40 uppercase tracking-wider">{lang === 'ar' ? 'متاح على' : 'GET IT ON'}</div>
-                    <div className="text-base sm:text-lg font-bold text-white leading-tight">Google Play</div>
+                    <div className="text-[10px] sm:text-xs text-ktv-text-faint uppercase tracking-wider">{lang === 'ar' ? 'متاح على' : 'GET IT ON'}</div>
+                    <div className="text-base sm:text-lg font-bold text-ktv-text leading-tight">Google Play</div>
                   </div>
                 </div>
 
                 <h3 className="text-base sm:text-lg font-bold mb-1.5 group-hover:text-green-400 transition-colors duration-300">
                   {t('downloadAndroid')}
                 </h3>
-                <p className="text-white/35 text-xs sm:text-sm mb-4">{lang === 'ar' ? 'لأجهزة أندرويد 5.0+' : 'For Android 5.0+'}</p>
+                <p className="text-ktv-text-weak text-xs sm:text-sm mb-4">{lang === 'ar' ? 'لأجهزة أندرويد 5.0+' : 'For Android 5.0+'}</p>
 
                 {/* CTA Button */}
                 <div className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-green-500/10 text-green-400 text-sm font-bold border border-green-500/20 group-hover:bg-green-500/20 group-hover:border-green-500/40 transition-all duration-300">
@@ -651,7 +651,7 @@ function LandingContent() {
               href="https://apps.apple.com/us/app/ktv-player/id6764389973?l=ar"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative rounded-2xl bg-ktv-bg-card border border-white/[0.06] hover:border-blue-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-500"
+              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-blue-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-500"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -667,19 +667,19 @@ function LandingContent() {
               <div className="relative">
                 {/* App Store Badge Style */}
                 <div className="flex items-center justify-center gap-3 mb-5">
-                  <svg className="w-9 h-9 sm:w-10 sm:h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <svg className="w-9 h-9 sm:w-10 sm:h-10 text-ktv-text" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.79 22.05 6.8 20.68 5.96 19.47C4.25 16.56 2.93 11.3 4.7 7.72C5.57 5.94 7.36 4.86 9.28 4.84C10.56 4.81 11.78 5.72 12.55 5.72C13.31 5.72 14.8 4.62 16.36 4.8C17.06 4.83 18.92 5.09 20.07 6.83C19.96 6.9 17.62 8.28 17.65 11.14C17.68 14.56 20.6 15.68 20.63 15.69C20.6 15.77 20.15 17.35 19.01 18.98L18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/>
                   </svg>
                   <div className="text-left">
-                    <div className="text-[10px] sm:text-xs text-white/40 uppercase tracking-wider">{lang === 'ar' ? 'حمّل من' : 'Download on the'}</div>
-                    <div className="text-base sm:text-lg font-bold text-white leading-tight">App Store</div>
+                    <div className="text-[10px] sm:text-xs text-ktv-text-faint uppercase tracking-wider">{lang === 'ar' ? 'حمّل من' : 'Download on the'}</div>
+                    <div className="text-base sm:text-lg font-bold text-ktv-text leading-tight">App Store</div>
                   </div>
                 </div>
 
                 <h3 className="text-base sm:text-lg font-bold mb-1.5 group-hover:text-blue-400 transition-colors duration-300">
                   {t('downloadIos')}
                 </h3>
-                <p className="text-white/35 text-xs sm:text-sm mb-4">{lang === 'ar' ? 'لأجهزة iPhone و iPad' : 'For iPhone & iPad'}</p>
+                <p className="text-ktv-text-weak text-xs sm:text-sm mb-4">{lang === 'ar' ? 'لأجهزة iPhone و iPad' : 'For iPhone & iPad'}</p>
 
                 {/* CTA Button */}
                 <div className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-blue-500/10 text-blue-400 text-sm font-bold border border-blue-500/20 group-hover:bg-blue-500/20 group-hover:border-blue-500/40 transition-all duration-300">
@@ -691,7 +691,7 @@ function LandingContent() {
 
             {/* TV */}
             <motion.div
-              className="group relative rounded-2xl bg-ktv-bg-card border border-white/[0.06] hover:border-amber-500/40 p-6 sm:p-7 text-center cursor-pointer sm:col-span-2 lg:col-span-1 overflow-hidden transition-all duration-500"
+              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-amber-500/40 p-6 sm:p-7 text-center cursor-pointer sm:col-span-2 lg:col-span-1 overflow-hidden transition-all duration-500"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -710,19 +710,19 @@ function LandingContent() {
                     <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
                   </div>
                   <div className="text-left">
-                    <div className="text-[10px] sm:text-xs text-white/40 uppercase tracking-wider">{lang === 'ar' ? 'متاح على' : 'AVAILABLE ON'}</div>
-                    <div className="text-base sm:text-lg font-bold text-white leading-tight">Smart TV</div>
+                    <div className="text-[10px] sm:text-xs text-ktv-text-faint uppercase tracking-wider">{lang === 'ar' ? 'متاح على' : 'AVAILABLE ON'}</div>
+                    <div className="text-base sm:text-lg font-bold text-ktv-text leading-tight">Smart TV</div>
                   </div>
                 </div>
 
                 <h3 className="text-base sm:text-lg font-bold mb-1.5 group-hover:text-amber-400 transition-colors duration-300">
                   {t('downloadTv')}
                 </h3>
-                <p className="text-white/35 text-xs sm:text-sm mb-4">{t('downloadTvNote')}</p>
+                <p className="text-ktv-text-weak text-xs sm:text-sm mb-4">{t('downloadTvNote')}</p>
 
                 {/* App Code */}
                 <div className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-amber-500/10 text-amber-400 text-sm font-bold border border-amber-500/20 group-hover:bg-amber-500/20 group-hover:border-amber-500/40 transition-all duration-300">
-                  <span className="text-white/50 text-xs">{t('tvAppCode')}:</span>
+                  <span className="text-ktv-text-muted text-xs">{t('tvAppCode')}:</span>
                   <span className="font-mono tracking-wider">9562862</span>
                 </div>
               </div>
@@ -738,7 +738,7 @@ function LandingContent() {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <div className="inline-flex flex-col items-center gap-4 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#25D366]/10 to-[#25D366]/5 border border-[#25D366]/20">
-              <p className="text-white/70 text-base sm:text-lg font-medium">
+              <p className="text-ktv-text-medium text-base sm:text-lg font-medium">
                 📲 {t('heroContact')}
               </p>
               <a
@@ -780,7 +780,7 @@ function LandingContent() {
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 sm:mb-6 leading-tight">
               {t('ctaTitle')}
             </h2>
-            <p className="text-white/55 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
+            <p className="text-ktv-text-semi text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
               {t('ctaSubtitle')}
             </p>
 
@@ -792,7 +792,7 @@ function LandingContent() {
               >
                 <Play className="w-5 h-5 sm:w-6 sm:h-6" fill="white" />
                 {t('ctaDownload')}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-ktv-surface-hover to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               </a>
               <a
                 href="https://wa.me/212602251813"
@@ -807,7 +807,7 @@ function LandingContent() {
 
             {/* Trust indicators */}
             <motion.div
-              className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-white/30 text-xs sm:text-sm"
+              className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-ktv-text-ghost text-xs sm:text-sm"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -838,7 +838,7 @@ function LandingContent() {
       </section>
 
       {/* ==================== FOOTER ==================== */}
-      <footer className="relative py-8 sm:py-12 border-t border-white/5">
+      <footer className="relative py-8 sm:py-12 border-t border-ktv-border-faint">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
             {/* Logo & Copyright */}
@@ -852,7 +852,7 @@ function LandingContent() {
                 <span className="font-bold text-sm sm:text-base">
                   KTV <span className="text-ktv-red">Player</span>
                 </span>
-                <p className="text-white/30 text-xs">
+                <p className="text-ktv-text-ghost text-xs">
                   © 2026 KTV Player. {t('footerRights')}.
                 </p>
               </div>
@@ -860,12 +860,12 @@ function LandingContent() {
 
             {/* Social Links */}
             <div className="flex items-center gap-4">
-              <span className="text-white/30 text-xs sm:text-sm">{t('footerFollowUs')}</span>
+              <span className="text-ktv-text-ghost text-xs sm:text-sm">{t('footerFollowUs')}</span>
               <a
                 href="https://www.tiktok.com/@ktv2026"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-ktv-red/30 transition-all duration-300 text-sm text-white/60 hover:text-white"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-ktv-surface hover:bg-ktv-surface-hover border border-ktv-border-faint hover:border-ktv-red/30 transition-all duration-300 text-sm text-ktv-text-secondary hover:text-ktv-text"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.78a8.22 8.22 0 004.76 1.51V6.84a4.85 4.85 0 01-1-.15z" />

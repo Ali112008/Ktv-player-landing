@@ -83,15 +83,15 @@ export default function AutoScrollGallery({ lang, isRTL }: AutoScrollGalleryProp
 
   const renderCard = (item: typeof galleryItems[0], key: string) => (
     <div key={key} className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px]">
-      <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-xl shadow-ktv-red/5 bg-ktv-bg-card group/card transition-all duration-500 hover:border-ktv-red/30 hover:shadow-ktv-red/20">
+      <div className="relative rounded-2xl border border-ktv-border overflow-hidden shadow-xl shadow-ktv-red/5 bg-ktv-bg-card group/card transition-all duration-500 hover:border-ktv-red/30 hover:shadow-ktv-red/20">
         <img
           src={item.src}
           alt={lang === 'ar' ? item.ar : item.en}
           className="w-full h-auto object-cover transition-transform duration-500 group-hover/card:scale-105"
           draggable={false}
         />
-        <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
-          <span className="text-white/80 text-xs sm:text-sm font-medium">
+        <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-ktv-overlay to-transparent">
+          <span className="text-ktv-text-medium text-xs sm:text-sm font-medium">
             {lang === 'ar' ? item.ar : item.en}
           </span>
         </div>
@@ -143,7 +143,7 @@ export default function AutoScrollGallery({ lang, isRTL }: AutoScrollGalleryProp
 
       {/* Pause indicator */}
       <div className={`flex items-center justify-center mt-3 transition-opacity duration-300 ${isPaused ? 'opacity-50' : 'opacity-0'}`}>
-        <span className="text-white/30 text-[10px] sm:text-xs flex items-center gap-1.5">
+        <span className="text-ktv-text-ghost text-[10px] sm:text-xs flex items-center gap-1.5">
           <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
             {isPaused ? (
               <>

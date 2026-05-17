@@ -24,7 +24,7 @@ export default function FloatingWhatsApp() {
         <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8 text-white" fill="white" />
         
         {/* Tooltip */}
-        <span className="absolute right-full rtl:right-auto rtl:left-full mr-3 rtl:mr-0 rtl:ml-3 whitespace-nowrap bg-[#12121a] text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border border-white/10">
+        <span className="absolute right-full rtl:right-auto rtl:left-full mr-3 rtl:mr-0 rtl:ml-3 whitespace-nowrap bg-ktv-bg-card text-ktv-text text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border border-ktv-border">
           {t('whatsappTooltip')}
         </span>
       </a>

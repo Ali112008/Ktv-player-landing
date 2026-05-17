@@ -10,13 +10,13 @@ export default function LanguageToggle() {
   return (
     <motion.button
       onClick={toggleLang}
-      className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-ktv-red/50 transition-all duration-300 text-sm font-medium"
+      className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 rounded-full bg-ktv-surface hover:bg-ktv-surface-hover border border-ktv-border hover:border-ktv-red/50 transition-all duration-300 text-sm font-medium"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       aria-label="Toggle language"
     >
       <Globe className="w-4 h-4 text-ktv-red" />
-      <span className="text-white/80">{lang === 'ar' ? 'EN' : 'عربي'}</span>
+      <span className="text-ktv-text-medium">{lang === 'ar' ? 'EN' : 'عربي'}</span>
     </motion.button>
   );
 }

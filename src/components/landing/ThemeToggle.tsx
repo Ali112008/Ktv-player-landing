@@ -9,7 +9,7 @@ export default function ThemeToggle() {
   return (
     <motion.button
       onClick={toggleTheme}
-      className="theme-toggle-btn relative flex items-center justify-center w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors duration-300"
+      className="theme-toggle-btn relative flex items-center justify-center w-9 h-9 rounded-xl bg-ktv-surface hover:bg-ktv-surface-hover border border-ktv-border transition-colors duration-300"
       whileTap={{ scale: 0.9 }}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       title={isDark ? 'الوضع الفاتح' : 'Dark Mode'}
