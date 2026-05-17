@@ -17,6 +17,9 @@ import {
   Menu,
   X,
   Star,
+  Download,
+  UserPlus,
+  MonitorPlay,
 } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/hooks/useLanguage';
 import { ThemeProvider } from '@/hooks/useTheme';
@@ -185,6 +188,33 @@ function LandingContent() {
       reviewEn: 'The interface is so clean and easy to use. My whole family loves it, even the kids can navigate it!',
       reviewAr: 'الواجهة نظيفة وسهلة الاستخدام. عائلتي كلها تحبه، حتى الأطفال يقدرون يستخدمونه!',
       gradient: 'from-green-500 to-emerald-500',
+    },
+  ];
+
+  const howItWorksSteps = [
+    {
+      step: 1,
+      icon: Download,
+      title: lang === 'ar' ? 'حمّل التطبيق' : 'Download the App',
+      desc: lang === 'ar' ? 'حمّل KTV Player من Google Play أو App Store في ثواني' : 'Download KTV Player from Google Play or App Store in seconds',
+      color: 'from-green-500 to-emerald-600',
+      emoji: '📲',
+    },
+    {
+      step: 2,
+      icon: UserPlus,
+      title: lang === 'ar' ? 'سجّل حسابك' : 'Create Your Account',
+      desc: lang === 'ar' ? 'أنشئ حسابك بسهولة وابدأ تجربتك المجانية' : 'Create your account easily and start your free trial',
+      color: 'from-blue-500 to-indigo-600',
+      emoji: '👤',
+    },
+    {
+      step: 3,
+      icon: MonitorPlay,
+      title: lang === 'ar' ? 'استمتع بالمشاهدة' : 'Enjoy Watching',
+      desc: lang === 'ar' ? 'استمتع بآلاف الأفلام والمسلسلات والقنوات المباشرة' : 'Enjoy thousands of movies, series, and live channels',
+      color: 'from-ktv-red to-rose-600',
+      emoji: '🎬',
     },
   ];
 
@@ -473,6 +503,22 @@ function LandingContent() {
               {t('heroSubtitle')}
             </motion.p>
 
+            {/* Urgency Badge - Above CTA Buttons */}
+            <motion.div
+              className="flex justify-center mb-4 sm:mb-6"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.6 }}
+            >
+              <motion.div
+                animate={{ scale: [1, 1.02, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ktv-surface/80 backdrop-blur border border-ktv-red/20 text-xs sm:text-sm text-ktv-text-secondary"
+              >
+                {lang === 'ar' ? '🔥 انضم لأكتر من 50,000 مستخدم نشط' : '🔥 Join 50,000+ Active Users'}
+              </motion.div>
+            </motion.div>
+
             {/* CTA Buttons */}
             <motion.div
               className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
@@ -481,12 +527,14 @@ function LandingContent() {
               transition={{ duration: 0.7, delay: 0.7 }}
             >
               <a
-                href="#download"
+                href="https://play.google.com/store/apps/details?id=com.ktvplayer.ktv"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-red hover:bg-ktv-red-light text-white font-bold text-base sm:text-lg transition-all duration-300 red-glow hover:scale-105"
               >
-                <Play className="w-5 h-5" fill="white" />
+                <Play className="w-5 h-5" />
+                <ExternalLink className="w-4 h-4" />
                 {t('heroCta')}
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-ktv-surface-hover to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               </a>
               <a
                 href="https://wa.me/212602251813"
@@ -540,110 +588,6 @@ function LandingContent() {
           >
             <ChevronDown className="w-6 h-6 sm:w-7 sm:h-7 text-ktv-text-ghost" />
           </motion.div>
-        </section>
-
-        {/* ==================== FEATURES SECTION ==================== */}
-        <section id="features" className="relative py-16 sm:py-20 md:py-28">
-          {/* Background decoration */}
-          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/30 to-ktv-bg-dark" />
-
-          <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Section Header */}
-            <motion.div
-              className="text-center mb-12 sm:mb-16"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <motion.span
-                className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20"
-                initial={{ scale: 0.8, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: true }}
-              >
-                {t('featuresTitle')}
-              </motion.span>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-                {lang === 'ar' ? (
-                  <>
-                    تجربة مشاهدة{' '}
-                    <span className="gradient-text-red">استثنائية</span> تجمع بين
-                    كل ما تحب
-                  </>
-                ) : (
-                  <>
-                    An{' '}
-                    <span className="gradient-text-red">Exceptional</span>{' '}
-                    Viewing Experience
-                  </>
-                )}
-              </h2>
-              <p className="text-ktv-text-muted text-base sm:text-lg max-w-2xl mx-auto">
-                {t('featuresSubtitle')}
-              </p>
-            </motion.div>
-
-            {/* Features Grid - Icon on Top Centered Cards */}
-            <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-50px' }}
-            >
-              {features.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-500 overflow-hidden cursor-default text-center"
-                >
-                  {/* Hover gradient sweep */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                  <div className="relative flex flex-col items-center">
-                    {/* Icon - centered on top */}
-                    <div
-                      className={`relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${feature.color} shadow-lg mb-4 transition-transform duration-500 group-hover:scale-110`}
-                    >
-                      <span className="text-2xl sm:text-3xl">{feature.emoji}</span>
-                      {/* Glow ring on hover */}
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-ktv-surface-active to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    </div>
-
-                    {/* Text - centered below icon */}
-                    <h3 className="text-base sm:text-lg font-bold mb-2 group-hover:text-ktv-red transition-colors duration-300">
-                      {feature.title}
-                    </h3>
-                    <p className="text-ktv-text-dim text-xs sm:text-sm leading-relaxed">
-                      {feature.desc}
-                    </p>
-                  </div>
-
-                  {/* Bottom accent line */}
-                  <div className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-ktv-red to-ktv-gold transition-all duration-700" />
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Features CTA */}
-            <motion.div
-              className="mt-8 sm:mt-10 text-center"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-            >
-              <a
-                href="#download"
-                className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-ktv-red hover:bg-ktv-red-light text-white font-bold text-sm sm:text-base transition-all duration-300 red-glow-sm hover:scale-105"
-              >
-                {lang === 'ar' ? 'جربها بنفسك الآن' : 'Try It Yourself Now'}
-                <ChevronDown className="w-4 h-4 rotate-[-90deg] rtl:rotate-90 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform" />
-              </a>
-            </motion.div>
-          </div>
         </section>
 
         {/* ==================== SHOWCASE SECTION ==================== */}
@@ -770,6 +714,206 @@ function LandingContent() {
                   ))}
                 </div>
               </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ==================== HOW IT WORKS SECTION ==================== */}
+        <section className="relative py-16 sm:py-20 md:py-24">
+          {/* Background decoration */}
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
+
+          <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Section Header */}
+            <motion.div
+              className="text-center mb-12 sm:mb-16"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <motion.span
+                className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20"
+                initial={{ scale: 0.8, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+              >
+                {lang === 'ar' ? 'كيف يعمل' : 'How It Works'}
+              </motion.span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+                {lang === 'ar' ? (
+                  <>
+                    ابدأ في{' '}
+                    <span className="gradient-text-red">ثلاث خطوات</span>{' '}
+                    بسيطة
+                  </>
+                ) : (
+                  <>
+                    Get Started in{' '}
+                    <span className="gradient-text-red">3 Simple</span>{' '}
+                    Steps
+                  </>
+                )}
+              </h2>
+              <p className="text-ktv-text-muted text-base sm:text-lg max-w-2xl mx-auto">
+                {lang === 'ar'
+                  ? 'تجربة KTV Player سهلة وسريعة. حمّل التطبيق وابدأ المشاهدة فوراً'
+                  : 'Getting started with KTV Player is quick and easy. Download the app and start watching instantly'}
+              </p>
+            </motion.div>
+
+            {/* Steps Grid */}
+            <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+              {/* Connecting dashed line - visible on desktop only */}
+              <div className="hidden lg:block absolute top-1/2 left-[16.67%] right-[16.67%] h-[2px] -translate-y-1/2 border-t-2 border-dashed border-ktv-border-subtle z-0" />
+
+              {howItWorksSteps.map((step, index) => (
+                <motion.div
+                  key={index}
+                  className="relative z-10"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.15 }}
+                >
+                  <div className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-500 overflow-hidden cursor-default text-center">
+                    {/* Hover gradient sweep */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                    <div className="relative flex flex-col items-center">
+                      {/* Step Number Badge */}
+                      <div className="absolute -top-1 -right-1 rtl:-left-1 rtl:right-auto w-7 h-7 rounded-full bg-ktv-red text-white text-xs font-black flex items-center justify-center shadow-lg">
+                        {step.step}
+                      </div>
+
+                      {/* Icon */}
+                      <div
+                        className={`relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${step.color} shadow-lg mb-4 transition-transform duration-500 group-hover:scale-110`}
+                      >
+                        <step.icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                        {/* Glow ring on hover */}
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-ktv-surface-active to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="text-base sm:text-lg font-bold mb-2 group-hover:text-ktv-red transition-colors duration-300">
+                        {step.title}
+                      </h3>
+                      <p className="text-ktv-text-dim text-xs sm:text-sm leading-relaxed">
+                        {step.desc}
+                      </p>
+                    </div>
+
+                    {/* Bottom accent line */}
+                    <div className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-ktv-red to-ktv-gold transition-all duration-700" />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ==================== FEATURES SECTION ==================== */}
+        <section id="features" className="relative py-16 sm:py-20 md:py-28">
+          {/* Background decoration */}
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/30 to-ktv-bg-dark" />
+
+          <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Section Header */}
+            <motion.div
+              className="text-center mb-12 sm:mb-16"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <motion.span
+                className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20"
+                initial={{ scale: 0.8, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+              >
+                {t('featuresTitle')}
+              </motion.span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+                {lang === 'ar' ? (
+                  <>
+                    تجربة مشاهدة{' '}
+                    <span className="gradient-text-red">استثنائية</span> تجمع بين
+                    كل ما تحب
+                  </>
+                ) : (
+                  <>
+                    An{' '}
+                    <span className="gradient-text-red">Exceptional</span>{' '}
+                    Viewing Experience
+                  </>
+                )}
+              </h2>
+              <p className="text-ktv-text-muted text-base sm:text-lg max-w-2xl mx-auto">
+                {t('featuresSubtitle')}
+              </p>
+            </motion.div>
+
+            {/* Features Grid - Icon on Top Centered Cards */}
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-50px' }}
+            >
+              {features.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-500 overflow-hidden cursor-default text-center"
+                >
+                  {/* Hover gradient sweep */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                  <div className="relative flex flex-col items-center">
+                    {/* Icon - centered on top */}
+                    <div
+                      className={`relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${feature.color} shadow-lg mb-4 transition-transform duration-500 group-hover:scale-110`}
+                    >
+                      <span className="text-2xl sm:text-3xl">{feature.emoji}</span>
+                      {/* Glow ring on hover */}
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-ktv-surface-active to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </div>
+
+                    {/* Text - centered below icon */}
+                    <h3 className="text-base sm:text-lg font-bold mb-2 group-hover:text-ktv-red transition-colors duration-300">
+                      {feature.title}
+                    </h3>
+                    <p className="text-ktv-text-dim text-xs sm:text-sm leading-relaxed">
+                      {feature.desc}
+                    </p>
+                  </div>
+
+                  {/* Bottom accent line */}
+                  <div className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-ktv-red to-ktv-gold transition-all duration-700" />
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Features CTA */}
+            <motion.div
+              className="mt-8 sm:mt-10 text-center"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <a
+                href="#download"
+                className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-ktv-red hover:bg-ktv-red-light text-white font-bold text-sm sm:text-base transition-all duration-300 red-glow-sm hover:scale-105"
+              >
+                {lang === 'ar' ? 'جربها بنفسك الآن' : 'Try It Yourself Now'}
+                <ChevronDown className="w-4 h-4 rotate-[-90deg] rtl:rotate-90 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform" />
+              </a>
             </motion.div>
           </div>
         </section>
@@ -966,6 +1110,16 @@ function LandingContent() {
               <p className="text-ktv-text-muted text-base sm:text-lg">
                 {t('downloadSubtitle')}
               </p>
+              {/* Urgency Text */}
+              <motion.p
+                className="mt-3 text-ktv-gold text-sm sm:text-base font-semibold"
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                {lang === 'ar' ? '⏰ عرض محدود - اشترك الآن واحصل على شهر مجاني!' : '⏰ Limited Offer - Subscribe now and get 1 month free!'}
+              </motion.p>
             </motion.div>
 
             {/* Download Cards */}
@@ -1120,88 +1274,6 @@ function LandingContent() {
                   <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
                   WhatsApp
                 </a>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ==================== POWERFUL CTA SECTION ==================== */}
-        <section className="relative py-16 sm:py-20 md:py-24 overflow-hidden">
-          {/* Background effects */}
-          <div className="absolute inset-0 bg-gradient-to-br from-ktv-red/10 via-ktv-bg-dark to-ktv-gold/5" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ktv-bg-dark via-transparent to-ktv-bg-dark" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-ktv-red/8 rounded-full blur-[150px]" />
-
-          <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              className="text-center"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              {/* Decorative line */}
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="w-8 h-[1px] bg-gradient-to-r from-transparent to-ktv-red" />
-                <div className="w-2 h-2 rounded-full bg-ktv-red animate-pulse" />
-                <div className="w-8 h-[1px] bg-gradient-to-l from-transparent to-ktv-red" />
-              </div>
-
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 sm:mb-6 leading-tight">
-                {t('ctaTitle')}
-              </h2>
-              <p className="text-ktv-text-semi text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
-                {t('ctaSubtitle')}
-              </p>
-
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
-                <a
-                  href="#download"
-                  className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 sm:px-10 sm:py-5 rounded-2xl bg-ktv-red hover:bg-ktv-red-light text-white font-black text-base sm:text-lg transition-all duration-300 red-glow hover:scale-105"
-                >
-                  <Play className="w-5 h-5 sm:w-6 sm:h-6" fill="white" />
-                  {t('ctaDownload')}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-ktv-surface-hover to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                </a>
-                <a
-                  href="https://wa.me/212602251813"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 sm:px-10 sm:py-5 rounded-2xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-black text-base sm:text-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-[#25D366]/25"
-                >
-                  <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
-                  {t('ctaWhatsapp')}
-                </a>
-              </div>
-
-              {/* Trust indicators */}
-              <motion.div
-                className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-ktv-text-ghost text-xs sm:text-sm"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                <span className="flex items-center gap-1.5">
-                  <Zap className="w-3.5 h-3.5 text-ktv-gold" />
-                  {lang === 'ar' ? 'تحميل فوري' : 'Instant Download'}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-ktv-gold" />
-                  {lang === 'ar' ? 'مجاني بالكامل' : 'Completely Free'}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Diamond className="w-3.5 h-3.5 text-ktv-gold" />
-                  {lang === 'ar' ? 'بدون إعلانات مزعجة' : 'No Annoying Ads'}
-                </span>
-              </motion.div>
-
-              {/* Decorative line bottom */}
-              <div className="flex items-center justify-center gap-3 mt-8">
-                <div className="w-8 h-[1px] bg-gradient-to-r from-transparent to-ktv-gold/50" />
-                <div className="w-1.5 h-1.5 rounded-full bg-ktv-gold/50" />
-                <div className="w-8 h-[1px] bg-gradient-to-l from-transparent to-ktv-gold/50" />
               </div>
             </motion.div>
           </div>
