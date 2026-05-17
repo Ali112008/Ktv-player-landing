@@ -1352,3 +1352,264 @@ html {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* ==================== BONUS FEATURES CSS ==================== */
+
+/* 1. Announcement Bar - Marquee scroll */
+@keyframes marqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marqueeScrollRTL {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.announcement-bar {
+  overflow: hidden;
+  position: relative;
+}
+
+.announcement-bar .marquee-content {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marqueeScroll 20s linear infinite;
+}
+
+[dir="rtl"] .announcement-bar .marquee-content {
+  animation: marqueeScrollRTL 20s linear infinite;
+}
+
+.announcement-bar-dismiss {
+  transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease;
+}
+
+.announcement-bar-dismiss.dismissed {
+  opacity: 0;
+  transform: translateY(-100%);
+  max-height: 0 !important;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* 2. Live Viewer Counter - Pulsing green dot */
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+}
+
+.live-dot::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.4);
+  animation: livePulse 2s ease-in-out infinite;
+}
+
+/* 3. FAQ Accordion */
+.faq-item {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background: rgba(18, 18, 26, 0.8);
+}
+
+[data-theme="light"] .faq-item {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.faq-item:hover {
+  border-color: rgba(224, 0, 0, 0.2);
+}
+
+.faq-item.faq-open {
+  border-color: rgba(224, 0, 0, 0.3);
+  box-shadow: 0 0 15px rgba(224, 0, 0, 0.08);
+}
+
+.faq-answer {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.3s ease,
+              padding 0.3s ease;
+  padding: 0 1.5rem;
+}
+
+.faq-open .faq-answer {
+  max-height: 200px;
+  opacity: 1;
+  padding: 0 1.5rem 1.25rem;
+}
+
+.faq-chevron {
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.faq-open .faq-chevron {
+  transform: rotate(180deg);
+}
+
+/* 4. Comparison Table */
+.comparison-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 0.75rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 0.875rem;
+}
+
+.comparison-table th {
+  background: rgba(18, 18, 26, 0.9);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+[data-theme="light"] .comparison-table th {
+  background: rgba(245, 242, 238, 0.9);
+}
+
+.comparison-table td:first-child {
+  text-align: start;
+  font-weight: 600;
+}
+
+.comparison-highlight {
+  background: rgba(224, 0, 0, 0.06) !important;
+  position: relative;
+}
+
+[data-theme="light"] .comparison-highlight {
+  background: rgba(224, 0, 0, 0.04) !important;
+}
+
+.comparison-highlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-left: 2px solid rgba(224, 0, 0, 0.3);
+  border-right: 2px solid rgba(224, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+.comparison-highlight:first-child::before {
+  border-left: none;
+}
+
+.comparison-highlight:last-child::before {
+  border-right: none;
+}
+
+/* Comparison table horizontal scroll on mobile */
+.comparison-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #e00000 transparent;
+}
+
+.comparison-wrapper::-webkit-scrollbar {
+  height: 4px;
+}
+
+.comparison-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.comparison-wrapper::-webkit-scrollbar-thumb {
+  background: #e00000;
+  border-radius: 2px;
+}
+
+/* 5. Confetti Effect */
+@keyframes confettiBurst {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--confetti-x, 0), var(--confetti-y, -100px)) rotate(var(--confetti-rotate, 360deg)) scale(0);
+    opacity: 0;
+  }
+}
+
+.confetti-particle {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: confettiBurst 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.confetti-particle:nth-child(odd) {
+  border-radius: 50%;
+}
+
+.confetti-particle:nth-child(even) {
+  border-radius: 2px;
+}
+
+/* 6. Typing Text Effect */
+.typing-text {
+  display: inline;
+}
+
+.typing-cursor-blink {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: #e00000;
+  margin-left: 2px;
+  margin-right: 2px;
+  vertical-align: text-bottom;
+  animation: cursorBlink 1s step-end infinite;
+}
+
+.typing-cursor-blink.cursor-fade {
+  animation: cursorFadeOut 2s ease-out forwards;
+}
+
+@keyframes cursorFadeOut {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Reduced motion for bonus features */
+@media (prefers-reduced-motion: reduce) {
+  .announcement-bar .marquee-content,
+  .live-dot::before,
+  .confetti-particle {
+    animation: none !important;
+  }
+  .faq-answer {
+    transition: none !important;
+  }
+}

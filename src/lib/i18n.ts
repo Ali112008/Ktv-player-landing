@@ -59,6 +59,42 @@ export const translations = {
     // Testimonials
     testimonialsTitle: 'ماذا يقول عملاؤنا',
     testimonialsSubtitle: 'آراء حقيقية من مشاهدين يستمتعون بـ KTV Player كل يوم',
+
+    // Announcement Bar
+    announcementText: '🔥 عرض خاص: اشترك الآن واحصل على شهر مجاني! 🔥',
+    announcementDismiss: 'إغلاق',
+
+    // Live Viewer Counter
+    liveViewers: 'شخص يشاهدون الآن',
+
+    // FAQ Section
+    faqTitle: 'أسئلة شائعة',
+    faqQ1: 'هل التطبيق مجاني؟',
+    faqA1: 'نعم، تحميل التطبيق مجاني تماماً. نقدم فترة تجريبية مجانية لتتمكن من تجربة جميع المميزات قبل الاشتراك.',
+    faqQ2: 'هل يعمل على جميع الأجهزة؟',
+    faqA2: 'نعم! KTV Player متاح على أندرويد، آيفون، آيباد، والتلفزيون الذكي. تطبيق واحد لكل أجهزتك.',
+    faqQ3: 'هل يحتاج إنترنت سريع؟',
+    faqA3: 'لا، تقنية البث الذكية في KTV Player تتكيف مع سرعة إنترك. يعمل بسلاسة حتى على الاتصالات الضعيفة بدون تقطيع.',
+    faqQ4: 'هل يمكنني إلغاء الاشتراك في أي وقت؟',
+    faqA4: 'بالتأكيد! لا توجد عقود أو التزامات. يمكنك إلغاء اشتراكك في أي وقت بسهولة عبر تطبيق واتساب.',
+    faqQ5: 'كم عدد القنوات المتاحة؟',
+    faqA5: 'أكثر من 500 قناة مباشرة من جميع أنحاء العالم، بالإضافة إلى آلاف الأفلام والمسلسلات التي تُحدَّث يومياً.',
+
+    // Comparison Table
+    comparisonTitle: 'قارن بين الخيارات',
+    comparisonSubtitle: 'شوف ليش KTV Player هو الخيار الأفضل',
+    comparisonFeature: 'الميزة',
+    comparisonKtv: 'KTV Player',
+    comparisonCable: 'تلفزيون الكابل',
+    comparisonOther: 'IPTV أخرى',
+    compPrice: 'السعر',
+    compChannels: 'القنوات',
+    compMovies: 'أفلام ومسلسلات',
+    comp4k: 'جودة 4K',
+    compNoBuffer: 'بدون تقطيع',
+    compMultiDevice: 'أجهزة متعددة',
+    compFreeTrial: 'فترة تجريبية مجانية',
+    comparisonBest: 'الأفضل',
   },
   en: {
     // Hero Section
@@ -118,6 +154,42 @@ export const translations = {
     // Testimonials
     testimonialsTitle: 'What Our Customers Say',
     testimonialsSubtitle: 'Real reviews from viewers enjoying KTV Player every day',
+
+    // Announcement Bar
+    announcementText: '🔥 Limited Offer: Subscribe now and get 1 month free! 🔥',
+    announcementDismiss: 'Dismiss',
+
+    // Live Viewer Counter
+    liveViewers: 'people viewing now',
+
+    // FAQ Section
+    faqTitle: 'Frequently Asked Questions',
+    faqQ1: 'Is the app free?',
+    faqA1: 'Yes, downloading the app is completely free. We offer a free trial period so you can experience all features before subscribing.',
+    faqQ2: 'Does it work on all devices?',
+    faqA2: 'Yes! KTV Player is available on Android, iPhone, iPad, and Smart TV. One app for all your devices.',
+    faqQ3: 'Does it require fast internet?',
+    faqA3: 'No, KTV Player\'s smart streaming technology adapts to your internet speed. It works smoothly even on slow connections without buffering.',
+    faqQ4: 'Can I cancel anytime?',
+    faqA4: 'Absolutely! There are no contracts or commitments. You can cancel your subscription anytime easily via WhatsApp.',
+    faqQ5: 'How many channels are available?',
+    faqA5: 'Over 500 live channels from around the world, plus thousands of movies and series updated daily.',
+
+    // Comparison Table
+    comparisonTitle: 'Compare Options',
+    comparisonSubtitle: 'See why KTV Player is the best choice',
+    comparisonFeature: 'Feature',
+    comparisonKtv: 'KTV Player',
+    comparisonCable: 'Cable TV',
+    comparisonOther: 'Other IPTV',
+    compPrice: 'Price',
+    compChannels: 'Channels',
+    compMovies: 'Movies & Series',
+    comp4k: '4K Quality',
+    compNoBuffer: 'No Buffering',
+    compMultiDevice: 'Multi-device',
+    compFreeTrial: 'Free Trial',
+    comparisonBest: 'Best',
   },
 } as const;
 

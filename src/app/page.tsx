@@ -90,7 +90,6 @@ function AnimatedCounter({ target, suffix, duration = 2000 }: { target: number; 
               requestAnimationFrame(step);
             } else {
               setCount(target);
-              // Add glow burst when count finishes
               if (el) el.classList.add('count-glow-active');
               setTimeout(() => {
                 if (el) el.classList.remove('count-glow-active');
@@ -116,6 +115,80 @@ function AnimatedCounter({ target, suffix, duration = 2000 }: { target: number; 
   return <span ref={ref}>{formatNumber()}</span>;
 }
 
+/* ========== Typing Text Hook ========== */
+function useTypingText(text: string, speed = 40) {
+  const [displayed, setDisplayed] = useState('');
+  const [started, setStarted] = useState(false);
+  const [done, setDone] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started) {
+          setStarted(true);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [started]);
+
+  useEffect(() => {
+    if (!started) return;
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      setDisplayed(text.slice(0, i));
+      if (i >= text.length) {
+        clearInterval(interval);
+        setDone(true);
+      }
+    }, speed);
+    return () => clearInterval(interval);
+  }, [started, text, speed]);
+
+  return { displayed, done, ref };
+}
+
+/* ========== Confetti Trigger ========== */
+function triggerConfetti(e: React.MouseEvent) {
+  const burst = document.createElement('div');
+  burst.style.position = 'fixed';
+  burst.style.left = e.clientX + 'px';
+  burst.style.top = e.clientY + 'px';
+  burst.style.pointerEvents = 'none';
+  burst.style.zIndex = '9999';
+  document.body.appendChild(burst);
+
+  const colors = ['#e00000', '#d4a017', '#ffffff', '#ff2a2a', '#f5c842'];
+
+  for (let i = 0; i < 25; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'confetti-particle';
+    const angle = (Math.PI * 2 * i) / 25;
+    const distance = 60 + Math.random() * 80;
+    const x = Math.cos(angle) * distance;
+    const y = Math.sin(angle) * distance - 40;
+    const rotate = Math.random() * 720 - 360;
+    particle.style.setProperty('--confetti-x', `${x}px`);
+    particle.style.setProperty('--confetti-y', `${y}px`);
+    particle.style.setProperty('--confetti-rotate', `${rotate}deg`);
+    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+    particle.style.width = `${4 + Math.random() * 6}px`;
+    particle.style.height = `${4 + Math.random() * 6}px`;
+    burst.appendChild(particle);
+  }
+
+  setTimeout(() => {
+    burst.remove();
+  }, 1500);
+}
+
 function LandingContent() {
   const { t, isRTL, lang } = useLanguage();
 
@@ -127,6 +200,8 @@ function LandingContent() {
   const revealGallery = useScrollReveal();
   const revealTestimonials = useScrollReveal();
   const revealDownload = useScrollReveal();
+  const revealFaq = useScrollReveal();
+  const revealComparison = useScrollReveal();
 
   // ========== Card spotlight refs ==========
   const spotlightFeatures = useCardSpotlight();
@@ -134,6 +209,31 @@ function LandingContent() {
 
   // ========== Mobile menu state ==========
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // ========== Announcement bar state ==========
+  const [announcementVisible, setAnnouncementVisible] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return !localStorage.getItem('ktv-announcement-dismissed');
+    }
+    return true;
+  });
+
+  // ========== Live viewer counter state ==========
+  const [viewerCount, setViewerCount] = useState(247);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const delta = Math.floor(Math.random() * 21) - 10; // -10 to +10
+      setViewerCount((prev) => Math.max(180, Math.min(350, prev + delta)));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // ========== FAQ accordion state ==========
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  // ========== Typing text for hero subtitle ==========
+  const heroSubtitleText = t('heroSubtitle');
+  const { displayed: typedSubtitle, done: typingDone, ref: typingRef } = useTypingText(heroSubtitleText, 40);
 
   // ========== Scroll-to-top visibility + Navbar scroll style ==========
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -144,7 +244,6 @@ function LandingContent() {
         requestAnimationFrame(() => {
           const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
           setShowScrollTop(window.scrollY > scrollHeight * 0.5);
-          // Navbar scroll style
           const nav = document.getElementById('main-nav');
           if (nav) {
             if (window.scrollY > 50) {
@@ -153,7 +252,6 @@ function LandingContent() {
               nav.classList.remove('nav-scrolled');
             }
           }
-          // Update scroll progress bar
           const progressBar = document.getElementById('scroll-progress');
           if (progressBar) {
             const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
@@ -170,6 +268,12 @@ function LandingContent() {
 
   const scrollToTop = useCallback(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  // ========== Dismiss announcement bar ==========
+  const dismissAnnouncement = useCallback(() => {
+    setAnnouncementVisible(false);
+    localStorage.setItem('ktv-announcement-dismissed', 'true');
   }, []);
 
   const features = [
@@ -287,6 +391,24 @@ function LandingContent() {
     },
   ];
 
+  const faqItems = [
+    { q: t('faqQ1'), a: t('faqA1') },
+    { q: t('faqQ2'), a: t('faqA2') },
+    { q: t('faqQ3'), a: t('faqA3') },
+    { q: t('faqQ4'), a: t('faqA4') },
+    { q: t('faqQ5'), a: t('faqA5') },
+  ];
+
+  const comparisonRows = [
+    { feature: t('compPrice'), ktv: '✅', cable: '❌', other: '⚠️' },
+    { feature: t('compChannels'), ktv: '✅', cable: '❌', other: '⚠️' },
+    { feature: t('compMovies'), ktv: '✅', cable: '❌', other: '⚠️' },
+    { feature: t('comp4k'), ktv: '✅', cable: '❌', other: '❌' },
+    { feature: t('compNoBuffer'), ktv: '✅', cable: '❌', other: '⚠️' },
+    { feature: t('compMultiDevice'), ktv: '✅', cable: '❌', other: '❌' },
+    { feature: t('compFreeTrial'), ktv: '✅', cable: '❌', other: '⚠️' },
+  ];
+
   // Close mobile menu and smooth scroll to section
   const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
@@ -321,8 +443,39 @@ function LandingContent() {
       {/* Scroll Progress Bar */}
       <div className="scroll-progress" id="scroll-progress" />
 
+      {/* ==================== ANNOUNCEMENT BAR ==================== */}
+      <div
+        className={`announcement-bar-dismiss z-50 relative ${
+          announcementVisible ? '' : 'dismissed'
+        }`}
+        style={{ maxHeight: announcementVisible ? '32px' : '0px' }}
+      >
+        <div className="h-8 bg-gradient-to-r from-ktv-red/80 via-ktv-red/60 to-ktv-gold/60 flex items-center announcement-bar">
+          <div className="marquee-content text-white/90 text-xs sm:text-sm font-medium">
+            <span className="mx-8">{t('announcementText')}</span>
+            <span className="mx-8">{t('announcementText')}</span>
+            <span className="mx-8">{t('announcementText')}</span>
+            <span className="mx-8">{t('announcementText')}</span>
+            <span className="mx-8">{t('announcementText')}</span>
+            <span className="mx-8">{t('announcementText')}</span>
+          </div>
+          <button
+            onClick={dismissAnnouncement}
+            className="absolute right-2 rtl:right-auto rtl:left-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors z-10"
+            aria-label={t('announcementDismiss')}
+          >
+            <X className="w-3.5 h-3.5 text-white/80" />
+          </button>
+        </div>
+      </div>
+
       {/* Navigation Bar */}
-      <nav id="main-nav" className="fixed top-0 left-0 right-0 z-40 bg-ktv-bg-dark/80 backdrop-blur-xl border-b border-ktv-border-faint transition-all duration-300">
+      <nav
+        id="main-nav"
+        className={`fixed left-0 right-0 z-40 bg-ktv-bg-dark/80 backdrop-blur-xl border-b border-ktv-border-faint transition-all duration-300 ${
+          announcementVisible ? 'top-8' : 'top-0'
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
@@ -386,7 +539,7 @@ function LandingContent() {
           </div>
         </div>
 
-        {/* ========== MOBILE HAMBURGER MENU OVERLAY (click outside to close) ========== */}
+        {/* ========== MOBILE HAMBURGER MENU OVERLAY ========== */}
         {mobileMenuOpen && (
           <div
             className="fixed inset-0 z-[-1] md:hidden"
@@ -445,7 +598,7 @@ function LandingContent() {
         {/* Aurora Borealis Effect */}
         <div className="aurora-bg z-[0]" />
 
-        {/* Glowing Orbs - Reduced to 2 for performance */}
+        {/* Glowing Orbs */}
         <div className="glow-orb glow-orb-1" style={{ top: '15%', left: '10%' }} />
         <div className="glow-orb glow-orb-2" style={{ top: '60%', right: '5%' }} />
 
@@ -453,16 +606,16 @@ function LandingContent() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-ktv-bg-dark/50 to-ktv-bg-dark z-[1]" />
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-ktv-red/5 via-transparent to-ktv-gold/5 z-[1]" />
 
-        {/* Decorative blurred circles - static, no animation */}
+        {/* Decorative blurred circles */}
         <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-80 sm:h-80 bg-ktv-red/10 rounded-full blur-[40px]" />
         <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-ktv-gold/10 rounded-full blur-[30px]" />
 
-        {/* Hero sparkles - reduced for performance */}
+        {/* Hero sparkles */}
         <div className="hero-sparkle z-[2]" />
         <div className="hero-sparkle z-[2]" />
         <div className="hero-sparkle z-[2]" />
 
-        {/* Particle dots - reduced for performance */}
+        {/* Particle dots */}
         <div className="particle particle-1 z-[2]" style={{ top: '25%', left: '20%' }} />
         <div className="particle particle-2 z-[2]" style={{ top: '45%', right: '15%' }} />
         <div className="particle particle-3 z-[2]" style={{ bottom: '30%', left: '40%' }} />
@@ -488,26 +641,32 @@ function LandingContent() {
             <span className="text-shimmer glitch-text" data-text="KTV">KTV</span>
             <span className="text-ktv-text"> — </span>
             <br className="sm:hidden" />
-            <span className="text-ktv-text-strong typing-cursor">
+            <span className="text-ktv-text-strong">
               {lang === 'ar' ? 'عالم الترفيه بين يديك' : 'Entertainment at Your Fingertips'}
             </span>
           </h1>
 
-          {/* Subtitle */}
+          {/* Subtitle with Typing Effect */}
           <p
             className="text-base sm:text-lg md:text-xl text-ktv-text-secondary max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed animate-fade-in-up"
             style={{ animationDelay: '0.3s' }}
           >
-            {t('heroSubtitle')}
+            <span ref={typingRef} className="typing-text">{typedSubtitle}</span>
+            <span className={`typing-cursor-blink ${typingDone ? 'cursor-fade' : ''}`} />
           </p>
 
-          {/* Urgency Badge */}
+          {/* Urgency Badge + Live Viewer Counter */}
           <div
-            className="flex justify-center mb-4 sm:mb-6 animate-fade-in-up"
+            className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-3 mb-4 sm:mb-6 animate-fade-in-up"
             style={{ animationDelay: '0.4s' }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ktv-surface/80 backdrop-blur border border-ktv-red/20 text-xs sm:text-sm text-ktv-text-secondary animate-pulse-subtle badge-premium">
               {lang === 'ar' ? '🔥 انضم لأكتر من 50,000 مستخدم نشط' : '🔥 Join 50,000+ Active Users'}
+            </div>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-ktv-surface/80 backdrop-blur border border-green-500/20 text-xs text-ktv-text-secondary">
+              <span className="live-dot" />
+              <span className="font-semibold text-green-400">{viewerCount}</span>
+              <span>{t('liveViewers')}</span>
             </div>
           </div>
 
@@ -520,6 +679,7 @@ function LandingContent() {
               href="https://play.google.com/store/apps/details?id=com.ktvplayer.ktv"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={triggerConfetti}
               className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-red hover:bg-ktv-red-light text-white font-bold text-base sm:text-lg transition-all duration-300 red-glow glow-pulse hover:scale-105 magnetic-btn"
             >
               <Play className="w-5 h-5" fill="white" />
@@ -576,8 +736,6 @@ function LandingContent() {
       <section ref={revealTestimonials} id="testimonials" className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-reveal">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent diagonal-reveal" />
         <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
-
-        {/* Floating orbs removed for performance */}
 
         <div ref={spotlightTestimonials} className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 card-spotlight">
           {/* Section Header */}
@@ -648,14 +806,11 @@ function LandingContent() {
       <section ref={revealShowcase} className="relative py-16 sm:py-20 overflow-hidden scroll-reveal hex-pattern">
         <div className="absolute inset-0 bg-gradient-to-r from-ktv-red/5 via-ktv-bg-dark to-ktv-gold/5" />
 
-        {/* Floating orb in showcase - reduced */}
-
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
             {/* Left - Real App Screenshots in Phone Frames */}
             <div className="flex-1 w-full slide-in-left">
               <div className="relative flex items-center justify-center gap-3 sm:gap-4">
-                {/* Phone Frame 1 */}
                 <div className="relative w-[42%] float-phone-1 hover:rotate-0 hover:scale-105 transition-transform duration-500">
                   <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/20">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
@@ -667,7 +822,6 @@ function LandingContent() {
                   </div>
                 </div>
 
-                {/* Phone Frame 2 (center) */}
                 <div className="relative w-[46%] z-10 float-phone-2 hover:scale-105 transition-transform duration-500">
                   <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/30">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
@@ -680,7 +834,6 @@ function LandingContent() {
                   <div className="absolute -inset-4 bg-ktv-red/10 rounded-3xl blur-xl -z-10" />
                 </div>
 
-                {/* Phone Frame 3 */}
                 <div className="relative w-[42%] hidden sm:block float-phone-3 hover:rotate-0 hover:scale-105 transition-transform duration-500">
                   <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/20">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
@@ -744,8 +897,6 @@ function LandingContent() {
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark grid-pattern" />
 
-        {/* Floating orb removed for performance */}
-
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <div className="text-center mb-10 sm:mb-14">
@@ -778,8 +929,6 @@ function LandingContent() {
       <section ref={revealFeatures} id="features" className="relative py-16 sm:py-20 md:py-28 scroll-reveal">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent diagonal-reveal" />
         <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/30 to-ktv-bg-dark hex-pattern" />
-
-        {/* Morphing blob + particles removed for performance */}
 
         <div ref={spotlightFeatures} className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 card-spotlight">
           {/* Section Header */}
@@ -855,8 +1004,6 @@ function LandingContent() {
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent diagonal-reveal" />
         <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
 
-        {/* Floating orb - removed for performance */}
-
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <div className="text-center mb-12 sm:mb-16">
@@ -925,16 +1072,129 @@ function LandingContent() {
         </div>
       </section>
 
+      {/* ==================== FAQ ACCORDION SECTION ==================== */}
+      <section ref={revealFaq} className="relative py-16 sm:py-20 md:py-24 scroll-reveal">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent diagonal-reveal" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/10 to-ktv-bg-dark" />
+
+        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center mb-12 sm:mb-16">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20 badge-premium">
+              ❓ {t('faqTitle')}
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+              {lang === 'ar' ? (
+                <>
+                  <span className="gradient-text-red glow-highlight">أسئلة شائعة</span>
+                </>
+              ) : (
+                <>
+                  <span className="gradient-text-red glow-highlight">Frequently Asked</span>{' '}
+                  Questions
+                </>
+              )}
+            </h2>
+          </div>
+
+          {/* FAQ Items */}
+          <div className="flex flex-col gap-3">
+            {faqItems.map((item, index) => (
+              <div
+                key={index}
+                className={`faq-item ${openFaq === index ? 'faq-open' : ''}`}
+              >
+                <button
+                  className="w-full flex items-center justify-between gap-3 p-4 sm:p-5 text-left rtl:text-right cursor-pointer"
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  aria-expanded={openFaq === index}
+                >
+                  <span className="text-sm sm:text-base font-semibold text-ktv-text-strong">
+                    {item.q}
+                  </span>
+                  <ChevronDown className="w-5 h-5 text-ktv-text-muted faq-chevron" />
+                </button>
+                <div className="faq-answer">
+                  <p className="text-ktv-text-dim text-sm sm:text-base leading-relaxed">
+                    {item.a}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== COMPARISON TABLE SECTION ==================== */}
+      <section ref={revealComparison} className="relative py-16 sm:py-20 md:py-24 scroll-reveal grid-pattern">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-gold/30 to-transparent diagonal-reveal" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/10 to-ktv-bg-dark" />
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center mb-12 sm:mb-16">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-gold/10 text-ktv-gold text-xs sm:text-sm font-semibold mb-4 border border-ktv-gold/20 badge-premium">
+              ⚡ {t('comparisonTitle')}
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+              {lang === 'ar' ? (
+                <>
+                  <span className="gradient-text-red glow-highlight">قارن بين</span>{' '}
+                  الخيارات
+                </>
+              ) : (
+                <>
+                  <span className="gradient-text-red glow-highlight">Compare</span>{' '}
+                  Options
+                </>
+              )}
+            </h2>
+            <p className="text-ktv-text-muted text-base sm:text-lg max-w-xl mx-auto">
+              {t('comparisonSubtitle')}
+            </p>
+          </div>
+
+          {/* Comparison Table */}
+          <div className="comparison-wrapper stagger-child">
+            <table className="comparison-table">
+              <thead>
+                <tr>
+                  <th className="text-ktv-text-secondary">{t('comparisonFeature')}</th>
+                  <th className="comparison-highlight">
+                    <div className="flex flex-col items-center gap-1">
+                      <span className="text-ktv-red">{t('comparisonKtv')}</span>
+                      <span className="inline-block px-2 py-0.5 rounded-full bg-ktv-red/20 text-ktv-red text-[10px] font-bold uppercase tracking-wider">
+                        {t('comparisonBest')}
+                      </span>
+                    </div>
+                  </th>
+                  <th className="text-ktv-text-secondary">{t('comparisonCable')}</th>
+                  <th className="text-ktv-text-secondary">{t('comparisonOther')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonRows.map((row, index) => (
+                  <tr key={index}>
+                    <td className="text-ktv-text-medium text-xs sm:text-sm">{row.feature}</td>
+                    <td className="comparison-highlight text-lg">{row.ktv}</td>
+                    <td className="text-lg">{row.cable}</td>
+                    <td className="text-lg">{row.other}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       {/* ==================== DOWNLOAD SECTION ==================== */}
       <section ref={revealDownload} id="download" className="relative py-16 sm:py-20 md:py-28 scroll-reveal overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-gold/30 to-transparent diagonal-reveal" />
 
-        {/* Background effects - simplified for performance */}
+        {/* Background effects */}
         <div className="absolute inset-0 grid-pattern">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-ktv-red/5 rounded-full blur-[60px]" />
         </div>
-
-        {/* Floating particles & orbs removed for performance */}
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
@@ -971,6 +1231,7 @@ function LandingContent() {
               href="https://play.google.com/store/apps/details?id=com.ktvplayer.ktv"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={triggerConfetti}
               className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-green-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child hover-lift"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-green-500/[0.06] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -1007,6 +1268,7 @@ function LandingContent() {
               href="https://apps.apple.com/us/app/ktv-player/id6764389973?l=ar"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={triggerConfetti}
               className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-blue-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child hover-lift"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-blue-500/[0.06] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
