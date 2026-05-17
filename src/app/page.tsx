@@ -499,6 +499,37 @@ function LandingContent() {
               </a>
             </motion.div>
 
+            {/* Social Proof Badge - subtle link to testimonials */}
+            <motion.a
+              href="#testimonials"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById('testimonials');
+                if (el) {
+                  const navHeight = 64;
+                  const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+                  window.scrollTo({ top, behavior: 'smooth' });
+                }
+              }}
+              className="group mt-5 sm:mt-6 inline-flex items-center gap-2 text-ktv-text-muted hover:text-ktv-gold transition-colors duration-300 text-xs sm:text-sm cursor-pointer"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.9 }}
+            >
+              <div className="flex items-center gap-0.5">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                ))}
+              </div>
+              <span className="font-semibold text-ktv-text-strong">4.9</span>
+              <span>/ 5</span>
+              <span className="text-ktv-border">—</span>
+              <span className="underline decoration-ktv-text-muted/30 group-hover:decoration-ktv-gold/50 underline-offset-2">
+                {lang === 'ar' ? 'شوف آراء العملاء' : 'Read Customer Reviews'}
+              </span>
+              <ChevronDown className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
+            </motion.a>
+
           </motion.div>
 
           {/* Scroll indicator - below content */}
@@ -802,7 +833,7 @@ function LandingContent() {
         </section>
 
         {/* ==================== TESTIMONIALS SECTION ==================== */}
-        <section className="relative py-16 sm:py-20 md:py-24 overflow-hidden">
+        <section id="testimonials" className="relative py-16 sm:py-20 md:py-24 overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
 
