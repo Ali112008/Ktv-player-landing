@@ -386,9 +386,22 @@ function LandingContent() {
           </div>
         </div>
 
-        {/* ========== MOBILE HAMBURGER MENU ========== */}
+        {/* ========== MOBILE HAMBURGER MENU OVERLAY (click outside to close) ========== */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-ktv-bg-dark/95 backdrop-blur-xl border-b border-ktv-border-faint animate-fade-in">
+          <div
+            className="fixed inset-0 z-[-1] md:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+
+        {/* ========== MOBILE HAMBURGER MENU ========== */}
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            mobileMenuOpen ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <div className="bg-ktv-bg-dark/95 backdrop-blur-xl border-b border-ktv-border-faint">
             <div className="px-4 py-4 flex flex-col gap-3">
               <a
                 href="#features"
@@ -420,7 +433,7 @@ function LandingContent() {
               </div>
             </div>
           </div>
-        )}
+        </div>
       </nav>
 
 
@@ -628,6 +641,55 @@ function LandingContent() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ==================== APP GALLERY SECTION ==================== */}
+      <section ref={revealGallery} className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-reveal">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark grid-pattern" />
+
+        {/* Floating orb removed for performance */}
+
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center mb-10 sm:mb-14">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+              {lang === 'ar' ? (
+                <>
+                  لمحة عن{' '}
+                  <span className="gradient-text-red glow-highlight">التطبيق</span>
+                </>
+              ) : (
+                <>
+                  App{' '}
+                  <span className="gradient-text-red glow-highlight">Preview</span>
+                </>
+              )}
+            </h2>
+            <p className="text-ktv-text-muted text-base sm:text-lg max-w-xl mx-auto">
+              {lang === 'ar'
+                ? 'شاهد بنفسك كيف يبدو تطبيق KTV Player من الداخل'
+                : 'See for yourself what KTV Player looks like from the inside'}
+            </p>
+          </div>
+
+          {/* Wide Feature Screenshot */}
+          <div className="mb-8 sm:mb-10 stagger-child">
+            <div className="relative rounded-2xl border border-ktv-border overflow-hidden shadow-2xl shadow-ktv-red/10 group scale-reveal">
+              <img
+                src="/screen-features-wide.webp"
+                alt={lang === 'ar' ? 'مميزات KTV Player - بث سلس وأفلام ومسلسلات' : 'KTV Player Features - Smooth Streaming, Movies & Series'}
+                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ktv-bg-dark/40 via-transparent to-transparent pointer-events-none" />
+              {/* Animated border glow on hover */}
+              <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-ktv-red/20 transition-colors duration-500 pointer-events-none" />
+            </div>
+          </div>
+
+          {/* Marquee Gallery */}
+          <MarqueeGallery lang={lang} isRTL={isRTL} />
         </div>
       </section>
 
@@ -874,55 +936,6 @@ function LandingContent() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ==================== APP GALLERY SECTION ==================== */}
-      <section ref={revealGallery} className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-reveal">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark grid-pattern" />
-
-        {/* Floating orb removed for performance */}
-
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="text-center mb-10 sm:mb-14">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-              {lang === 'ar' ? (
-                <>
-                  لمحة عن{' '}
-                  <span className="gradient-text-red glow-highlight">التطبيق</span>
-                </>
-              ) : (
-                <>
-                  App{' '}
-                  <span className="gradient-text-red glow-highlight">Preview</span>
-                </>
-              )}
-            </h2>
-            <p className="text-ktv-text-muted text-base sm:text-lg max-w-xl mx-auto">
-              {lang === 'ar'
-                ? 'شاهد بنفسك كيف يبدو تطبيق KTV Player من الداخل'
-                : 'See for yourself what KTV Player looks like from the inside'}
-            </p>
-          </div>
-
-          {/* Wide Feature Screenshot */}
-          <div className="mb-8 sm:mb-10 stagger-child">
-            <div className="relative rounded-2xl border border-ktv-border overflow-hidden shadow-2xl shadow-ktv-red/10 group scale-reveal">
-              <img
-                src="/screen-features-wide.webp"
-                alt={lang === 'ar' ? 'مميزات KTV Player - بث سلس وأفلام ومسلسلات' : 'KTV Player Features - Smooth Streaming, Movies & Series'}
-                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-ktv-bg-dark/40 via-transparent to-transparent pointer-events-none" />
-              {/* Animated border glow on hover */}
-              <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-ktv-red/20 transition-colors duration-500 pointer-events-none" />
-            </div>
-          </div>
-
-          {/* Marquee Gallery */}
-          <MarqueeGallery lang={lang} isRTL={isRTL} />
         </div>
       </section>
 
