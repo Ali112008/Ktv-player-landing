@@ -477,38 +477,32 @@ html {
 
 /* ==================== PREMIUM ANIMATION EFFECTS (CSS-only, no Framer Motion) ==================== */
 
-/* 1. Enhanced scroll reveal with scale + slight blur */
+/* 1. Enhanced scroll reveal with scale (NO blur - GPU cheap) */
 .scroll-reveal {
   opacity: 0;
   transform: translateY(30px) scale(0.97);
-  filter: blur(4px);
   transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform, filter;
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
 }
 
 .scroll-reveal.revealed {
   opacity: 1;
   transform: translateY(0) scale(1);
-  filter: blur(0);
   will-change: auto;
 }
 
-/* 2. Enhanced stagger children with scale + blur */
+/* 2. Enhanced stagger children with scale (NO blur - GPU cheap) */
 .stagger-child {
   opacity: 0;
   transform: translateY(25px) scale(0.95);
-  filter: blur(3px);
   transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .revealed .stagger-child {
   opacity: 1;
   transform: translateY(0) scale(1);
-  filter: blur(0);
 }
 
 /* 3. 3D Tilt card hover effect */
@@ -772,36 +766,33 @@ html {
   z-index: 0;
 }
 
+/* Orbs use wider radial-gradient that fades naturally - NO CSS filter:blur needed (GPU cheap) */
 .glow-orb-1 {
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(224, 0, 0, 0.15) 0%, transparent 70%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(224, 0, 0, 0.12) 0%, rgba(224, 0, 0, 0.05) 40%, transparent 70%);
   animation: orbDrift1 12s ease-in-out infinite;
-  filter: blur(40px);
 }
 
 .glow-orb-2 {
-  width: 250px;
-  height: 250px;
-  background: radial-gradient(circle, rgba(212, 160, 23, 0.12) 0%, transparent 70%);
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(212, 160, 23, 0.1) 0%, rgba(212, 160, 23, 0.04) 40%, transparent 70%);
   animation: orbDrift2 15s ease-in-out infinite;
-  filter: blur(35px);
 }
 
 .glow-orb-3 {
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(224, 0, 0, 0.1) 0%, transparent 70%);
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(224, 0, 0, 0.08) 0%, rgba(224, 0, 0, 0.03) 40%, transparent 70%);
   animation: orbDrift3 18s ease-in-out infinite;
-  filter: blur(30px);
 }
 
 .glow-orb-4 {
-  width: 180px;
-  height: 180px;
-  background: radial-gradient(circle, rgba(212, 160, 23, 0.08) 0%, transparent 70%);
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(212, 160, 23, 0.06) 0%, rgba(212, 160, 23, 0.02) 40%, transparent 70%);
   animation: orbDrift4 20s ease-in-out infinite;
-  filter: blur(25px);
 }
 
 /* 16. Aurora Borealis Effect - Moving gradient bands */
@@ -812,22 +803,17 @@ html {
   100% { transform: translateX(-30%) rotate(0deg) scale(1); }
 }
 
+/* Aurora without filter:blur - uses soft gradients instead (GPU cheap) */
 .aurora-bg {
   position: absolute;
   inset: -50%;
   background: 
-    linear-gradient(135deg, 
-      transparent 0%,
-      rgba(224, 0, 0, 0.06) 20%,
-      rgba(212, 160, 23, 0.04) 40%,
-      rgba(139, 0, 0, 0.05) 60%,
-      rgba(224, 0, 0, 0.03) 80%,
-      transparent 100%
-    );
+    radial-gradient(ellipse at 30% 50%, rgba(224, 0, 0, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 40%, rgba(212, 160, 23, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 60%, rgba(139, 0, 0, 0.06) 0%, transparent 40%);
   animation: aurora 20s ease-in-out infinite;
   pointer-events: none;
   will-change: transform;
-  filter: blur(60px);
 }
 
 /* 17. Morphing Blob - Continuously shape-shifting background element */
@@ -850,49 +836,18 @@ html {
   }
 }
 
+/* Morph blob without filter:blur - uses radial-gradient fade (GPU cheap) */
 .morph-blob {
   position: absolute;
   width: 400px;
   height: 400px;
-  background: linear-gradient(135deg, rgba(224, 0, 0, 0.08), rgba(212, 160, 23, 0.06));
+  background: radial-gradient(ellipse, rgba(224, 0, 0, 0.07) 0%, rgba(212, 160, 23, 0.04) 40%, transparent 70%);
   animation: morphBlob 15s ease-in-out infinite;
   pointer-events: none;
   will-change: transform, border-radius;
-  filter: blur(50px);
 }
 
-/* 18. Film Grain Overlay - Subtle cinematic noise */
-@keyframes grain {
-  0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-5%, -10%); }
-  20% { transform: translate(-15%, 5%); }
-  30% { transform: translate(7%, -25%); }
-  40% { transform: translate(-5%, 25%); }
-  50% { transform: translate(-15%, 10%); }
-  60% { transform: translate(15%, 0%); }
-  70% { transform: translate(0%, 15%); }
-  80% { transform: translate(3%, 35%); }
-  90% { transform: translate(-10%, 10%); }
-}
-
-.film-grain {
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  right: -50%;
-  bottom: -50%;
-  width: 200%;
-  height: 200%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  animation: grain 0.5s steps(6) infinite;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.4;
-}
-
-[data-theme="light"] .film-grain {
-  opacity: 0.2;
-}
+/* 18. Film Grain REMOVED - was causing 12 full-screen repaints/sec (MAJOR lag source) */
 
 /* 19. Particle Dots - Tiny twinkling particles */
 @keyframes particleFloat1 {
@@ -916,19 +871,18 @@ html {
   100% { opacity: 0; transform: translateY(-100px) translateX(10px); }
 }
 
+/* Particles without box-shadow (GPU cheap - only transform+opacity animated) */
 .particle {
   position: absolute;
-  width: 3px;
-  height: 3px;
-  background: rgba(212, 160, 23, 0.6);
+  width: 4px;
+  height: 4px;
+  background: rgba(212, 160, 23, 0.7);
   border-radius: 50%;
   pointer-events: none;
-  box-shadow: 0 0 6px rgba(212, 160, 23, 0.3);
 }
 
 .particle:nth-child(odd) {
-  background: rgba(224, 0, 0, 0.5);
-  box-shadow: 0 0 6px rgba(224, 0, 0, 0.3);
+  background: rgba(224, 0, 0, 0.6);
 }
 
 .particle-1 { animation: particleFloat1 6s ease-in-out infinite; }
@@ -940,28 +894,7 @@ html {
 .particle-7 { animation: particleFloat1 7.5s ease-in-out infinite 4s; }
 .particle-8 { animation: particleFloat2 10s ease-in-out infinite 2.5s; }
 
-/* 20. Ripple Pulse - Expanding rings from CTA buttons */
-@keyframes rippleExpand {
-  0% { transform: scale(0.8); opacity: 0.6; }
-  100% { transform: scale(2.5); opacity: 0; }
-}
-
-.ripple-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  border: 2px solid rgba(224, 0, 0, 0.3);
-  animation: rippleExpand 2s ease-out infinite;
-  pointer-events: none;
-}
-
-.ripple-ring:nth-child(2) {
-  animation-delay: 0.5s;
-}
-
-.ripple-ring:nth-child(3) {
-  animation-delay: 1s;
-}
+/* 20. Ripple Pulse REMOVED - was animating infinitely even without hover (wasteful) */
 
 /* 21. Card Inner Glow - Spotlight gradient that moves on hover */
 .card-spotlight {
@@ -1194,24 +1127,7 @@ html {
     0 0 0 1px rgba(224, 0, 0, 0.05);
 }
 
-/* 33. Rotating ring decoration */
-@keyframes rotateRing {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.rotating-ring {
-  animation: rotateRing 20s linear infinite;
-}
-
-.rotating-ring::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1px dashed rgba(224, 0, 0, 0.15);
-  animation: rotateRing 30s linear infinite reverse;
-}
+/* 33. Rotating ring REMOVED - continuous rotation too expensive */
 
 /* 34. Slide in from sides */
 @keyframes slideInLeft {
@@ -1266,38 +1182,7 @@ html {
   background-size: 100% 100%;
 }
 
-/* 36. Orbit decoration */
-@keyframes orbit {
-  from { transform: rotate(0deg) translateX(80px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(80px) rotate(-360deg); }
-}
-
-.orbit-dot {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: rgba(212, 160, 23, 0.6);
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(212, 160, 23, 0.4);
-  animation: orbit 8s linear infinite;
-  pointer-events: none;
-}
-
-.orbit-dot:nth-child(2) {
-  animation-duration: 12s;
-  animation-direction: reverse;
-  background: rgba(224, 0, 0, 0.5);
-  box-shadow: 0 0 10px rgba(224, 0, 0, 0.3);
-  width: 4px;
-  height: 4px;
-}
-
-.orbit-dot:nth-child(3) {
-  animation-duration: 16s;
-  animation-delay: -4s;
-  width: 3px;
-  height: 3px;
-}
+/* 36. Orbit decoration REMOVED - double rotation + box-shadow too expensive */
 
 /* 37. Water wave at section bottom */
 @keyframes waveFloat {

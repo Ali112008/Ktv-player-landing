@@ -312,9 +312,6 @@ function LandingContent() {
       }`}
       dir={isRTL ? 'rtl' : 'ltr'}
     >
-      {/* ========== FILM GRAIN OVERLAY ========== */}
-      <div className="film-grain" />
-
       {/* Navigation Bar */}
       <nav id="main-nav" className="fixed top-0 left-0 right-0 z-40 bg-ktv-bg-dark/80 backdrop-blur-xl border-b border-ktv-border-faint transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -455,14 +452,6 @@ function LandingContent() {
         <div className="particle particle-5 z-[2]" style={{ top: '15%', right: '35%' }} />
         <div className="particle particle-6 z-[2]" style={{ bottom: '45%', right: '25%' }} />
 
-        {/* Orbit decoration around logo area */}
-        <div className="absolute top-[18%] left-1/2 -translate-x-1/2 w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] z-[2] pointer-events-none">
-          <div className="rotating-ring w-full h-full" />
-          <div className="orbit-dot" style={{ top: '50%', left: '50%' }} />
-          <div className="orbit-dot" style={{ top: '50%', left: '50%' }} />
-          <div className="orbit-dot" style={{ top: '50%', left: '50%' }} />
-        </div>
-
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center">
           {/* Logo */}
           <div className="mb-6 sm:mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
@@ -473,8 +462,6 @@ function LandingContent() {
                 alt="KTV Player"
                 className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-2xl drop-shadow-2xl"
               />
-              {/* Floating shadow under logo */}
-              <div className="float-shadow" />
             </div>
           </div>
 
@@ -520,12 +507,8 @@ function LandingContent() {
               rel="noopener noreferrer"
               className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-red hover:bg-ktv-red-light text-white font-bold text-base sm:text-lg transition-all duration-300 red-glow glow-pulse hover:scale-105 magnetic-btn"
             >
-              {/* Ripple rings */}
-              <span className="ripple-ring" />
-              <span className="ripple-ring" />
-              <span className="ripple-ring" />
-              <Play className="w-5 h-5 relative z-10" fill="white" />
-              <span className="relative z-10">{t('heroCta')}</span>
+              <Play className="w-5 h-5" fill="white" />
+              {t('heroCta')}
             </a>
             <a
               href="https://wa.me/212602251813"
@@ -597,12 +580,11 @@ function LandingContent() {
                       className="w-full h-auto object-cover"
                     />
                   </div>
-                  <div className="float-shadow" />
                 </div>
 
                 {/* Phone Frame 2 (center) */}
                 <div className="relative w-[46%] z-10 float-phone-2 hover:scale-105 transition-transform duration-500">
-                  <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/30 neon-pulse">
+                  <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/30">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
                     <img
                       src="/screen-series.webp"
@@ -611,7 +593,6 @@ function LandingContent() {
                     />
                   </div>
                   <div className="absolute -inset-4 bg-ktv-red/10 rounded-3xl blur-xl -z-10" />
-                  <div className="float-shadow" />
                 </div>
 
                 {/* Phone Frame 3 */}
@@ -624,7 +605,6 @@ function LandingContent() {
                       className="w-full h-auto object-cover"
                     />
                   </div>
-                  <div className="float-shadow" />
                 </div>
               </div>
             </div>
