@@ -221,12 +221,15 @@ function LandingContent() {
   const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
     setMobileMenuOpen(false);
-    const el = document.getElementById(targetId);
-    if (el) {
-      const navHeight = 64; // navbar height
-      const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
+    // Wait for menu close animation to finish before scrolling
+    setTimeout(() => {
+      const el = document.getElementById(targetId);
+      if (el) {
+        const navHeight = 64; // navbar height
+        const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    }, 300);
   }, []);
 
   // Same scroll handler for desktop nav links
