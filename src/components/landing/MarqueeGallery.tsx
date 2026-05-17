@@ -30,23 +30,21 @@ const screenshots = [
   },
 ];
 
-const SPEED = 0.6; // pixels per frame (~40px/s at 60fps)
+const SPEED = 0.7; // pixels per frame
 
 export default function MarqueeGallery({ lang, isRTL }: MarqueeGalleryProps) {
-  const trackRef = useRef<HTMLDivElement>(null);
   const setRef = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState(0);
-  const [setWidth, setSetWidth] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const offsetRef = useRef(0);
+  const setWidthRef = useRef(0);
   const rafRef = useRef<number>(0);
 
-  // Measure the actual width of one set of items
+  // Measure the actual width of one full set of items (4 images + gaps)
   useEffect(() => {
     const measure = () => {
       if (setRef.current) {
         const width = setRef.current.offsetWidth;
-        if (width > 0) setSetWidth(width);
+        if (width > 0) setWidthRef.current = width;
       }
     };
     measure();
@@ -54,23 +52,24 @@ export default function MarqueeGallery({ lang, isRTL }: MarqueeGalleryProps) {
     return () => window.removeEventListener('resize', measure);
   }, []);
 
-  // Animation loop
+  // Animation loop - uses refs only, no state updates for smooth 60fps
   const animate = useCallback(() => {
-    if (isPaused || setWidth === 0) {
-      rafRef.current = requestAnimationFrame(animate);
-      return;
+    if (!isPaused && setWidthRef.current > 0) {
+      offsetRef.current += SPEED;
+
+      // Seamless reset: when we've scrolled exactly one set width, jump back
+      // Since set2 starts where set1 ends, and set3 starts where set2 ends,
+      // resetting by one setWidth is invisible to the user
+      if (offsetRef.current >= setWidthRef.current) {
+        offsetRef.current -= setWidthRef.current;
+      }
+
+      if (setRef.current?.parentElement) {
+        setRef.current.parentElement.style.transform = `translateX(${-offsetRef.current}px)`;
+      }
     }
-
-    offsetRef.current += SPEED;
-
-    // Seamless reset: when we've scrolled exactly one set width, reset to 0
-    if (offsetRef.current >= setWidth) {
-      offsetRef.current -= setWidth;
-    }
-
-    setOffset(offsetRef.current);
     rafRef.current = requestAnimationFrame(animate);
-  }, [isPaused, setWidth]);
+  }, [isPaused]);
 
   useEffect(() => {
     rafRef.current = requestAnimationFrame(animate);
@@ -79,11 +78,31 @@ export default function MarqueeGallery({ lang, isRTL }: MarqueeGalleryProps) {
     };
   }, [animate]);
 
-  // 3 copies for smooth buffer during reset
-  const items = [...screenshots, ...screenshots, ...screenshots];
-
-  // Always LTR direction on the inner track so translateX(-) moves right-to-left
-  const translateX = -offset;
+  const renderPhone = (item: typeof screenshots[0], key: string) => (
+    <div key={key} className="shrink-0 group">
+      <div className="relative w-[160px] sm:w-[190px] md:w-[210px] lg:w-[230px] rounded-[1.4rem] sm:rounded-[1.6rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/20 transition-transform duration-500 group-hover:scale-[1.04] group-hover:shadow-ktv-red/40">
+        {/* Phone notch */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[35%] h-[2.2%] bg-black rounded-b-xl z-10" />
+        {/* Screenshot */}
+        <img
+          src={item.src}
+          alt={lang === 'ar' ? item.ar : item.en}
+          className="w-full h-auto object-cover object-top"
+          draggable={false}
+        />
+        {/* Phone bottom bar */}
+        <div className="absolute bottom-0 inset-x-0 h-[2.5%] bg-black/80 flex items-center justify-center z-10">
+          <div className="w-[25%] h-[22%] bg-ktv-border rounded-full" />
+        </div>
+        {/* Hover overlay with label */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-8 z-20">
+          <span className="text-white text-xs sm:text-sm font-semibold px-3 py-1.5 bg-ktv-red/80 rounded-full backdrop-blur-sm">
+            {lang === 'ar' ? item.ar : item.en}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div
@@ -97,50 +116,26 @@ export default function MarqueeGallery({ lang, isRTL }: MarqueeGalleryProps) {
       <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 bg-gradient-to-r from-ktv-bg-dark to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 bg-gradient-to-l from-ktv-bg-dark to-transparent z-10 pointer-events-none" />
 
-      {/* Marquee track - forced LTR so translateX works consistently */}
+      {/* Marquee track - forced LTR so translateX(-) always moves right-to-left */}
       <div
-        ref={trackRef}
         className="flex items-center gap-5 sm:gap-7 md:gap-9"
         style={{
           direction: 'ltr',
-          transform: `translateX(${translateX}px)`,
           willChange: 'transform',
         }}
       >
-        {items.map((item, index) => (
-          <div
-            key={index}
-            ref={index === 0 ? setRef : undefined}
-            className="shrink-0 group"
-          >
-            {/* Phone frame */}
-            <div className="relative w-[160px] sm:w-[190px] md:w-[210px] lg:w-[230px] rounded-[1.4rem] sm:rounded-[1.6rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/20 transition-transform duration-500 group-hover:scale-[1.04] group-hover:shadow-ktv-red/40">
-              {/* Phone notch */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[35%] h-[2.2%] bg-black rounded-b-xl z-10" />
-
-              {/* Screenshot */}
-              <img
-                src={item.src}
-                alt={lang === 'ar' ? item.ar : item.en}
-                className="w-full h-auto object-cover object-top"
-                draggable={false}
-                loading={index < screenshots.length ? 'eager' : 'lazy'}
-              />
-
-              {/* Phone bottom bar */}
-              <div className="absolute bottom-0 inset-x-0 h-[2.5%] bg-black/80 flex items-center justify-center z-10">
-                <div className="w-[25%] h-[22%] bg-ktv-border rounded-full" />
-              </div>
-
-              {/* Hover overlay with label */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-8 z-20">
-                <span className="text-white text-xs sm:text-sm font-semibold px-3 py-1.5 bg-ktv-red/80 rounded-full backdrop-blur-sm">
-                  {lang === 'ar' ? item.ar : item.en}
-                </span>
-              </div>
-            </div>
-          </div>
-        ))}
+        {/* Set 1 - MEASURED (this is the width we reset at) */}
+        <div ref={setRef} className="flex items-center gap-5 sm:gap-7 md:gap-9">
+          {screenshots.map((item, i) => renderPhone(item, `s1-${i}`))}
+        </div>
+        {/* Set 2 - identical, provides seamless continuation */}
+        <div className="flex items-center gap-5 sm:gap-7 md:gap-9">
+          {screenshots.map((item, i) => renderPhone(item, `s2-${i}`))}
+        </div>
+        {/* Set 3 - buffer so reset is never visible */}
+        <div className="flex items-center gap-5 sm:gap-7 md:gap-9">
+          {screenshots.map((item, i) => renderPhone(item, `s3-${i}`))}
+        </div>
       </div>
 
       {/* Decorative glow */}
