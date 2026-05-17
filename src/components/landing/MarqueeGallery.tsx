@@ -29,8 +29,8 @@ const screenshots = [
 ];
 
 export default function MarqueeGallery({ lang, isRTL }: MarqueeGalleryProps) {
-  // Duplicate items for seamless infinite loop
-  const items = [...screenshots, ...screenshots, ...screenshots];
+  // 4 copies: 2 visible + 2 offscreen for seamless infinite loop
+  const items = [...screenshots, ...screenshots, ...screenshots, ...screenshots];
 
   return (
     <div className="relative w-full overflow-hidden">
