@@ -149,6 +149,7 @@ function LandingContent() {
     {
       name: 'Ahmed',
       country: '🇲🇦',
+      avatar: '/avatar-ahmed.png',
       reviewEn: "Best IPTV app I've ever used! The quality is amazing and zero buffering.",
       reviewAr: 'أفضل تطبيق IPTV استخدمته! الجودة مذهلة وبدون أي تقطيع.',
       gradient: 'from-ktv-red to-amber-500',
@@ -156,6 +157,7 @@ function LandingContent() {
     {
       name: 'Sarah',
       country: '🇸🇦',
+      avatar: '/avatar-sarah.png',
       reviewEn: 'Finally an app that has everything. Movies, series, live TV - all in one place.',
       reviewAr: 'أخيراً تطبيق فيه كل شيء. أفلام ومسلسلات وقنوات مباشرة - كلهم في مكان واحد.',
       gradient: 'from-purple-500 to-pink-500',
@@ -163,9 +165,26 @@ function LandingContent() {
     {
       name: 'Omar',
       country: '🇦🇪',
+      avatar: '/avatar-omar.png',
       reviewEn: "The 4K quality is incredible. It's like having a cinema in my pocket!",
       reviewAr: 'جودة 4K مذهلة. كأنني أحمل سينما في جيبي!',
       gradient: 'from-cyan-500 to-blue-500',
+    },
+    {
+      name: 'Fatima',
+      country: '🇪🇬',
+      avatar: '/avatar-fatima.png',
+      reviewEn: 'I canceled my cable subscription after trying KTV Player. Way more content for a fraction of the price!',
+      reviewAr: 'ألغيت اشتراك الكابل بعد ما جربت KTV Player. محتوى أكثر بكثير بسعر أقل بكثير!',
+      gradient: 'from-rose-500 to-orange-500',
+    },
+    {
+      name: 'Khalid',
+      country: '🇰🇼',
+      avatar: '/avatar-khalid.png',
+      reviewEn: 'The interface is so clean and easy to use. My whole family loves it, even the kids can navigate it!',
+      reviewAr: 'الواجهة نظيفة وسهلة الاستخدام. عائلتي كلها تحبه، حتى الأطفال يقدرون يستخدمونه!',
+      gradient: 'from-green-500 to-emerald-500',
     },
   ];
 
@@ -198,9 +217,27 @@ function LandingContent() {
     },
   };
 
-  // Close mobile menu when a link is clicked
-  const closeMobileMenu = useCallback(() => {
+  // Close mobile menu and smooth scroll to section
+  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
     setMobileMenuOpen(false);
+    const el = document.getElementById(targetId);
+    if (el) {
+      const navHeight = 64; // navbar height
+      const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }, []);
+
+  // Same scroll handler for desktop nav links
+  const handleDesktopNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const el = document.getElementById(targetId);
+    if (el) {
+      const navHeight = 64;
+      const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
   }, []);
 
   return (
@@ -273,13 +310,15 @@ function LandingContent() {
               <div className="hidden md:flex items-center gap-8">
                 <a
                   href="#features"
-                  className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm"
+                  onClick={(e) => handleDesktopNavClick(e, 'features')}
+                  className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm cursor-pointer"
                 >
                   {t('navFeatures')}
                 </a>
                 <a
                   href="#download"
-                  className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm"
+                  onClick={(e) => handleDesktopNavClick(e, 'download')}
+                  className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm cursor-pointer"
                 >
                   {t('navDownload')}
                 </a>
@@ -338,15 +377,15 @@ function LandingContent() {
                 <div className="px-4 py-4 flex flex-col gap-3">
                   <a
                     href="#features"
-                    onClick={closeMobileMenu}
-                    className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm py-2"
+                    onClick={(e) => handleNavClick(e, 'features')}
+                    className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm py-2 cursor-pointer"
                   >
                     {t('navFeatures')}
                   </a>
                   <a
                     href="#download"
-                    onClick={closeMobileMenu}
-                    className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm py-2"
+                    onClick={(e) => handleNavClick(e, 'download')}
+                    className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm py-2 cursor-pointer"
                   >
                     {t('navDownload')}
                   </a>
@@ -759,6 +798,98 @@ function LandingContent() {
           </div>
         </section>
 
+        {/* ==================== TESTIMONIALS SECTION ==================== */}
+        <section className="relative py-16 sm:py-20 md:py-24 overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
+
+          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Section Header */}
+            <motion.div
+              className="text-center mb-12 sm:mb-16"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <motion.span
+                className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20"
+                initial={{ scale: 0.8, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+              >
+                ⭐ {t('testimonialsTitle')}
+              </motion.span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+                {lang === 'ar' ? (
+                  <>
+                    ماذا يقول{' '}
+                    <span className="gradient-text-red">عملاؤنا</span>
+                  </>
+                ) : (
+                  <>
+                    What Our{' '}
+                    <span className="gradient-text-red">Customers</span>{' '}
+                    Say
+                  </>
+                )}
+              </h2>
+              <p className="text-ktv-text-muted text-base sm:text-lg max-w-2xl mx-auto">
+                {t('testimonialsSubtitle')}
+              </p>
+            </motion.div>
+
+            {/* Testimonial Cards - responsive grid for 5 items */}
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-50px' }}
+            >
+              {testimonials.map((testimonial, index) => (
+                <motion.div
+                  key={index}
+                  variants={testimonialVariants}
+                  className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/20 p-6 sm:p-7 transition-all duration-500"
+                >
+                  {/* Top avatar + name row */}
+                  <div className="flex items-center gap-3 mb-4">
+                    {/* Avatar with real photo */}
+                    <div className="w-11 h-11 rounded-full overflow-hidden shrink-0 ring-2 ring-ktv-border-subtle group-hover:ring-ktv-red/30 transition-all duration-300">
+                      <img
+                        src={testimonial.avatar}
+                        alt={testimonial.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div>
+                      <div className="font-bold text-sm sm:text-base text-ktv-text flex items-center gap-1.5">
+                        {testimonial.name}
+                        <span className="text-base">{testimonial.country}</span>
+                      </div>
+                      {/* Star rating */}
+                      <div className="flex items-center gap-0.5 mt-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Review text */}
+                  <p className="text-ktv-text-dim text-sm sm:text-base leading-relaxed">
+                    &ldquo;{lang === 'ar' ? testimonial.reviewAr : testimonial.reviewEn}&rdquo;
+                  </p>
+
+                  {/* Subtle bottom accent */}
+                  <div className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-ktv-red to-ktv-gold transition-all duration-700" />
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
         {/* ==================== DOWNLOAD SECTION ==================== */}
         <section id="download" className="relative py-16 sm:py-20 md:py-28">
           <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-gold/30 to-transparent" />
@@ -956,94 +1087,6 @@ function LandingContent() {
                   WhatsApp
                 </a>
               </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ==================== TESTIMONIALS SECTION ==================== */}
-        <section className="relative py-16 sm:py-20 md:py-24 overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
-
-          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Section Header */}
-            <motion.div
-              className="text-center mb-12 sm:mb-16"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <motion.span
-                className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20"
-                initial={{ scale: 0.8, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: true }}
-              >
-                ⭐ {t('testimonialsTitle')}
-              </motion.span>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-                {lang === 'ar' ? (
-                  <>
-                    ماذا يقول{' '}
-                    <span className="gradient-text-red">عملاؤنا</span>
-                  </>
-                ) : (
-                  <>
-                    What Our{' '}
-                    <span className="gradient-text-red">Customers</span>{' '}
-                    Say
-                  </>
-                )}
-              </h2>
-              <p className="text-ktv-text-muted text-base sm:text-lg max-w-2xl mx-auto">
-                {t('testimonialsSubtitle')}
-              </p>
-            </motion.div>
-
-            {/* Testimonial Cards */}
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-50px' }}
-            >
-              {testimonials.map((testimonial, index) => (
-                <motion.div
-                  key={index}
-                  variants={testimonialVariants}
-                  className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/20 p-6 sm:p-7 transition-all duration-500"
-                >
-                  {/* Top avatar + name row */}
-                  <div className="flex items-center gap-3 mb-4">
-                    {/* Avatar circle */}
-                    <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${testimonial.gradient} flex items-center justify-center text-white font-bold text-lg shrink-0`}>
-                      {testimonial.name.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="font-bold text-sm sm:text-base text-ktv-text flex items-center gap-1.5">
-                        {testimonial.name}
-                        <span className="text-base">{testimonial.country}</span>
-                      </div>
-                      {/* Star rating */}
-                      <div className="flex items-center gap-0.5 mt-0.5">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Review text */}
-                  <p className="text-ktv-text-dim text-sm sm:text-base leading-relaxed">
-                    &ldquo;{lang === 'ar' ? testimonial.reviewAr : testimonial.reviewEn}&rdquo;
-                  </p>
-
-                  {/* Subtle bottom accent */}
-                  <div className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-ktv-red to-ktv-gold transition-all duration-700" />
-                </motion.div>
-              ))}
             </motion.div>
           </div>
         </section>
