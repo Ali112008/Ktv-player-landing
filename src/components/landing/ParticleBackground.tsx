@@ -23,18 +23,36 @@ export default function ParticleBackground() {
       color: string;
     }> = [];
 
+    const isLightMode = () => document.documentElement.getAttribute('data-theme') === 'light';
+
+    const getColors = () => {
+      if (isLightMode()) {
+        return [
+          'rgba(224, 0, 0,',    // Red (brand color stays)
+          'rgba(180, 130, 20,',  // Darker gold for visibility
+          'rgba(200, 0, 0,',     // Darker red
+        ];
+      }
+      return [
+        'rgba(224, 0, 0,',    // Red
+        'rgba(212, 160, 23,', // Gold
+        'rgba(255, 42, 42,',  // Light red
+      ];
+    };
+
+    const getConnectionColor = () => {
+      return isLightMode()
+        ? `rgba(224, 0, 0,`  // Use red for connections in both modes
+        : `rgba(224, 0, 0,`;
+    };
+
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
 
-    const colors = [
-      'rgba(224, 0, 0,',    // Red
-      'rgba(212, 160, 23,', // Gold
-      'rgba(255, 42, 42,',  // Light red
-    ];
-
     const createParticles = () => {
+      const colors = getColors();
       const count = Math.min(Math.floor(window.innerWidth / 15), 60);
       for (let i = 0; i < count; i++) {
         particles.push({
@@ -51,6 +69,7 @@ export default function ParticleBackground() {
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const connColor = getConnectionColor();
 
       particles.forEach((p) => {
         p.x += p.speedX;
@@ -75,10 +94,11 @@ export default function ParticleBackground() {
           const distance = Math.sqrt(dx * dx + dy * dy);
 
           if (distance < 120) {
+            const opacity = isLightMode() ? 0.04 : 0.05;
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(224, 0, 0, ${0.05 * (1 - distance / 120)})`;
+            ctx.strokeStyle = `${connColor} ${opacity * (1 - distance / 120)})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -92,14 +112,28 @@ export default function ParticleBackground() {
     createParticles();
     animate();
 
-    window.addEventListener('resize', () => {
+    const handleResize = () => {
       resize();
       particles = [];
       createParticles();
+    };
+
+    // Re-create particles when theme changes
+    const observer = new MutationObserver(() => {
+      particles = [];
+      createParticles();
     });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    window.addEventListener('resize', handleResize);
 
     return () => {
       cancelAnimationFrame(animationId);
+      observer.disconnect();
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 

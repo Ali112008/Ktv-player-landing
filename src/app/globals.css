@@ -3,7 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -181,13 +181,15 @@
   --sidebar-ring: #e00000;
 }
 
-/* Light theme - hero bg effect */
+/* ==================== LIGHT THEME ELEMENT OVERRIDES ==================== */
+
+/* Light theme - hero bg effect (softer gradients for light bg) */
 [data-theme="light"] .hero-bg::before {
   background: radial-gradient(circle at 30% 50%, rgba(224, 0, 0, 0.06) 0%, transparent 50%),
               radial-gradient(circle at 70% 50%, rgba(212, 160, 23, 0.04) 0%, transparent 50%);
 }
 
-/* Light theme - navbar */
+/* Light theme - navbar (ensure backdrop-blur looks correct on light bg) */
 [data-theme="light"] nav {
   background: rgba(245, 242, 238, 0.85);
   border-color: rgba(0, 0, 0, 0.06);
@@ -204,16 +206,24 @@
   background: #e00000;
 }
 
-/* Light theme - shimmer */
+/* Light theme - shimmer (subtle dark sweep instead of light sweep) */
 [data-theme="light"] .animate-shimmer {
   background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03), transparent);
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
 }
 
-/* Light theme - gradient text */
+/* Light theme - gradient text (start with dark text color for light bg) */
 [data-theme="light"] .gradient-text {
   background: linear-gradient(135deg, #1a1a2e 0%, #e00000 50%, #d4a017 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Light theme - red gradient text */
+[data-theme="light"] .gradient-text-red {
+  background: linear-gradient(135deg, #e00000 0%, #c00000 50%, #8b0000 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -224,7 +234,7 @@
   box-shadow: 0 0 25px rgba(224, 0, 0, 0.2);
 }
 
-/* Light theme - glow effects */
+/* Light theme - glow effects (softer for light bg) */
 [data-theme="light"] .red-glow {
   box-shadow: 0 0 15px rgba(224, 0, 0, 0.15), 0 0 30px rgba(224, 0, 0, 0.05);
 }
@@ -240,6 +250,18 @@
 [data-theme="light"] .theme-toggle-btn:hover {
   background: rgba(0, 0, 0, 0.08);
 }
+
+/* Light theme - card hover effect (softer shadow on light bg) */
+[data-theme="light"] .card-hover:hover {
+  box-shadow: 0 0 20px rgba(224, 0, 0, 0.1);
+}
+
+/* Light theme - phone frame borders (darker for light bg) */
+[data-theme="light"] .phone-frame-border {
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+/* Light theme - auto scroll gallery fade edges use ktv-bg-dark which is now light */
 
 @layer base {
   * {

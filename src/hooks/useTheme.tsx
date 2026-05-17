@@ -33,6 +33,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     if (stored !== 'dark') {
       setTheme(stored);
     }
+    // Always ensure data-theme attribute is set on mount
+    document.documentElement.setAttribute('data-theme', stored);
     setMounted(true);
   }, []);
 

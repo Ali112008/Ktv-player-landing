@@ -81,6 +81,24 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
 
+        {/* Apply saved theme before paint to prevent flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var theme = localStorage.getItem('ktv-theme');
+                if (theme === 'light' || theme === 'dark') {
+                  document.documentElement.setAttribute('data-theme', theme);
+                } else {
+                  document.documentElement.setAttribute('data-theme', 'dark');
+                }
+              } catch(e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+              }
+            `,
+          }}
+        />
+
         {/* Pixel tracking placeholder - will be configured by client */}
         {/* 
           TODO: Add tracking pixels here before closing head tag:
