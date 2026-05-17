@@ -9,15 +9,10 @@ import {
   Sparkles,
   Zap,
   Diamond,
-  Smartphone,
-  Apple,
-  Monitor,
   ChevronDown,
   MessageCircle,
   ExternalLink,
   Play,
-  ChevronLeft,
-  ChevronRight,
 } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/hooks/useLanguage';
 import ParticleBackground from '@/components/landing/ParticleBackground';
@@ -306,9 +301,9 @@ function LandingContent() {
             </p>
           </motion.div>
 
-          {/* Features List - Horizontal Cards */}
+          {/* Features Grid - Icon on Top Centered Cards */}
           <motion.div
-            className="flex flex-col gap-3 sm:gap-4"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -318,39 +313,28 @@ function LandingContent() {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="group relative rounded-2xl bg-ktv-bg-card border border-white/[0.06] hover:border-ktv-red/30 p-4 sm:p-5 md:p-6 transition-all duration-500 overflow-hidden cursor-default"
+                className="group relative rounded-2xl bg-ktv-bg-card border border-white/[0.06] hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-500 overflow-hidden cursor-default text-center"
               >
                 {/* Hover gradient sweep */}
-                <div className="absolute inset-0 bg-gradient-to-l from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="relative flex items-center gap-4 sm:gap-5 md:gap-6">
-                  {/* Icon */}
-                  <div className="flex-shrink-0">
-                    <div
-                      className={`relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br ${feature.color} shadow-lg transition-transform duration-500 group-hover:scale-110`}
-                    >
-                      <span className="text-xl sm:text-2xl md:text-3xl">{feature.emoji}</span>
-                      {/* Glow ring on hover */}
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    </div>
+                <div className="relative flex flex-col items-center">
+                  {/* Icon - centered on top */}
+                  <div
+                    className={`relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${feature.color} shadow-lg mb-4 transition-transform duration-500 group-hover:scale-110`}
+                  >
+                    <span className="text-2xl sm:text-3xl">{feature.emoji}</span>
+                    {/* Glow ring on hover */}
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
 
-                  {/* Text */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1 group-hover:text-ktv-red transition-colors duration-300">
-                      {feature.title}
-                    </h3>
-                    <p className="text-white/45 text-xs sm:text-sm md:text-base leading-relaxed">
-                      {feature.desc}
-                    </p>
-                  </div>
-
-                  {/* Arrow indicator */}
-                  <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 rtl:translate-x-0 rtl:-translate-x-2 group-hover:translate-x-0">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-ktv-red/10 flex items-center justify-center">
-                      <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-ktv-red" fill="currentColor" />
-                    </div>
-                  </div>
+                  {/* Text - centered below icon */}
+                  <h3 className="text-base sm:text-lg font-bold mb-2 group-hover:text-ktv-red transition-colors duration-300">
+                    {feature.title}
+                  </h3>
+                  <p className="text-white/45 text-xs sm:text-sm leading-relaxed">
+                    {feature.desc}
+                  </p>
                 </div>
 
                 {/* Bottom accent line */}
@@ -713,30 +697,50 @@ function LandingContent() {
           </motion.div>
 
           {/* Download Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {/* Android */}
             <motion.a
               href="https://play.google.com/store/apps/details?id=com.ktvplayer.ktv"
               target="_blank"
               rel="noopener noreferrer"
-              className="group download-btn rounded-2xl bg-ktv-bg-card border border-white/5 p-6 sm:p-8 text-center cursor-pointer block"
+              className="group relative rounded-2xl bg-ktv-bg-card border border-white/[0.06] hover:border-green-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-500"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              whileHover={{ scale: 1.03 }}
+              whileHover={{ scale: 1.03, borderColor: 'rgba(34,197,94,0.4)' }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-green-500 to-green-700 mb-4 shadow-lg">
-                <Smartphone className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-bold mb-2 group-hover:text-green-400 transition-colors">
-                {t('downloadAndroid')}
-              </h3>
-              <p className="text-white/40 text-sm mb-4">Google Play Store</p>
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-green-500/10 text-green-400 text-sm font-bold border border-green-500/20 group-hover:bg-green-500/20 transition-colors">
-                <ExternalLink className="w-4 h-4" />
-                {lang === 'ar' ? 'تحميل مباشر' : 'Direct Download'}
+              {/* Hover gradient */}
+              <div className="absolute inset-0 bg-gradient-to-b from-green-500/[0.06] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              {/* Top accent line */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <div className="relative">
+                {/* Google Play Badge Style */}
+                <div className="flex items-center justify-center gap-3 mb-5">
+                  <svg className="w-9 h-9 sm:w-10 sm:h-10" viewBox="0 0 512 512" fill="none">
+                    <path d="M49.6 16.7C41.5 21.5 36 30.3 36 40.5V471.5C36 481.7 41.5 490.5 49.6 495.3L49.9 495.6L279.2 256L49.9 16.4L49.6 16.7Z" fill="#2196F3"/>
+                    <path d="M370.4 347.2L279.2 256L49.6 495.3C56.2 500 64.8 502.5 74 501.5C83.2 500.5 92.2 496.5 99.5 490.5L370.4 347.2Z" fill="#F44336"/>
+                    <path d="M370.4 164.8L99.5 21.5C92.2 15.5 83.2 11.5 74 10.5C64.8 9.5 56.2 12 49.6 16.7L279.2 256L370.4 164.8Z" fill="#4CAF50"/>
+                    <path d="M460.8 228.8L370.4 164.8L279.2 256L370.4 347.2L460.8 283.2C474.4 275.2 483.2 263.2 483.2 256C483.2 248.8 474.4 236.8 460.8 228.8Z" fill="#FFC107"/>
+                  </svg>
+                  <div className="text-left">
+                    <div className="text-[10px] sm:text-xs text-white/40 uppercase tracking-wider">{lang === 'ar' ? 'متاح على' : 'GET IT ON'}</div>
+                    <div className="text-base sm:text-lg font-bold text-white leading-tight">Google Play</div>
+                  </div>
+                </div>
+
+                <h3 className="text-base sm:text-lg font-bold mb-1.5 group-hover:text-green-400 transition-colors duration-300">
+                  {t('downloadAndroid')}
+                </h3>
+                <p className="text-white/35 text-xs sm:text-sm mb-4">{lang === 'ar' ? 'لأجهزة أندرويد 5.0+' : 'For Android 5.0+'}</p>
+
+                {/* CTA Button */}
+                <div className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-green-500/10 text-green-400 text-sm font-bold border border-green-500/20 group-hover:bg-green-500/20 group-hover:border-green-500/40 transition-all duration-300">
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  {lang === 'ar' ? 'تحميل مجاني' : 'Free Download'}
+                </div>
               </div>
             </motion.a>
 
@@ -745,45 +749,80 @@ function LandingContent() {
               href="https://apps.apple.com/us/app/ktv-player/id6764389973?l=ar"
               target="_blank"
               rel="noopener noreferrer"
-              className="group download-btn rounded-2xl bg-ktv-bg-card border border-white/5 p-6 sm:p-8 text-center cursor-pointer block"
+              className="group relative rounded-2xl bg-ktv-bg-card border border-white/[0.06] hover:border-blue-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-500"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover={{ scale: 1.03 }}
+              whileHover={{ scale: 1.03, borderColor: 'rgba(59,130,246,0.4)' }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 mb-4 shadow-lg">
-                <Apple className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-bold mb-2 group-hover:text-blue-400 transition-colors">
-                {t('downloadIos')}
-              </h3>
-              <p className="text-white/40 text-sm mb-4">App Store</p>
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-500/10 text-blue-400 text-sm font-bold border border-blue-500/20 group-hover:bg-blue-500/20 transition-colors">
-                <ExternalLink className="w-4 h-4" />
-                {lang === 'ar' ? 'تحميل مباشر' : 'Direct Download'}
+              {/* Hover gradient */}
+              <div className="absolute inset-0 bg-gradient-to-b from-blue-500/[0.06] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              {/* Top accent line */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <div className="relative">
+                {/* App Store Badge Style */}
+                <div className="flex items-center justify-center gap-3 mb-5">
+                  <svg className="w-9 h-9 sm:w-10 sm:h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.79 22.05 6.8 20.68 5.96 19.47C4.25 16.56 2.93 11.3 4.7 7.72C5.57 5.94 7.36 4.86 9.28 4.84C10.56 4.81 11.78 5.72 12.55 5.72C13.31 5.72 14.8 4.62 16.36 4.8C17.06 4.83 18.92 5.09 20.07 6.83C19.96 6.9 17.62 8.28 17.65 11.14C17.68 14.56 20.6 15.68 20.63 15.69C20.6 15.77 20.15 17.35 19.01 18.98L18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/>
+                  </svg>
+                  <div className="text-left">
+                    <div className="text-[10px] sm:text-xs text-white/40 uppercase tracking-wider">{lang === 'ar' ? 'حمّل من' : 'Download on the'}</div>
+                    <div className="text-base sm:text-lg font-bold text-white leading-tight">App Store</div>
+                  </div>
+                </div>
+
+                <h3 className="text-base sm:text-lg font-bold mb-1.5 group-hover:text-blue-400 transition-colors duration-300">
+                  {t('downloadIos')}
+                </h3>
+                <p className="text-white/35 text-xs sm:text-sm mb-4">{lang === 'ar' ? 'لأجهزة iPhone و iPad' : 'For iPhone & iPad'}</p>
+
+                {/* CTA Button */}
+                <div className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-blue-500/10 text-blue-400 text-sm font-bold border border-blue-500/20 group-hover:bg-blue-500/20 group-hover:border-blue-500/40 transition-all duration-300">
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  {lang === 'ar' ? 'تحميل مجاني' : 'Free Download'}
+                </div>
               </div>
             </motion.a>
 
             {/* TV */}
             <motion.div
-              className="group download-btn rounded-2xl bg-ktv-bg-card border border-white/5 p-6 sm:p-8 text-center cursor-pointer sm:col-span-2 lg:col-span-1"
+              className="group relative rounded-2xl bg-ktv-bg-card border border-white/[0.06] hover:border-amber-500/40 p-6 sm:p-7 text-center cursor-pointer sm:col-span-2 lg:col-span-1 overflow-hidden transition-all duration-500"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
               whileHover={{ scale: 1.03 }}
             >
-              <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 mb-4 shadow-lg">
-                <Monitor className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-bold mb-2 group-hover:text-amber-400 transition-colors">
-                {t('downloadTv')}
-              </h3>
-              <p className="text-white/40 text-sm mb-3">{t('downloadTvNote')}</p>
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-amber-500/10 text-amber-400 text-sm font-bold border border-amber-500/20 font-mono">
-                {t('tvAppCode')}: 9562862
+              {/* Hover gradient */}
+              <div className="absolute inset-0 bg-gradient-to-b from-amber-500/[0.06] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              {/* Top accent line */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <div className="relative">
+                {/* Smart TV Badge */}
+                <div className="flex items-center justify-center gap-3 mb-5">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
+                  </div>
+                  <div className="text-left">
+                    <div className="text-[10px] sm:text-xs text-white/40 uppercase tracking-wider">{lang === 'ar' ? 'متاح على' : 'AVAILABLE ON'}</div>
+                    <div className="text-base sm:text-lg font-bold text-white leading-tight">Smart TV</div>
+                  </div>
+                </div>
+
+                <h3 className="text-base sm:text-lg font-bold mb-1.5 group-hover:text-amber-400 transition-colors duration-300">
+                  {t('downloadTv')}
+                </h3>
+                <p className="text-white/35 text-xs sm:text-sm mb-4">{t('downloadTvNote')}</p>
+
+                {/* App Code */}
+                <div className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-amber-500/10 text-amber-400 text-sm font-bold border border-amber-500/20 group-hover:bg-amber-500/20 group-hover:border-amber-500/40 transition-all duration-300">
+                  <span className="text-white/50 text-xs">{t('tvAppCode')}:</span>
+                  <span className="font-mono tracking-wider">9562862</span>
+                </div>
               </div>
             </motion.div>
           </div>
