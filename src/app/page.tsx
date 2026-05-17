@@ -15,9 +15,11 @@ import {
   Play,
 } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/hooks/useLanguage';
+import { ThemeProvider } from '@/hooks/useTheme';
 import ParticleBackground from '@/components/landing/ParticleBackground';
 import FloatingWhatsApp from '@/components/landing/FloatingWhatsApp';
 import LanguageToggle from '@/components/landing/LanguageToggle';
+import ThemeToggle from '@/components/landing/ThemeToggle';
 import AutoScrollGallery from '@/components/landing/AutoScrollGallery';
 
 function LandingContent() {
@@ -154,7 +156,10 @@ function LandingContent() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <LanguageToggle />
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <LanguageToggle />
+              </div>
             </motion.div>
           </div>
         </div>
@@ -888,8 +893,10 @@ function LandingContent() {
 
 export default function Home() {
   return (
-    <LanguageProvider>
-      <LandingContent />
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <LandingContent />
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }

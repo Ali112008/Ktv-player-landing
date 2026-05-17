@@ -89,6 +89,179 @@
   --sidebar-ring: #e00000;
 }
 
+/* ==================== LIGHT THEME ==================== */
+[data-theme="light"] {
+  /* KTV brand color overrides */
+  --color-ktv-bg-dark: #f5f2ee;
+  --color-ktv-bg-card: #ffffff;
+  --color-ktv-bg-card-hover: #f0ede8;
+
+  /* Tailwind CSS variable overrides */
+  --background: #f5f2ee;
+  --foreground: #1a1a2e;
+  --card: #ffffff;
+  --card-foreground: #1a1a2e;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a2e;
+  --primary: #e00000;
+  --primary-foreground: #ffffff;
+  --secondary: #e8e4df;
+  --secondary-foreground: #1a1a2e;
+  --muted: #e8e4df;
+  --muted-foreground: #6b6b80;
+  --accent: #e8e4df;
+  --accent-foreground: #1a1a2e;
+  --destructive: #e00000;
+  --border: rgba(0, 0, 0, 0.08);
+  --input: rgba(0, 0, 0, 0.08);
+  --ring: #e00000;
+  --sidebar: #f5f2ee;
+  --sidebar-foreground: #1a1a2e;
+  --sidebar-primary: #e00000;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e8e4df;
+  --sidebar-accent-foreground: #1a1a2e;
+  --sidebar-border: rgba(0, 0, 0, 0.08);
+  --sidebar-ring: #e00000;
+}
+
+/* Light theme - text color overrides */
+[data-theme="light"] .text-white {
+  color: #1a1a2e;
+}
+[data-theme="light"] .text-white\/90 {
+  color: rgba(26, 26, 46, 0.9);
+}
+[data-theme="light"] .text-white\/80 {
+  color: rgba(26, 26, 46, 0.8);
+}
+[data-theme="light"] .text-white\/70 {
+  color: rgba(26, 26, 46, 0.7);
+}
+[data-theme="light"] .text-white\/60 {
+  color: rgba(26, 26, 46, 0.6);
+}
+[data-theme="light"] .text-white\/55 {
+  color: rgba(26, 26, 46, 0.55);
+}
+[data-theme="light"] .text-white\/50 {
+  color: rgba(26, 26, 46, 0.5);
+}
+[data-theme="light"] .text-white\/45 {
+  color: rgba(26, 26, 46, 0.45);
+}
+[data-theme="light"] .text-white\/40 {
+  color: rgba(26, 26, 46, 0.4);
+}
+[data-theme="light"] .text-white\/35 {
+  color: rgba(26, 26, 46, 0.35);
+}
+[data-theme="light"] .text-white\/30 {
+  color: rgba(26, 26, 46, 0.3);
+}
+
+/* Light theme - background overrides */
+[data-theme="light"] .bg-white\/5 {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+[data-theme="light"] .bg-white\/10 {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+[data-theme="light"] .bg-black {
+  background-color: #1a1a2e;
+}
+
+/* Light theme - border overrides */
+[data-theme="light"] .border-white\/5 {
+  border-color: rgba(0, 0, 0, 0.05);
+}
+[data-theme="light"] .border-white\/10 {
+  border-color: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .border-white\/15 {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+[data-theme="light"] .border-white\[\/0\.06\] {
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Light theme - gradient & overlay overrides */
+[data-theme="light"] .hero-bg::before {
+  background: radial-gradient(circle at 30% 50%, rgba(224, 0, 0, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 70% 50%, rgba(212, 160, 23, 0.06) 0%, transparent 50%);
+}
+
+[data-theme="light"] .from-transparent {
+  --tw-gradient-from: transparent var(--tw-gradient-from-position);
+}
+
+/* Light theme - navbar */
+[data-theme="light"] nav {
+  background: rgba(245, 242, 238, 0.85);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Light theme - gradient overlays on hero */
+[data-theme="light"] .bg-gradient-to-b {
+  --tw-gradient-to: #f5f2ee var(--tw-gradient-to-position);
+}
+
+/* Light theme - scrollbar */
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #f5f2ee;
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #d4a017;
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #e00000;
+}
+
+/* Light theme - shimmer */
+[data-theme="light"] .animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+/* Light theme - gradient text */
+[data-theme="light"] .gradient-text {
+  background: linear-gradient(135deg, #1a1a2e 0%, #e00000 50%, #d4a017 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Light theme - download btn */
+[data-theme="light"] .download-btn:hover {
+  box-shadow: 0 0 25px rgba(224, 0, 0, 0.2);
+}
+
+/* Light theme - glow effects */
+[data-theme="light"] .red-glow {
+  box-shadow: 0 0 15px rgba(224, 0, 0, 0.15), 0 0 30px rgba(224, 0, 0, 0.05);
+}
+[data-theme="light"] .red-glow-sm {
+  box-shadow: 0 0 8px rgba(224, 0, 0, 0.1), 0 0 15px rgba(224, 0, 0, 0.05);
+}
+
+/* Light theme - ThemeToggle button */
+[data-theme="light"] .theme-toggle-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .theme-toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* Light theme - gradient overlays on images */
+[data-theme="light"] .from-black\/80 {
+  --tw-gradient-from: rgba(26, 26, 46, 0.85) var(--tw-gradient-from-position);
+}
+[data-theme="light"] .from-black\/50 {
+  --tw-gradient-from: rgba(26, 26, 46, 0.5) var(--tw-gradient-from-position);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
