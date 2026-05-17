@@ -564,13 +564,7 @@ html {
   animation: floatPhone3 4s ease-in-out infinite;
 }
 
-/* 6. Animated gradient border for download cards */
-@keyframes borderGlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
+/* 6. Animated gradient border for download cards - HOVER ONLY (was causing lag with infinite animation + mask-compositing) */
 .animated-border-glow {
   position: relative;
 }
@@ -578,17 +572,21 @@ html {
 .animated-border-glow::before {
   content: '';
   position: absolute;
-  inset: -1px;
+  inset: 0;
   border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(90deg, #e00000, #d4a017, #e00000, #d4a017);
-  background-size: 300% 100%;
-  animation: borderGlow 4s ease infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  border: 1px solid transparent;
+  background: linear-gradient(90deg, #e00000, #d4a017, #e00000, #d4a017) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
   pointer-events: none;
   z-index: 1;
+}
+
+.animated-border-glow:hover::before {
+  opacity: 1;
 }
 
 /* 7. Hero sparkle/twinkle effect */
