@@ -107,7 +107,7 @@ function LandingContent() {
   // ========== Mobile menu state ==========
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // ========== Scroll-to-top visibility ==========
+  // ========== Scroll-to-top visibility + Navbar scroll style ==========
   const [showScrollTop, setShowScrollTop] = useState(false);
   useEffect(() => {
     let ticking = false;
@@ -116,6 +116,15 @@ function LandingContent() {
         requestAnimationFrame(() => {
           const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
           setShowScrollTop(window.scrollY > scrollHeight * 0.5);
+          // Navbar scroll style
+          const nav = document.getElementById('main-nav');
+          if (nav) {
+            if (window.scrollY > 50) {
+              nav.classList.add('nav-scrolled');
+            } else {
+              nav.classList.remove('nav-scrolled');
+            }
+          }
           ticking = false;
         });
         ticking = true;
@@ -276,7 +285,7 @@ function LandingContent() {
       dir={isRTL ? 'rtl' : 'ltr'}
     >
       {/* Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 z-40 bg-ktv-bg-dark/80 backdrop-blur-xl border-b border-ktv-border-faint">
+      <nav id="main-nav" className="fixed top-0 left-0 right-0 z-40 bg-ktv-bg-dark/80 backdrop-blur-xl border-b border-ktv-border-faint transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
@@ -390,6 +399,14 @@ function LandingContent() {
         <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-80 sm:h-80 bg-ktv-red/10 rounded-full blur-[40px] will-change-transform" />
         <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-ktv-gold/10 rounded-full blur-[30px] will-change-transform" />
 
+        {/* Hero sparkles */}
+        <div className="hero-sparkle z-[2]" />
+        <div className="hero-sparkle z-[2]" />
+        <div className="hero-sparkle z-[2]" />
+        <div className="hero-sparkle z-[2]" />
+        <div className="hero-sparkle z-[2]" />
+        <div className="hero-sparkle z-[2]" />
+
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center">
           {/* Logo */}
           <div className="mb-6 sm:mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
@@ -408,7 +425,7 @@ function LandingContent() {
             className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 sm:mb-6 leading-tight animate-fade-in-up"
             style={{ animationDelay: '0.2s' }}
           >
-            <span className="gradient-text">KTV</span>
+            <span className="text-shimmer">KTV</span>
             <span className="text-ktv-text"> — </span>
             <br className="sm:hidden" />
             <span className="text-ktv-text-strong">
@@ -443,7 +460,7 @@ function LandingContent() {
               href="https://play.google.com/store/apps/details?id=com.ktvplayer.ktv"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-red hover:bg-ktv-red-light text-white font-bold text-base sm:text-lg transition-all duration-300 red-glow hover:scale-105"
+              className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-red hover:bg-ktv-red-light text-white font-bold text-base sm:text-lg transition-all duration-300 red-glow glow-pulse hover:scale-105"
             >
               <Play className="w-5 h-5" fill="white" />
               {t('heroCta')}
@@ -505,7 +522,7 @@ function LandingContent() {
             <div className="flex-1 w-full">
               <div className="relative flex items-center justify-center gap-3 sm:gap-4">
                 {/* Phone Frame 1 */}
-                <div className="relative w-[42%] -rotate-[3deg] hover:rotate-0 hover:scale-105 transition-transform duration-500">
+                <div className="relative w-[42%] float-phone-1 hover:rotate-0 hover:scale-105 transition-transform duration-500">
                   <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/20">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
                     <img
@@ -517,7 +534,7 @@ function LandingContent() {
                 </div>
 
                 {/* Phone Frame 2 (center) */}
-                <div className="relative w-[46%] z-10 hover:scale-105 transition-transform duration-500">
+                <div className="relative w-[46%] z-10 float-phone-2 hover:scale-105 transition-transform duration-500">
                   <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/30">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
                     <img
@@ -530,7 +547,7 @@ function LandingContent() {
                 </div>
 
                 {/* Phone Frame 3 */}
-                <div className="relative w-[42%] hidden sm:block rotate-[3deg] hover:rotate-0 hover:scale-105 transition-transform duration-500">
+                <div className="relative w-[42%] hidden sm:block float-phone-3 hover:rotate-0 hover:scale-105 transition-transform duration-500">
                   <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/20">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
                     <img
@@ -573,7 +590,7 @@ function LandingContent() {
                 ].map((stat, i) => (
                   <div
                     key={i}
-                    className="text-center md:text-start p-3 sm:p-4 rounded-xl bg-ktv-surface border border-ktv-border-faint stagger-child"
+                    className="text-center md:text-start p-3 sm:p-4 rounded-xl bg-ktv-surface border border-ktv-border-faint stagger-child stat-glow"
                     style={{ animationDelay: `${i * 0.1}s` }}
                   >
                     <div className="text-xl sm:text-2xl font-black text-ktv-red">
@@ -631,7 +648,7 @@ function LandingContent() {
                 className="relative z-10 stagger-child"
                 style={{ animationDelay: `${index * 0.15}s` }}
               >
-                <div className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center">
+                <div className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center tilt-card icon-bounce-hover">
                   <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                   <div className="relative flex flex-col items-center">
@@ -640,7 +657,7 @@ function LandingContent() {
                     </div>
 
                     <div
-                      className={`relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${step.color} shadow-lg mb-4 transition-transform duration-300 group-hover:scale-110`}
+                      className={`relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${step.color} shadow-lg mb-4 transition-transform duration-300 group-hover:scale-110 icon-target`}
                     >
                       <step.icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                     </div>
@@ -697,14 +714,14 @@ function LandingContent() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center stagger-child"
+                className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center stagger-child tilt-card icon-bounce-hover"
                 style={{ animationDelay: `${index * 0.08}s` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="relative flex flex-col items-center">
                   <div
-                    className={`relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${feature.color} shadow-lg mb-4 transition-transform duration-300 group-hover:scale-110`}
+                    className={`relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${feature.color} shadow-lg mb-4 transition-transform duration-300 group-hover:scale-110 icon-target`}
                   >
                     <span className="text-2xl sm:text-3xl">{feature.emoji}</span>
                   </div>
@@ -894,7 +911,7 @@ function LandingContent() {
               href="https://play.google.com/store/apps/details?id=com.ktvplayer.ktv"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-green-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-300 hover:scale-[1.03]"
+              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-green-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-green-500/[0.06] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -930,7 +947,7 @@ function LandingContent() {
               href="https://apps.apple.com/us/app/ktv-player/id6764389973?l=ar"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-blue-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-300 hover:scale-[1.03]"
+              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-blue-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-blue-500/[0.06] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -960,7 +977,7 @@ function LandingContent() {
 
             {/* TV */}
             <div
-              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-amber-500/40 p-6 sm:p-7 text-center cursor-pointer sm:col-span-2 lg:col-span-1 overflow-hidden transition-all duration-300 hover:scale-[1.03]"
+              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-amber-500/40 p-6 sm:p-7 text-center cursor-pointer sm:col-span-2 lg:col-span-1 overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-amber-500/[0.06] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
