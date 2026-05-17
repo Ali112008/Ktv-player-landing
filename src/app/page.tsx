@@ -393,7 +393,7 @@ function LandingContent() {
                     href="https://wa.me/212602251813"
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={closeMobileMenu}
+                    onClick={() => setMobileMenuOpen(false)}
                     className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm py-2 flex items-center gap-1"
                   >
                     {t('navContact')}
