@@ -768,29 +768,29 @@ html {
 
 /* Orbs use wider radial-gradient that fades naturally - NO CSS filter:blur needed (GPU cheap) */
 .glow-orb-1 {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
   background: radial-gradient(circle, rgba(224, 0, 0, 0.12) 0%, rgba(224, 0, 0, 0.05) 40%, transparent 70%);
   animation: orbDrift1 12s ease-in-out infinite;
 }
 
 .glow-orb-2 {
-  width: 350px;
-  height: 350px;
+  width: 250px;
+  height: 250px;
   background: radial-gradient(circle, rgba(212, 160, 23, 0.1) 0%, rgba(212, 160, 23, 0.04) 40%, transparent 70%);
   animation: orbDrift2 15s ease-in-out infinite;
 }
 
 .glow-orb-3 {
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 250px;
   background: radial-gradient(circle, rgba(224, 0, 0, 0.08) 0%, rgba(224, 0, 0, 0.03) 40%, transparent 70%);
   animation: orbDrift3 18s ease-in-out infinite;
 }
 
 .glow-orb-4 {
-  width: 280px;
-  height: 280px;
+  width: 220px;
+  height: 220px;
   background: radial-gradient(circle, rgba(212, 160, 23, 0.06) 0%, rgba(212, 160, 23, 0.02) 40%, transparent 70%);
   animation: orbDrift4 20s ease-in-out infinite;
 }
@@ -814,38 +814,26 @@ html {
   animation: aurora 20s ease-in-out infinite;
   pointer-events: none;
   will-change: transform;
+  /* Reduce motion for accessibility & performance */
 }
 
-/* 17. Morphing Blob - Continuously shape-shifting background element */
-@keyframes morphBlob {
-  0%, 100% {
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-    transform: translate(0, 0) rotate(0deg) scale(1);
-  }
-  25% {
-    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-    transform: translate(20px, -30px) rotate(90deg) scale(1.05);
-  }
-  50% {
-    border-radius: 50% 60% 30% 60% / 30% 50% 70% 60%;
-    transform: translate(-20px, 20px) rotate(180deg) scale(0.95);
-  }
-  75% {
-    border-radius: 60% 30% 50% 40% / 70% 40% 60% 30%;
-    transform: translate(10px, 10px) rotate(270deg) scale(1.08);
+@media (prefers-reduced-motion: reduce) {
+  .aurora-bg,
+  .glow-orb,
+  .hero-sparkle,
+  .particle,
+  .glow-pulse,
+  .neon-pulse,
+  .stat-glow,
+  .badge-premium,
+  .animate-pulse-subtle,
+  .animate-bounce-slow,
+  .animate-float {
+    animation: none !important;
   }
 }
 
-/* Morph blob without filter:blur - uses radial-gradient fade (GPU cheap) */
-.morph-blob {
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(ellipse, rgba(224, 0, 0, 0.07) 0%, rgba(212, 160, 23, 0.04) 40%, transparent 70%);
-  animation: morphBlob 15s ease-in-out infinite;
-  pointer-events: none;
-  will-change: transform, border-radius;
-}
+/* 17. Morphing Blob REMOVED - border-radius animation is too expensive for GPU */
 
 /* 18. Film Grain REMOVED - was causing 12 full-screen repaints/sec (MAJOR lag source) */
 
@@ -1164,22 +1152,27 @@ html {
   transform: translateX(0);
 }
 
-/* 35. Glow text highlight on scroll */
-@keyframes glowHighlight {
-  0% { background-size: 0% 100%; }
-  100% { background-size: 100% 100%; }
-}
-
+/* 35. Glow text highlight on scroll - uses ::after underline to avoid conflicting with gradient-text background */
 .glow-highlight {
-  background: linear-gradient(90deg, rgba(224, 0, 0, 0.2), rgba(224, 0, 0, 0.05));
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: 0% 100%;
-  transition: background-size 1s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
 }
 
-.revealed .glow-highlight {
-  background-size: 100% 100%;
+.glow-highlight::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #e00000, #d4a017);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.revealed .glow-highlight::after {
+  transform: scaleX(1);
 }
 
 /* 36. Orbit decoration REMOVED - double rotation + box-shadow too expensive */

@@ -422,45 +422,37 @@ function LandingContent() {
         {/* Aurora Borealis Effect */}
         <div className="aurora-bg z-[0]" />
 
-        {/* Glowing Orbs - Premium floating cells */}
+        {/* Glowing Orbs - Reduced to 2 for performance */}
         <div className="glow-orb glow-orb-1" style={{ top: '15%', left: '10%' }} />
         <div className="glow-orb glow-orb-2" style={{ top: '60%', right: '5%' }} />
-        <div className="glow-orb glow-orb-3" style={{ bottom: '20%', left: '30%' }} />
-        <div className="glow-orb glow-orb-4" style={{ top: '30%', right: '25%' }} />
 
         {/* Gradient overlays */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-ktv-bg-dark/50 to-ktv-bg-dark z-[1]" />
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-ktv-red/5 via-transparent to-ktv-gold/5 z-[1]" />
 
-        {/* Decorative blurred circles */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-80 sm:h-80 bg-ktv-red/10 rounded-full blur-[40px] will-change-transform parallax-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-ktv-gold/10 rounded-full blur-[30px] will-change-transform parallax-medium" />
+        {/* Decorative blurred circles - static, no animation */}
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-80 sm:h-80 bg-ktv-red/10 rounded-full blur-[40px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-ktv-gold/10 rounded-full blur-[30px]" />
 
-        {/* Hero sparkles */}
-        <div className="hero-sparkle z-[2]" />
-        <div className="hero-sparkle z-[2]" />
-        <div className="hero-sparkle z-[2]" />
+        {/* Hero sparkles - reduced for performance */}
         <div className="hero-sparkle z-[2]" />
         <div className="hero-sparkle z-[2]" />
         <div className="hero-sparkle z-[2]" />
 
-        {/* Particle dots */}
+        {/* Particle dots - reduced for performance */}
         <div className="particle particle-1 z-[2]" style={{ top: '25%', left: '20%' }} />
         <div className="particle particle-2 z-[2]" style={{ top: '45%', right: '15%' }} />
         <div className="particle particle-3 z-[2]" style={{ bottom: '30%', left: '40%' }} />
-        <div className="particle particle-4 z-[2]" style={{ top: '70%', left: '65%' }} />
-        <div className="particle particle-5 z-[2]" style={{ top: '15%', right: '35%' }} />
-        <div className="particle particle-6 z-[2]" style={{ bottom: '45%', right: '25%' }} />
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center">
           {/* Logo */}
           <div className="mb-6 sm:mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-            <div className="relative inline-block">
-              <div className="absolute inset-0 bg-ktv-red/20 rounded-3xl blur-lg" />
+            <div className="relative inline-flex items-center justify-center">
+              <div className="absolute inset-0 bg-ktv-red/20 rounded-3xl blur-xl scale-110" />
               <img
                 src="/ktv-logo.webp"
                 alt="KTV Player"
-                className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-2xl drop-shadow-2xl"
+                className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-2xl drop-shadow-2xl z-10"
               />
             </div>
           </div>
@@ -561,9 +553,7 @@ function LandingContent() {
       <section ref={revealShowcase} className="relative py-16 sm:py-20 overflow-hidden scroll-reveal hex-pattern">
         <div className="absolute inset-0 bg-gradient-to-r from-ktv-red/5 via-ktv-bg-dark to-ktv-gold/5" />
 
-        {/* Floating orbs in showcase */}
-        <div className="glow-orb glow-orb-3" style={{ top: '20%', right: '10%' }} />
-        <div className="glow-orb glow-orb-4" style={{ bottom: '10%', left: '5%' }} />
+        {/* Floating orb in showcase - reduced */}
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
@@ -659,8 +649,7 @@ function LandingContent() {
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent diagonal-reveal" />
         <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
 
-        {/* Floating orb */}
-        <div className="glow-orb glow-orb-2" style={{ top: '30%', left: '5%' }} />
+        {/* Floating orb - removed for performance */}
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
@@ -735,13 +724,7 @@ function LandingContent() {
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent diagonal-reveal" />
         <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/30 to-ktv-bg-dark hex-pattern" />
 
-        {/* Morphing blob in features */}
-        <div className="morph-blob" style={{ top: '10%', right: '-5%' }} />
-
-        {/* Floating particles */}
-        <div className="particle particle-1 z-[2]" style={{ top: '15%', right: '20%' }} />
-        <div className="particle particle-3 z-[2]" style={{ bottom: '20%', left: '10%' }} />
-        <div className="particle particle-5 z-[2]" style={{ top: '50%', left: '80%' }} />
+        {/* Morphing blob + particles removed for performance */}
 
         <div ref={spotlightFeatures} className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 card-spotlight">
           {/* Section Header */}
@@ -817,8 +800,7 @@ function LandingContent() {
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark grid-pattern" />
 
-        {/* Floating orb */}
-        <div className="glow-orb glow-orb-1" style={{ top: '40%', right: '5%' }} />
+        {/* Floating orb removed for performance */}
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
@@ -867,9 +849,7 @@ function LandingContent() {
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent diagonal-reveal" />
         <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
 
-        {/* Floating orbs in testimonials */}
-        <div className="glow-orb glow-orb-2" style={{ top: '20%', left: '3%' }} />
-        <div className="glow-orb glow-orb-3" style={{ bottom: '15%', right: '5%' }} />
+        {/* Floating orbs removed for performance */}
 
         <div ref={spotlightTestimonials} className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 card-spotlight">
           {/* Section Header */}
@@ -940,21 +920,12 @@ function LandingContent() {
       <section ref={revealDownload} id="download" className="relative py-16 sm:py-20 md:py-28 scroll-reveal overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-gold/30 to-transparent diagonal-reveal" />
 
-        {/* Background effects */}
+        {/* Background effects - simplified for performance */}
         <div className="absolute inset-0 grid-pattern">
-          {/* Morphing blob */}
-          <div className="morph-blob" style={{ top: '20%', left: '-10%' }} />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-ktv-red/5 rounded-full blur-[60px]" />
         </div>
 
-        {/* Floating particles in download */}
-        <div className="particle particle-2 z-[2]" style={{ top: '20%', left: '15%' }} />
-        <div className="particle particle-4 z-[2]" style={{ bottom: '25%', right: '10%' }} />
-        <div className="particle particle-6 z-[2]" style={{ top: '60%', left: '75%' }} />
-
-        {/* Floating orbs */}
-        <div className="glow-orb glow-orb-1" style={{ top: '10%', right: '5%' }} />
-        <div className="glow-orb glow-orb-4" style={{ bottom: '10%', left: '8%' }} />
+        {/* Floating particles & orbs removed for performance */}
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
