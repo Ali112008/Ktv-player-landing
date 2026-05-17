@@ -25,7 +25,7 @@ import { ThemeProvider } from '@/hooks/useTheme';
 import FloatingWhatsApp from '@/components/landing/FloatingWhatsApp';
 import LanguageToggle from '@/components/landing/LanguageToggle';
 import ThemeToggle from '@/components/landing/ThemeToggle';
-import RevSliderGallery from '@/components/landing/RevSliderGallery';
+import MarqueeGallery from '@/components/landing/MarqueeGallery';
 
 /* ========== CSS-based fade-in on scroll (IntersectionObserver) ========== */
 function useScrollReveal() {
@@ -775,8 +775,8 @@ function LandingContent() {
             </div>
           </div>
 
-          {/* Revolution Slider Gallery */}
-          <RevSliderGallery lang={lang} isRTL={isRTL} />
+          {/* Marquee Gallery */}
+          <MarqueeGallery lang={lang} isRTL={isRTL} />
         </div>
       </section>
 

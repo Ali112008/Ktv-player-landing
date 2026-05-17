@@ -497,23 +497,39 @@ html {
   box-shadow: 0 0 25px rgba(224, 0, 0, 0.4);
 }
 
-/* Revolution Slider Ken Burns effect */
-@keyframes kenBurns {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.06); }
+/* ==================== MARQUEE GALLERY ANIMATIONS ==================== */
+@keyframes marqueeLtr {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
 }
 
-.rev-kenburns {
-  animation: kenBurns 8s ease-out forwards;
+@keyframes marqueeRtl {
+  0% { transform: translateX(-33.333%); }
+  100% { transform: translateX(0); }
+}
+
+.marquee-track {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
   will-change: transform;
 }
 
-/* Revolution Slider phone entrance effect */
-@keyframes phoneEnter {
-  0% { opacity: 0; transform: scale(0.9) translateY(10px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
+.marquee-ltr {
+  animation-name: marqueeLtr;
+  animation-duration: 30s;
 }
 
-.rev-phone-enter {
-  animation: phoneEnter 0.7s ease-out both;
+.marquee-rtl {
+  animation-name: marqueeRtl;
+  animation-duration: 30s;
+}
+
+/* Pause marquee on hover */
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Light theme - marquee fade edges */
+[data-theme="light"] .marquee-track + .absolute {
+  /* gradient edges already use ktv-bg-dark which adapts */
 }
