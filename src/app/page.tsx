@@ -153,6 +153,12 @@ function LandingContent() {
               nav.classList.remove('nav-scrolled');
             }
           }
+          // Update scroll progress bar
+          const progressBar = document.getElementById('scroll-progress');
+          if (progressBar) {
+            const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            progressBar.style.width = `${scrollPercent}%`;
+          }
           ticking = false;
         });
         ticking = true;
@@ -312,6 +318,9 @@ function LandingContent() {
       }`}
       dir={isRTL ? 'rtl' : 'ltr'}
     >
+      {/* Scroll Progress Bar */}
+      <div className="scroll-progress" id="scroll-progress" />
+
       {/* Navigation Bar */}
       <nav id="main-nav" className="fixed top-0 left-0 right-0 z-40 bg-ktv-bg-dark/80 backdrop-blur-xl border-b border-ktv-border-faint transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -413,6 +422,7 @@ function LandingContent() {
           </div>
         )}
       </nav>
+
 
       {/* ==================== HERO SECTION ==================== */}
       <section
@@ -549,6 +559,78 @@ function LandingContent() {
         </div>
       </section>
 
+      {/* ==================== TESTIMONIALS SECTION ==================== */}
+      <section ref={revealTestimonials} id="testimonials" className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-reveal">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent diagonal-reveal" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
+
+        {/* Floating orbs removed for performance */}
+
+        <div ref={spotlightTestimonials} className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 card-spotlight">
+          {/* Section Header */}
+          <div className="text-center mb-12 sm:mb-16">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20 badge-premium">
+              ⭐ {t('testimonialsTitle')}
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+              {lang === 'ar' ? (
+                <>
+                  ماذا يقول{' '}
+                  <span className="gradient-text-red glow-highlight">عملاؤنا</span>
+                </>
+              ) : (
+                <>
+                  What Our{' '}
+                  <span className="gradient-text-red glow-highlight">Customers</span>{' '}
+                  Say
+                </>
+              )}
+            </h2>
+            <p className="text-ktv-text-muted text-base sm:text-lg max-w-2xl mx-auto">
+              {t('testimonialsSubtitle')}
+            </p>
+          </div>
+
+          {/* Testimonial Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {testimonials.map((testimonial, index) => (
+              <div
+                key={index}
+                className="group relative glass-card rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/20 p-6 sm:p-7 transition-all duration-300 stagger-child hover-lift"
+                style={{ animationDelay: `${index * 0.08}s` }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-11 h-11 rounded-full overflow-hidden shrink-0 ring-2 ring-ktv-border-subtle group-hover:ring-ktv-red/30 transition-all duration-300">
+                    <img
+                      src={testimonial.avatar}
+                      alt={testimonial.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <div className="font-bold text-sm sm:text-base text-ktv-text flex items-center gap-1.5">
+                      {testimonial.name}
+                      <span className="text-base">{testimonial.country}</span>
+                    </div>
+                    <div className="flex items-center gap-0.5 mt-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-ktv-text-dim text-sm sm:text-base leading-relaxed">
+                  &ldquo;{lang === 'ar' ? testimonial.reviewAr : testimonial.reviewEn}&rdquo;
+                </p>
+
+                <div className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-ktv-red to-ktv-gold transition-all duration-500" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ==================== SHOWCASE SECTION ==================== */}
       <section ref={revealShowcase} className="relative py-16 sm:py-20 overflow-hidden scroll-reveal hex-pattern">
         <div className="absolute inset-0 bg-gradient-to-r from-ktv-red/5 via-ktv-bg-dark to-ktv-gold/5" />
@@ -644,81 +726,6 @@ function LandingContent() {
         </div>
       </section>
 
-      {/* ==================== HOW IT WORKS SECTION ==================== */}
-      <section ref={revealHowItWorks} className="relative py-16 sm:py-20 md:py-24 scroll-reveal grid-pattern">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent diagonal-reveal" />
-        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
-
-        {/* Floating orb - removed for performance */}
-
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20 badge-premium">
-              {lang === 'ar' ? 'كيف يعمل' : 'How It Works'}
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-              {lang === 'ar' ? (
-                <>
-                  ابدأ في{' '}
-                  <span className="gradient-text-red glow-highlight">ثلاث خطوات</span>{' '}
-                  بسيطة
-                </>
-              ) : (
-                <>
-                  Get Started in{' '}
-                  <span className="gradient-text-red glow-highlight">3 Simple</span>{' '}
-                  Steps
-                </>
-              )}
-            </h2>
-            <p className="text-ktv-text-muted text-base sm:text-lg max-w-2xl mx-auto">
-              {lang === 'ar'
-                ? 'تجربة KTV Player سهلة وسريعة. حمّل التطبيق وابدأ المشاهدة فوراً'
-                : 'Getting started with KTV Player is quick and easy. Download the app and start watching instantly'}
-            </p>
-          </div>
-
-          {/* Steps Grid */}
-          <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-            <div className="hidden lg:block absolute top-1/2 left-[16.67%] right-[16.67%] h-[2px] -translate-y-1/2 border-t-2 border-dashed border-ktv-border-subtle z-0" />
-
-            {howItWorksSteps.map((step, index) => (
-              <div
-                key={index}
-                className="relative z-10 stagger-child"
-                style={{ animationDelay: `${index * 0.15}s` }}
-              >
-                <div className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center tilt-card icon-bounce-hover card-spotlight hover-lift">
-                  <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                  <div className="relative flex flex-col items-center">
-                    <div className="absolute -top-1 -right-1 rtl:-left-1 rtl:right-auto w-7 h-7 rounded-full bg-ktv-red text-white text-xs font-black flex items-center justify-center shadow-lg">
-                      {step.step}
-                    </div>
-
-                    <div
-                      className={`relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${step.color} shadow-lg mb-4 transition-transform duration-300 group-hover:scale-110 icon-target`}
-                    >
-                      <step.icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                    </div>
-
-                    <h3 className="text-base sm:text-lg font-bold mb-2 group-hover:text-ktv-red transition-colors duration-300">
-                      {step.title}
-                    </h3>
-                    <p className="text-ktv-text-dim text-xs sm:text-sm leading-relaxed">
-                      {step.desc}
-                    </p>
-                  </div>
-
-                  <div className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-ktv-red to-ktv-gold transition-all duration-500" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ==================== FEATURES SECTION ==================== */}
       <section ref={revealFeatures} id="features" className="relative py-16 sm:py-20 md:py-28 scroll-reveal">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent diagonal-reveal" />
@@ -795,6 +802,81 @@ function LandingContent() {
         </div>
       </section>
 
+      {/* ==================== HOW IT WORKS SECTION ==================== */}
+      <section ref={revealHowItWorks} className="relative py-16 sm:py-20 md:py-24 scroll-reveal grid-pattern">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent diagonal-reveal" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
+
+        {/* Floating orb - removed for performance */}
+
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center mb-12 sm:mb-16">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20 badge-premium">
+              {lang === 'ar' ? 'كيف يعمل' : 'How It Works'}
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+              {lang === 'ar' ? (
+                <>
+                  ابدأ في{' '}
+                  <span className="gradient-text-red glow-highlight">ثلاث خطوات</span>{' '}
+                  بسيطة
+                </>
+              ) : (
+                <>
+                  Get Started in{' '}
+                  <span className="gradient-text-red glow-highlight">3 Simple</span>{' '}
+                  Steps
+                </>
+              )}
+            </h2>
+            <p className="text-ktv-text-muted text-base sm:text-lg max-w-2xl mx-auto">
+              {lang === 'ar'
+                ? 'تجربة KTV Player سهلة وسريعة. حمّل التطبيق وابدأ المشاهدة فوراً'
+                : 'Getting started with KTV Player is quick and easy. Download the app and start watching instantly'}
+            </p>
+          </div>
+
+          {/* Steps Grid */}
+          <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="hidden lg:block absolute top-1/2 left-[16.67%] right-[16.67%] h-[2px] -translate-y-1/2 border-t-2 border-dashed border-ktv-border-subtle z-0" />
+
+            {howItWorksSteps.map((step, index) => (
+              <div
+                key={index}
+                className="relative z-10 stagger-child"
+                style={{ animationDelay: `${index * 0.15}s` }}
+              >
+                <div className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center tilt-card icon-bounce-hover card-spotlight hover-lift">
+                  <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                  <div className="relative flex flex-col items-center">
+                    <div className="absolute -top-1 -right-1 rtl:-left-1 rtl:right-auto w-7 h-7 rounded-full bg-ktv-red text-white text-xs font-black flex items-center justify-center shadow-lg">
+                      {step.step}
+                    </div>
+
+                    <div
+                      className={`relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${step.color} shadow-lg mb-4 transition-transform duration-300 group-hover:scale-110 icon-target`}
+                    >
+                      <step.icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                    </div>
+
+                    <h3 className="text-base sm:text-lg font-bold mb-2 group-hover:text-ktv-red transition-colors duration-300">
+                      {step.title}
+                    </h3>
+                    <p className="text-ktv-text-dim text-xs sm:text-sm leading-relaxed">
+                      {step.desc}
+                    </p>
+                  </div>
+
+                  <div className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-ktv-red to-ktv-gold transition-all duration-500" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ==================== APP GALLERY SECTION ==================== */}
       <section ref={revealGallery} className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-reveal">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent" />
@@ -841,78 +923,6 @@ function LandingContent() {
 
           {/* Marquee Gallery */}
           <MarqueeGallery lang={lang} isRTL={isRTL} />
-        </div>
-      </section>
-
-      {/* ==================== TESTIMONIALS SECTION ==================== */}
-      <section ref={revealTestimonials} id="testimonials" className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-reveal">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent diagonal-reveal" />
-        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
-
-        {/* Floating orbs removed for performance */}
-
-        <div ref={spotlightTestimonials} className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 card-spotlight">
-          {/* Section Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20 badge-premium">
-              ⭐ {t('testimonialsTitle')}
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-              {lang === 'ar' ? (
-                <>
-                  ماذا يقول{' '}
-                  <span className="gradient-text-red glow-highlight">عملاؤنا</span>
-                </>
-              ) : (
-                <>
-                  What Our{' '}
-                  <span className="gradient-text-red glow-highlight">Customers</span>{' '}
-                  Say
-                </>
-              )}
-            </h2>
-            <p className="text-ktv-text-muted text-base sm:text-lg max-w-2xl mx-auto">
-              {t('testimonialsSubtitle')}
-            </p>
-          </div>
-
-          {/* Testimonial Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/20 p-6 sm:p-7 transition-all duration-300 stagger-child hover-lift"
-                style={{ animationDelay: `${index * 0.08}s` }}
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-11 h-11 rounded-full overflow-hidden shrink-0 ring-2 ring-ktv-border-subtle group-hover:ring-ktv-red/30 transition-all duration-300">
-                    <img
-                      src={testimonial.avatar}
-                      alt={testimonial.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <div className="font-bold text-sm sm:text-base text-ktv-text flex items-center gap-1.5">
-                      {testimonial.name}
-                      <span className="text-base">{testimonial.country}</span>
-                    </div>
-                    <div className="flex items-center gap-0.5 mt-0.5">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <p className="text-ktv-text-dim text-sm sm:text-base leading-relaxed">
-                  &ldquo;{lang === 'ar' ? testimonial.reviewAr : testimonial.reviewEn}&rdquo;
-                </p>
-
-                <div className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-ktv-red to-ktv-gold transition-all duration-500" />
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -1114,6 +1124,7 @@ function LandingContent() {
           </div>
         </div>
       </footer>
+
 
       {/* ========== SCROLL TO TOP BUTTON ========== */}
       {showScrollTop && (

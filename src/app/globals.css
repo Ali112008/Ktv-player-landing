@@ -1260,3 +1260,97 @@ html {
   animation: floatShadow 4s ease-in-out infinite;
   pointer-events: none;
 }
+
+/* ==================== WORLD-CLASS CSS EFFECTS ==================== */
+
+/* A. Glassmorphism card for testimonials */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="light"] .glass-card {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* B. Animated mesh gradient background */
+@keyframes meshGradient {
+  0%, 100% { background-position: 0% 50%; }
+  25% { background-position: 100% 50%; }
+  50% { background-position: 100% 0%; }
+  75% { background-position: 0% 100%; }
+}
+
+.mesh-gradient-bg {
+  background: linear-gradient(135deg,
+    rgba(224, 0, 0, 0.04) 0%,
+    rgba(139, 0, 0, 0.02) 25%,
+    rgba(212, 160, 23, 0.03) 50%,
+    rgba(224, 0, 0, 0.02) 75%,
+    rgba(212, 160, 23, 0.04) 100%
+  );
+  background-size: 400% 400%;
+  animation: meshGradient 15s ease infinite;
+}
+
+/* C. Scroll progress indicator */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, #e00000, #d4a017);
+  z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* D. Counter pulse ring animation */
+@keyframes counterPulseRing {
+  0% { box-shadow: 0 0 0 0 rgba(224, 0, 0, 0.3); }
+  70% { box-shadow: 0 0 0 10px rgba(224, 0, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(224, 0, 0, 0); }
+}
+
+.counter-pulse-ring {
+  animation: counterPulseRing 2s ease-out infinite;
+}
+
+/* E. Text reveal from center */
+@keyframes textRevealCenter {
+  from { clip-path: inset(0 50% 0 50%); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+.text-reveal {
+  animation: textRevealCenter 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* F. Floating download indicator */
+@keyframes floatBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.float-bounce {
+  animation: floatBounce 2s ease-in-out infinite;
+}
+
+/* G. Decorative section number */
+.section-number {
+  font-size: 8rem;
+  font-weight: 900;
+  line-height: 1;
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  opacity: 0.03;
+  pointer-events: none;
+  background: linear-gradient(135deg, #e00000, #d4a017);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
