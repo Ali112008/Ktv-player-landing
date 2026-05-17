@@ -64,7 +64,6 @@ export default function RevSliderGallery({ lang, isRTL }: RevSliderGalleryProps)
     goTo(isRTL ? (current + 1) % total : (current - 1 + total) % total);
   }, [current, total, goTo, isRTL]);
 
-  // Auto-play
   useEffect(() => {
     if (isPaused) {
       if (timerRef.current) clearInterval(timerRef.current);
@@ -76,7 +75,6 @@ export default function RevSliderGallery({ lang, isRTL }: RevSliderGalleryProps)
     };
   }, [isPaused, goNext]);
 
-  // Touch handlers for swipe
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStartX(e.touches[0].clientX);
     setIsPaused(true);
@@ -108,6 +106,10 @@ export default function RevSliderGallery({ lang, isRTL }: RevSliderGalleryProps)
     >
       {/* Slide viewport */}
       <div className="relative w-full aspect-[16/9] sm:aspect-[16/8] md:aspect-[16/7] lg:aspect-[21/8] overflow-hidden rounded-2xl border border-ktv-border bg-ktv-bg-card">
+        {/* Background subtle pattern */}
+        <div className="absolute inset-0 bg-gradient-to-br from-ktv-red/5 via-ktv-bg-card to-ktv-gold/5" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] bg-ktv-red/5 rounded-full blur-[60px] pointer-events-none" />
+
         {slides.map((slide, index) => {
           const isActive = index === current;
           const isPrev = index === (current - 1 + total) % total;
@@ -128,22 +130,34 @@ export default function RevSliderGallery({ lang, isRTL }: RevSliderGalleryProps)
                 transitionDuration: `${TRANSITION_DURATION}ms`,
               }}
             >
-              {/* Ken Burns subtle zoom on active slide */}
-              <img
-                src={slide.src}
-                alt={lang === 'ar' ? slide.ar : slide.en}
-                className={`w-full h-full object-cover ${
-                  isActive ? 'rev-kenburns' : ''
-                }`}
-                draggable={false}
-                loading={index === 0 ? 'eager' : 'lazy'}
-              />
+              {/* Phone frame mockup — centered in the wide slider */}
+              <div className={`absolute inset-0 flex items-center justify-center ${isActive ? 'rev-phone-enter' : ''}`}>
+                <div className="relative w-[22%] sm:w-[18%] md:w-[14%] lg:w-[12%] aspect-[9/19.5] rounded-[1.2rem] sm:rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/30">
+                  {/* Phone notch */}
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[40%] h-[2.5%] bg-black rounded-b-xl z-10" />
 
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-ktv-bg-dark/80 via-ktv-bg-dark/20 to-transparent pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-r from-ktv-bg-dark/30 via-transparent to-ktv-bg-dark/30 pointer-events-none" />
+                  {/* Screenshot inside phone */}
+                  <img
+                    src={slide.src}
+                    alt={lang === 'ar' ? slide.ar : slide.en}
+                    className={`w-full h-full object-cover object-top ${
+                      isActive ? 'rev-kenburns' : ''
+                    }`}
+                    draggable={false}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                  />
 
-              {/* Text overlay */}
+                  {/* Phone bottom bar */}
+                  <div className="absolute bottom-0 inset-x-0 h-[3%] bg-black/80 flex items-center justify-center z-10">
+                    <div className="w-[30%] h-[25%] bg-ktv-border rounded-full" />
+                  </div>
+                </div>
+
+                {/* Glow behind phone */}
+                <div className="absolute w-[30%] sm:w-[24%] md:w-[18%] lg:w-[16%] aspect-square bg-ktv-red/15 rounded-full blur-[40px] pointer-events-none" />
+              </div>
+
+              {/* Text overlay at bottom */}
               <div
                 className={`absolute bottom-0 inset-x-0 p-4 sm:p-6 md:p-8 flex flex-col items-center text-center transition-all duration-500 ${
                   isActive
