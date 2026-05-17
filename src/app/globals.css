@@ -1155,15 +1155,17 @@ html {
 /* 35. Glow text highlight on scroll - uses ::after underline to avoid conflicting with gradient-text background */
 .glow-highlight {
   position: relative;
+  padding-bottom: 8px;
 }
 
 .glow-highlight::after {
   content: '';
   position: absolute;
-  bottom: -2px;
+  bottom: 0;
   left: 0;
   right: 0;
   height: 3px;
+  margin-bottom: 4px;
   background: linear-gradient(90deg, #e00000, #d4a017);
   border-radius: 2px;
   transform: scaleX(0);
