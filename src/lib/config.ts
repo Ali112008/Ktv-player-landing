@@ -44,3 +44,6 @@ export const TV_APP_CODE = '9562862';
 
 // ─── Site URL ────────────────────────────────────────────────
 export const SITE_URL = 'https://ktvplayer.com';
+
+// ─── Project Version ─────────────────────────────────────────
+export const PROJECT_VERSION = '1.0.0';
