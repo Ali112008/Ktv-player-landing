@@ -82,11 +82,11 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.jpg",
         width: 1344,
         height: 768,
         alt: "KTV Player — Best IPTV Streaming App for Live TV, Movies & Series",
-        type: "image/png",
+        type: "image/jpeg",
       },
     ],
   },
@@ -100,7 +100,7 @@ export const metadata: Metadata = {
       "شاهد أفضل القنوات المباشرة، أحدث الأفلام، والمسلسلات بجودة عالية. حمّل KTV Player الآن مجاناً!",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.jpg",
         width: 1344,
         height: 768,
         alt: "KTV Player — Best IPTV Streaming App",
@@ -189,7 +189,7 @@ export default function RootLayout({
           worstRating: "1",
         },
         installUrl: APP_LINKS.android,
-        screenshot: `${SITE_URL}/og-image.png`,
+        screenshot: `${SITE_URL}/og-image.jpg`,
       },
       {
         "@type": "WebSite",

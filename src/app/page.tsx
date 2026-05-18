@@ -430,9 +430,7 @@ function LandingContent() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-ktv-bg-dark/60 to-ktv-bg-dark z-[1]" />
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-ktv-red/5 via-transparent to-ktv-gold/5 z-[1]" />
 
-        {/* Decorative blurred circles */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-80 sm:h-80 bg-ktv-red/10 rounded-full blur-[40px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-ktv-gold/10 rounded-full blur-[30px]" />
+        {/* Decorative blurred circles removed - was covering hero background image */}
 
         {/* Hero sparkles */}
         <div className="hero-sparkle z-[2]" />
@@ -497,10 +495,16 @@ function LandingContent() {
             style={{ animationDelay: '0.5s' }}
           >
             <a
-              href={APP_LINKS.android}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={triggerConfetti}
+              href="#download"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById('download');
+                if (el) {
+                  const navHeight = 64;
+                  const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+                  window.scrollTo({ top, behavior: 'smooth' });
+                }
+              }}
               className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-red hover:bg-ktv-red-light text-white font-bold text-base sm:text-lg transition-all duration-300 red-glow glow-pulse hover:scale-105 magnetic-btn"
             >
               <Play className="w-5 h-5" fill="white" />
