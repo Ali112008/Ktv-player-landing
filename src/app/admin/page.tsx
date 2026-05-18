@@ -5,11 +5,9 @@ import { SiteConfig, DEFAULT_CONFIG } from '@/lib/site-config';
 
 // ─── Session constants ──────────────────────────────
 const SESSION_KEY = 'ktv_admin_session';
-const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days in ms
 
 interface AdminSession {
   password: string;
-  expiresAt: number;
 }
 
 function getStoredSession(): AdminSession | null {
@@ -17,10 +15,6 @@ function getStoredSession(): AdminSession | null {
     const raw = localStorage.getItem(SESSION_KEY);
     if (!raw) return null;
     const session: AdminSession = JSON.parse(raw);
-    if (Date.now() > session.expiresAt) {
-      localStorage.removeItem(SESSION_KEY);
-      return null;
-    }
     return session;
   } catch {
     return null;
@@ -30,7 +24,6 @@ function getStoredSession(): AdminSession | null {
 function storeSession(password: string) {
   const session: AdminSession = {
     password,
-    expiresAt: Date.now() + SESSION_DURATION,
   };
   localStorage.setItem(SESSION_KEY, JSON.stringify(session));
 }
