@@ -416,7 +416,7 @@ function LandingContent() {
 
         {/* Hero Background Image */}
         <img
-          src={isDark ? '/hero-bg-dark.png' : '/hero-bg-light.jpg'}
+          src={isDark ? '/hero-bg-light.jpg' : '/hero-bg-dark.png'}
           alt=""
           className="absolute inset-0 w-full h-full object-cover z-[0] hero-bg-image"
           aria-hidden="true"
