@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { WHATSAPP_LINK, APP_LINKS, SITE_URL, SOCIAL_LINKS } from "@/lib/config";
+import { getSiteConfig } from "@/lib/config";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,20 +14,32 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// ─── Resolve the real base URL for OG images ──────────────
-// On Vercel, VERCEL_URL gives the actual deployment URL (e.g. ktv-player-landing.vercel.app)
-// Falls back to SITE_URL from config for local dev or custom domains
-function getBaseUrl(): string {
-  const vercelUrl = process.env.VERCEL_URL;
-  if (vercelUrl) {
-    return `https://${vercelUrl}`;
-  }
-  return SITE_URL;
-}
-
-// ─── Dynamic metadata (so OG images use the real deployed URL) ──
+// ─── Dynamic metadata (so OG images use the siteUrl from Admin) ──
 export async function generateMetadata(): Promise<Metadata> {
-  const baseUrl = getBaseUrl();
+  // 1. Try to get siteUrl from Redis (Admin Dashboard setting)
+  // 2. Fall back to VERCEL_URL (actual deployment URL)
+  // 3. Fall back to hardcoded SITE_URL
+  let baseUrl = SITE_URL;
+
+  try {
+    const dynamicConfig = await getSiteConfig();
+    if (dynamicConfig.siteUrl) {
+      baseUrl = dynamicConfig.siteUrl;
+    }
+  } catch {
+    // Redis unavailable, use fallback
+  }
+
+  // If no custom siteUrl, try VERCEL_URL as backup
+  if (baseUrl === SITE_URL) {
+    const vercelUrl = process.env.VERCEL_URL;
+    if (vercelUrl) {
+      baseUrl = `https://${vercelUrl}`;
+    }
+  }
+
+  // Ensure no trailing slash
+  baseUrl = baseUrl.replace(/\/+$/, '');
 
   return {
     metadataBase: new URL(baseUrl),
@@ -178,9 +191,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const baseUrl = getBaseUrl();
-
   // JSON-LD Structured Data for the app
+  // Uses SITE_URL as fallback; dynamic config is loaded client-side
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : SITE_URL;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
