@@ -26,6 +26,7 @@ import FloatingWhatsApp from '@/components/landing/FloatingWhatsApp';
 import LanguageToggle from '@/components/landing/LanguageToggle';
 import ThemeToggle from '@/components/landing/ThemeToggle';
 import MarqueeGallery from '@/components/landing/MarqueeGallery';
+import { WHATSAPP_LINK, APP_LINKS, TV_APP_CODE, ACTIVE_SOCIAL_LINKS } from '@/lib/config';
 
 /* ========== CSS-based fade-in on scroll (IntersectionObserver) ========== */
 function useScrollReveal() {
@@ -454,7 +455,7 @@ function LandingContent() {
                 {t('navDownload')}
               </a>
               <a
-                href="https://wa.me/212602251813"
+                href={WHATSAPP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm flex items-center gap-1"
@@ -518,7 +519,7 @@ function LandingContent() {
                 {t('navDownload')}
               </a>
               <a
-                href="https://wa.me/212602251813"
+                href={WHATSAPP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
@@ -618,7 +619,7 @@ function LandingContent() {
             style={{ animationDelay: '0.5s' }}
           >
             <a
-              href="https://play.google.com/store/apps/details?id=com.ktvplayer.ktv"
+              href={APP_LINKS.android}
               target="_blank"
               rel="noopener noreferrer"
               onClick={triggerConfetti}
@@ -628,7 +629,7 @@ function LandingContent() {
               {t('heroCta')}
             </a>
             <a
-              href="https://wa.me/212602251813"
+              href={WHATSAPP_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-surface hover:bg-ktv-surface-hover border border-ktv-border hover:border-ktv-gold/50 text-ktv-text font-bold text-base sm:text-lg transition-all duration-300 hover:scale-105 neon-pulse"
@@ -1195,7 +1196,7 @@ function LandingContent() {
                 <p className="text-ktv-text-weak text-xs sm:text-sm mb-4">{lang === 'ar' ? 'لأجهزة أندرويد 5.0+' : 'For Android 5.0+'}</p>
 
                 <a
-                  href="https://play.google.com/store/apps/details?id=com.ktvplayer.ktv"
+                  href={APP_LINKS.android}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={triggerConfetti}
@@ -1268,7 +1269,7 @@ function LandingContent() {
 
                 <div className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-amber-500/10 text-amber-400 text-sm font-bold border border-amber-500/20 group-hover:bg-amber-500/20 group-hover:border-amber-500/40 transition-all duration-300">
                   <span className="text-ktv-text-muted text-xs">{t('tvAppCode')}:</span>
-                  <span className="font-mono tracking-wider">9562862</span>
+                  <span className="font-mono tracking-wider">{TV_APP_CODE}</span>
                 </div>
               </div>
             </div>
@@ -1281,7 +1282,7 @@ function LandingContent() {
                 📲 {t('heroContact')}
               </p>
               <a
-                href="https://wa.me/212602251813"
+                href={WHATSAPP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-base sm:text-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-[#25D366]/20 magnetic-btn"
@@ -1314,19 +1315,34 @@ function LandingContent() {
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <span className="text-ktv-text-ghost text-xs sm:text-sm">{t('footerFollowUs')}</span>
-              <a
-                href="https://www.tiktok.com/@ktv2026"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-ktv-surface hover:bg-ktv-surface-hover border border-ktv-border-faint hover:border-ktv-red/30 transition-all duration-300 text-sm text-ktv-text-secondary hover:text-ktv-text"
-              >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.78a8.22 8.22 0 004.76 1.51V6.84a4.85 4.85 0 01-1-.15z" />
-                </svg>
-                TikTok
-              </a>
+              {ACTIVE_SOCIAL_LINKS.map(({ platform, url }) => (
+                <a
+                  key={platform}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-ktv-surface hover:bg-ktv-surface-hover border border-ktv-border-faint hover:border-ktv-red/30 transition-all duration-300 text-sm text-ktv-text-secondary hover:text-ktv-text"
+                >
+                  {platform === 'tiktok' && (
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.78a8.22 8.22 0 004.76 1.51V6.84a4.85 4.85 0 01-1-.15z" />
+                    </svg>
+                  )}
+                  {platform === 'instagram' && (
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                    </svg>
+                  )}
+                  {platform === 'snapchat' && (
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12.166 3c.796 0 3.495.223 4.769 3.073.426.925.355 2.477.295 3.725l-.014.278c-.022.42-.04.788-.022 1.016.046.558.254.767.457.81.203.043.51-.06.886-.393a.75.75 0 01.998 1.12c-.563.5-1.177.84-1.794.84-.12 0-.238-.012-.355-.04-.5-.118-.853-.49-1.018-1.056a5.868 5.868 0 01-.133-1.078l-.004-.166c-.028-.668.01-1.348.024-1.933.05-2.09-.09-3.235-.354-3.81C15.083 4.54 13.156 4.5 12.166 4.5h-.332c-.99 0-2.917.04-3.86 2.006-.263.575-.405 1.72-.354 3.81.013.585.052 1.265.024 1.933l-.004.166a5.868 5.868 0 01-.133 1.078c-.165.566-.518.938-1.018 1.055a1.592 1.592 0 01-.355.041c-.617 0-1.231-.34-1.794-.84a.75.75 0 01.998-1.12c.376.333.683.437.886.394.203-.044.411-.253.457-.81.018-.23 0-.597-.022-1.017l-.014-.278c-.06-1.248-.131-2.8.295-3.725C8.663 3.223 11.362 3 12.158 3h.008zM5.907 15.25c.38.358.516.87.349 1.336-.298.833-1.26 1.36-2.138 1.648a.75.75 0 01-.496-1.415c.406-.142.768-.338.992-.527-.316-.14-.676-.347-.898-.654a.75.75 0 011.224-.868c.166.234.536.42.875.518a1.3 1.3 0 00.092-.038zM18.093 15.25c.031.015.062.027.092.038.339-.098.709-.284.875-.518a.75.75 0 011.224.868c-.222.307-.582.514-.898.654.224.19.586.385.992.527a.75.75 0 01-.496 1.415c-.878-.288-1.84-.815-2.138-1.648-.167-.467-.031-.978.349-1.336zM12 18.5c.895 0 1.576.267 2.06.566.244.15.44.32.58.498.123.156.243.37.243.604 0 .207-.085.547-.373.835-.27.27-.734.558-1.47.778A8.303 8.303 0 0112 22.25a8.303 8.303 0 01-1.04-.169c-.736-.22-1.2-.508-1.47-.778-.288-.288-.373-.628-.373-.835 0-.233.12-.448.244-.604.14-.178.335-.347.579-.498.484-.3 1.165-.566 2.06-.566z"/>
+                    </svg>
+                  )}
+                  {t(`footer${platform.charAt(0).toUpperCase() + platform.slice(1)}` as any)}
+                </a>
+              ))}
             </div>
           </div>
         </div>

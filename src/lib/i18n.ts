@@ -47,6 +47,8 @@ export const translations = {
     footerRights: 'جميع الحقوق محفوظة',
     footerFollowUs: 'تابعنا على',
     footerTiktok: 'تيك توك',
+    footerInstagram: 'انستجرام',
+    footerSnapchat: 'سناب شات',
 
     // Language
     switchLang: 'English',
@@ -142,6 +144,8 @@ export const translations = {
     footerRights: 'All Rights Reserved',
     footerFollowUs: 'Follow us on',
     footerTiktok: 'TikTok',
+    footerInstagram: 'Instagram',
+    footerSnapchat: 'Snapchat',
 
     // Language
     switchLang: 'العربية',

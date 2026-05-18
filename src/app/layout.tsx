@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { WHATSAPP_LINK, APP_LINKS, SITE_URL, SOCIAL_LINKS } from "@/lib/config";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,7 +13,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const SITE_URL = "https://ktvplayer.com";
+// SITE_URL is now imported from @/lib/config
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -187,7 +188,7 @@ export default function RootLayout({
           bestRating: "5",
           worstRating: "1",
         },
-        installUrl: "https://play.google.com/store/apps/details?id=com.ktvplayer.ktv",
+        installUrl: APP_LINKS.android,
         screenshot: `${SITE_URL}/og-image.png`,
       },
       {
@@ -196,7 +197,7 @@ export default function RootLayout({
         url: SITE_URL,
         potentialAction: {
           "@type": "DownloadAction",
-          target: "https://play.google.com/store/apps/details?id=com.ktvplayer.ktv",
+          target: APP_LINKS.android,
         },
       },
       {
@@ -205,13 +206,13 @@ export default function RootLayout({
         url: SITE_URL,
         logo: `${SITE_URL}/ktv-logo.webp`,
         sameAs: [
-          "https://www.tiktok.com/@ktv2026",
-          "https://wa.me/212602251813",
+          ...Object.values(SOCIAL_LINKS).filter(url => url !== ''),
+          WHATSAPP_LINK,
         ],
         contactPoint: {
           "@type": "ContactPoint",
           contactType: "customer support",
-          url: "https://wa.me/212602251813",
+          url: WHATSAPP_LINK,
         },
       },
     ],
