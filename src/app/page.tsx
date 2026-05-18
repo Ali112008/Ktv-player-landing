@@ -17,7 +17,7 @@ import FloatingWhatsApp from '@/components/landing/FloatingWhatsApp';
 import LanguageToggle from '@/components/landing/LanguageToggle';
 import ThemeToggle from '@/components/landing/ThemeToggle';
 import MarqueeGallery from '@/components/landing/MarqueeGallery';
-import { WHATSAPP_LINK, APP_LINKS, TV_APP_CODE, ACTIVE_SOCIAL_LINKS } from '@/lib/config';
+import { DynamicConfigProvider, useDynamicConfig } from '@/lib/DynamicConfigProvider';
 
 /* ========== CSS-based fade-in on scroll (IntersectionObserver) ========== */
 function useScrollReveal() {
@@ -135,6 +135,11 @@ function triggerConfetti(e: React.MouseEvent) {
 
 function LandingContent() {
   const { t, isRTL, lang } = useLanguage();
+  const dynamicConfig = useDynamicConfig();
+  const WHATSAPP_LINK = dynamicConfig.whatsappLink;
+  const APP_LINKS = dynamicConfig.appLinks;
+  const TV_APP_CODE = dynamicConfig.tvAppCode;
+  const ACTIVE_SOCIAL_LINKS = dynamicConfig.activeSocialLinks;
 
   // ========== Scroll reveal refs ==========
   const { isDark } = useTheme();
@@ -688,7 +693,7 @@ function LandingContent() {
                 <p className="text-ktv-text-weak text-xs sm:text-sm mb-4">{lang === 'ar' ? 'لأجهزة iPhone و iPad' : 'For iPhone & iPad'}</p>
 
                 <a
-                  href="https://apps.apple.com/us/app/ktv-player/id6764389973?l=ar"
+                  href={APP_LINKS.ios}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={triggerConfetti}
@@ -1011,7 +1016,9 @@ export default function Home() {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        <LandingContent />
+        <DynamicConfigProvider>
+          <LandingContent />
+        </DynamicConfigProvider>
       </LanguageProvider>
     </ThemeProvider>
   );

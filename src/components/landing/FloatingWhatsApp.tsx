@@ -2,10 +2,11 @@
 
 import { useLanguage } from '@/hooks/useLanguage';
 import { MessageCircle } from 'lucide-react';
-import { WHATSAPP_LINK } from '@/lib/config';
+import { useDynamicConfig } from '@/lib/DynamicConfigProvider';
 
 export default function FloatingWhatsApp() {
   const { t } = useLanguage();
+  const { whatsappLink: WHATSAPP_LINK } = useDynamicConfig();
 
   return (
     <div className="fixed bottom-6 right-6 z-50 rtl:right-auto rtl:left-6 animate-fade-in-up" style={{ animationDelay: '1s' }}>
