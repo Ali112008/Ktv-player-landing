@@ -2,12 +2,6 @@
 
 import { useRef, useState, useCallback, useEffect } from 'react';
 import {
-  Tv,
-  Film,
-  Drama,
-  Sparkles,
-  Zap,
-  Diamond,
   ChevronDown,
   MessageCircle,
   ExternalLink,
@@ -16,12 +10,9 @@ import {
   Menu,
   X,
   Star,
-  Download,
-  UserPlus,
-  MonitorPlay,
 } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/hooks/useLanguage';
-import { ThemeProvider } from '@/hooks/useTheme';
+import { ThemeProvider, useTheme } from '@/hooks/useTheme';
 import FloatingWhatsApp from '@/components/landing/FloatingWhatsApp';
 import LanguageToggle from '@/components/landing/LanguageToggle';
 import ThemeToggle from '@/components/landing/ThemeToggle';
@@ -66,54 +57,6 @@ function useCardSpotlight() {
     return () => el.removeEventListener('mousemove', handleMove);
   }, []);
   return ref;
-}
-
-/* ========== Animated Counter Component ========== */
-function AnimatedCounter({ target, suffix, duration = 2000 }: { target: number; suffix: string; duration?: number }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [count, setCount] = useState(0);
-  const hasAnimated = useRef(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated.current) {
-          hasAnimated.current = true;
-          const startTime = Date.now();
-          const step = () => {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            setCount(Math.floor(eased * target));
-            if (progress < 1) {
-              requestAnimationFrame(step);
-            } else {
-              setCount(target);
-              if (el) el.classList.add('count-glow-active');
-              setTimeout(() => {
-                if (el) el.classList.remove('count-glow-active');
-              }, 600);
-            }
-          };
-          requestAnimationFrame(step);
-        }
-      },
-      { threshold: 0.3 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [target, duration]);
-
-  const formatNumber = () => {
-    if (suffix === 'K+') {
-      return count >= 10000 ? `${Math.round(count / 1000)}K+` : `${count}+`;
-    }
-    return `${count}${suffix}`;
-  };
-
-  return <span ref={ref}>{formatNumber()}</span>;
 }
 
 /* ========== Typing Text Hook ========== */
@@ -194,18 +137,16 @@ function LandingContent() {
   const { t, isRTL, lang } = useLanguage();
 
   // ========== Scroll reveal refs ==========
+  const { isDark } = useTheme();
+
   const revealHero = useScrollReveal();
-  const revealShowcase = useScrollReveal();
-  const revealHowItWorks = useScrollReveal();
-  const revealFeatures = useScrollReveal();
   const revealGallery = useScrollReveal();
-  const revealTestimonials = useScrollReveal();
   const revealDownload = useScrollReveal();
-  const revealFaq = useScrollReveal();
   const revealComparison = useScrollReveal();
+  const revealTestimonials = useScrollReveal();
+  const revealFaq = useScrollReveal();
 
   // ========== Card spotlight refs ==========
-  const spotlightFeatures = useCardSpotlight();
   const spotlightTestimonials = useCardSpotlight();
 
   // ========== Mobile menu state ==========
@@ -253,51 +194,6 @@ function LandingContent() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  const features = [
-    {
-      icon: Tv,
-      title: t('feature1Title'),
-      desc: t('feature1Desc'),
-      color: 'from-red-500 to-red-700',
-      emoji: '📺',
-    },
-    {
-      icon: Film,
-      title: t('feature2Title'),
-      desc: t('feature2Desc'),
-      color: 'from-amber-500 to-amber-700',
-      emoji: '🎬',
-    },
-    {
-      icon: Drama,
-      title: t('feature3Title'),
-      desc: t('feature3Desc'),
-      color: 'from-purple-500 to-purple-700',
-      emoji: '🎭',
-    },
-    {
-      icon: Sparkles,
-      title: t('feature4Title'),
-      desc: t('feature4Desc'),
-      color: 'from-cyan-500 to-cyan-700',
-      emoji: '✨',
-    },
-    {
-      icon: Zap,
-      title: t('feature5Title'),
-      desc: t('feature5Desc'),
-      color: 'from-yellow-500 to-yellow-700',
-      emoji: '⚡',
-    },
-    {
-      icon: Diamond,
-      title: t('feature6Title'),
-      desc: t('feature6Desc'),
-      color: 'from-rose-500 to-rose-700',
-      emoji: '💎',
-    },
-  ];
-
   const testimonials = [
     {
       name: 'Ahmed',
@@ -341,33 +237,6 @@ function LandingContent() {
     },
   ];
 
-  const howItWorksSteps = [
-    {
-      step: 1,
-      icon: Download,
-      title: lang === 'ar' ? 'حمّل التطبيق' : 'Download the App',
-      desc: lang === 'ar' ? 'حمّل KTV Player من Google Play أو App Store في ثواني' : 'Download KTV Player from Google Play or App Store in seconds',
-      color: 'from-green-500 to-emerald-600',
-      emoji: '📲',
-    },
-    {
-      step: 2,
-      icon: UserPlus,
-      title: lang === 'ar' ? 'سجّل حسابك' : 'Create Your Account',
-      desc: lang === 'ar' ? 'أنشئ حسابك بسهولة وابدأ تجربتك المجانية' : 'Create your account easily and start your free trial',
-      color: 'from-blue-500 to-indigo-600',
-      emoji: '👤',
-    },
-    {
-      step: 3,
-      icon: MonitorPlay,
-      title: lang === 'ar' ? 'استمتع بالمشاهدة' : 'Enjoy Watching',
-      desc: lang === 'ar' ? 'استمتع بآلاف الأفلام والمسلسلات والقنوات المباشرة' : 'Enjoy thousands of movies, series, and live channels',
-      color: 'from-ktv-red to-rose-600',
-      emoji: '🎬',
-    },
-  ];
-
   const faqItems = [
     { q: t('faqQ2'), a: t('faqA2') },
     { q: t('faqQ3'), a: t('faqA3') },
@@ -382,7 +251,6 @@ function LandingContent() {
     { feature: t('comp4k'), ktv: '✅', cable: '❌', other: '❌' },
     { feature: t('compNoBuffer'), ktv: '✅', cable: '❌', other: '⚠️' },
     { feature: t('compMultiDevice'), ktv: '✅', cable: '❌', other: '❌' },
-    { feature: t('compFreeTrial'), ktv: '✅', cable: '❌', other: '⚠️' },
   ];
 
   // Close mobile menu and smooth scroll to section
@@ -441,8 +309,8 @@ function LandingContent() {
             {/* Nav Links - Hidden on mobile */}
             <div className="hidden md:flex items-center gap-8">
               <a
-                href="#features"
-                onClick={(e) => handleDesktopNavClick(e, 'features')}
+                href="#gallery"
+                onClick={(e) => handleDesktopNavClick(e, 'gallery')}
                 className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm cursor-pointer"
               >
                 {t('navFeatures')}
@@ -505,8 +373,8 @@ function LandingContent() {
           <div className="bg-ktv-bg-dark/95 backdrop-blur-xl border-b border-ktv-border-faint">
             <div className="px-4 py-4 flex flex-col gap-3">
               <a
-                href="#features"
-                onClick={(e) => handleNavClick(e, 'features')}
+                href="#gallery"
+                onClick={(e) => handleNavClick(e, 'gallery')}
                 className="text-ktv-text-secondary hover:text-ktv-text transition-colors text-sm py-2 cursor-pointer"
               >
                 {t('navFeatures')}
@@ -546,12 +414,20 @@ function LandingContent() {
         {/* Aurora Borealis Effect */}
         <div className="aurora-bg z-[0]" />
 
+        {/* Hero Background Image */}
+        <img
+          src={isDark ? '/hero-bg-dark.png' : '/hero-bg-light.jpg'}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover z-[0] hero-bg-image"
+          aria-hidden="true"
+        />
+
         {/* Glowing Orbs */}
         <div className="glow-orb glow-orb-1" style={{ top: '15%', left: '10%' }} />
         <div className="glow-orb glow-orb-2" style={{ top: '60%', right: '5%' }} />
 
         {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-ktv-bg-dark/50 to-ktv-bg-dark z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-ktv-bg-dark/60 to-ktv-bg-dark z-[1]" />
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-ktv-red/5 via-transparent to-ktv-gold/5 z-[1]" />
 
         {/* Decorative blurred circles */}
@@ -596,11 +472,13 @@ function LandingContent() {
 
           {/* Subtitle with Typing Effect */}
           <p
-            className="text-base sm:text-lg md:text-xl text-ktv-text-secondary max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed animate-fade-in-up"
+            className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed animate-fade-in-up"
             style={{ animationDelay: '0.3s' }}
           >
-            <span ref={typingRef} className="typing-text">{typedSubtitle}</span>
-            <span className={`typing-cursor-blink ${typingDone ? 'cursor-fade' : ''}`} />
+            <span className="hero-subtitle-bg">
+              <span ref={typingRef} className="typing-text">{typedSubtitle}</span>
+              <span className={`typing-cursor-blink ${typingDone ? 'cursor-fade' : ''}`} />
+            </span>
           </p>
 
           {/* Urgency Badge */}
@@ -632,7 +510,7 @@ function LandingContent() {
               href={WHATSAPP_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-surface hover:bg-ktv-surface-hover border border-ktv-border hover:border-ktv-gold/50 text-ktv-text font-bold text-base sm:text-lg transition-all duration-300 hover:scale-105 neon-pulse"
+              className="hero-whatsapp-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl bg-ktv-surface hover:bg-ktv-surface-hover border border-ktv-border hover:border-ktv-gold/50 text-ktv-text font-bold text-base sm:text-lg transition-all duration-300 hover:scale-105 neon-pulse"
             >
               <MessageCircle className="w-5 h-5 text-[#25D366]" />
               {t('heroContact')}
@@ -675,168 +553,8 @@ function LandingContent() {
         </div>
       </section>
 
-      {/* ==================== TESTIMONIALS SECTION ==================== */}
-      <section ref={revealTestimonials} id="testimonials" className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-reveal">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent diagonal-reveal" />
-        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
-
-        <div ref={spotlightTestimonials} className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 card-spotlight">
-          {/* Section Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20 badge-premium">
-              ⭐ {t('testimonialsTitle')}
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-              {lang === 'ar' ? (
-                <>
-                  ماذا يقول{' '}
-                  <span className="gradient-text-red glow-highlight">عملاؤنا</span>
-                </>
-              ) : (
-                <>
-                  What Our{' '}
-                  <span className="gradient-text-red glow-highlight">Customers</span>{' '}
-                  Say
-                </>
-              )}
-            </h2>
-            <p className="text-ktv-text-muted text-base sm:text-lg max-w-2xl mx-auto">
-              {t('testimonialsSubtitle')}
-            </p>
-          </div>
-
-          {/* Testimonial Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="group relative glass-card rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/20 p-6 sm:p-7 transition-all duration-300 animated-border-glow dl-card-shine stagger-child hover-lift"
-                style={{ animationDelay: `${index * 0.08}s` }}
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-11 h-11 rounded-full overflow-hidden shrink-0 ring-2 ring-ktv-border-subtle group-hover:ring-ktv-red/30 transition-all duration-300">
-                    <img
-                      src={testimonial.avatar}
-                      alt={testimonial.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <div className="font-bold text-sm sm:text-base text-ktv-text flex items-center gap-1.5">
-                      {testimonial.name}
-                      <span className="text-base">{testimonial.country}</span>
-                    </div>
-                    <div className="flex items-center gap-0.5 mt-0.5">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <p className="text-ktv-text-dim text-sm sm:text-base leading-relaxed">
-                  &ldquo;{lang === 'ar' ? testimonial.reviewAr : testimonial.reviewEn}&rdquo;
-                </p>
-
-                <div className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-ktv-red to-ktv-gold transition-all duration-500" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ==================== SHOWCASE SECTION ==================== */}
-      <section ref={revealShowcase} className="relative py-16 sm:py-20 overflow-hidden scroll-reveal hex-pattern">
-        <div className="absolute inset-0 bg-gradient-to-r from-ktv-red/5 via-ktv-bg-dark to-ktv-gold/5" />
-
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
-            {/* Left - Real App Screenshots in Phone Frames */}
-            <div className="flex-1 w-full slide-in-left">
-              <div className="relative flex items-center justify-center gap-3 sm:gap-4">
-                <div className="relative w-[42%] float-phone-1 hover:rotate-0 hover:scale-105 transition-transform duration-500">
-                  <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/20">
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
-                    <img
-                      src="/screen-movie-detail.webp"
-                      alt={lang === 'ar' ? 'تفاصيل الفيلم في KTV Player' : 'Movie Details in KTV Player'}
-                      className="w-full h-auto object-cover"
-                    />
-                  </div>
-                </div>
-
-                <div className="relative w-[46%] z-10 float-phone-2 hover:scale-105 transition-transform duration-500">
-                  <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/30">
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
-                    <img
-                      src="/screen-series.webp"
-                      alt={lang === 'ar' ? 'مسلسلات TV في KTV Player' : 'TV Series in KTV Player'}
-                      className="w-full h-auto object-cover"
-                    />
-                  </div>
-                  <div className="absolute -inset-4 bg-ktv-red/10 rounded-3xl blur-xl -z-10" />
-                </div>
-
-                <div className="relative w-[42%] hidden sm:block float-phone-3 hover:rotate-0 hover:scale-105 transition-transform duration-500">
-                  <div className="relative w-full rounded-[1.5rem] border-2 border-ktv-border-light bg-black overflow-hidden shadow-2xl shadow-ktv-red/20">
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 bg-black rounded-b-xl z-10" />
-                    <img
-                      src="/screen-series-list.webp"
-                      alt={lang === 'ar' ? 'قائمة المسلسلات في KTV Player' : 'Series List in KTV Player'}
-                      className="w-full h-auto object-cover"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right - Content */}
-            <div className="flex-1 text-center md:text-start slide-in-right">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">
-                {lang === 'ar' ? (
-                  <>
-                    كل الترفيه{' '}
-                    <span className="gradient-text glow-highlight">في مكان واحد</span>
-                  </>
-                ) : (
-                  <>
-                    All Entertainment{' '}
-                    <span className="gradient-text glow-highlight">in One Place</span>
-                  </>
-                )}
-              </h2>
-              <p className="text-ktv-text-muted text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed">
-                {lang === 'ar'
-                  ? 'مع KTV Player، لن تحتاج لتطبيقات متعددة. كل ما تبحث عنه من ترفيه موجود في تطبيق واحد بتصميم أنيق وسهل الاستخدام. قنوات مباشرة، أفلام، مسلسلات، والمزيد.'
-                  : 'With KTV Player, you won\'t need multiple apps. Everything you\'re looking for in entertainment is available in one app with an elegant, easy-to-use design. Live channels, movies, series, and more.'}
-              </p>
-
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-3 sm:gap-4">
-                {[
-                  { target: 500, suffix: '+', label: lang === 'ar' ? 'قناة مباشرة' : 'Live Channels' },
-                  { target: 10000, suffix: 'K+', label: lang === 'ar' ? 'فيلم ومسلسل' : 'Movies & Series' },
-                  { target: 4, suffix: 'K', label: lang === 'ar' ? 'جودة عالية' : 'HD Quality' },
-                ].map((stat, i) => (
-                  <div
-                    key={i}
-                    className="text-center md:text-start p-3 sm:p-4 rounded-xl bg-ktv-surface border border-ktv-border-faint stagger-child stat-glow hover-lift"
-                    style={{ animationDelay: `${i * 0.1}s` }}
-                  >
-                    <div className="text-xl sm:text-2xl font-black text-ktv-red">
-                      <AnimatedCounter target={stat.target} suffix={stat.suffix} />
-                    </div>
-                    <div className="text-xs sm:text-sm text-ktv-text-muted">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ==================== APP GALLERY SECTION ==================== */}
-      <section ref={revealGallery} className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-reveal">
+      <section ref={revealGallery} id="gallery" className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-reveal">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark grid-pattern" />
 
@@ -865,268 +583,6 @@ function LandingContent() {
 
           {/* Marquee Gallery */}
           <MarqueeGallery lang={lang} isRTL={isRTL} />
-        </div>
-      </section>
-
-      {/* ==================== FEATURES SECTION ==================== */}
-      <section ref={revealFeatures} id="features" className="relative py-16 sm:py-20 md:py-28 scroll-reveal">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent diagonal-reveal" />
-        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/30 to-ktv-bg-dark hex-pattern" />
-
-        <div ref={spotlightFeatures} className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 card-spotlight">
-          {/* Section Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20 badge-premium">
-              {t('featuresTitle')}
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-              {lang === 'ar' ? (
-                <>
-                  تجربة مشاهدة{' '}
-                  <span className="gradient-text-red glow-highlight">استثنائية</span> تجمع بين
-                  كل ما تحب
-                </>
-              ) : (
-                <>
-                  An{' '}
-                  <span className="gradient-text-red glow-highlight">Exceptional</span>{' '}
-                  Viewing Experience
-                </>
-              )}
-            </h2>
-            <p className="text-ktv-text-muted text-base sm:text-lg max-w-2xl mx-auto">
-              {t('featuresSubtitle')}
-            </p>
-          </div>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center animated-border-glow dl-card-shine stagger-child tilt-card icon-bounce-hover hover-lift"
-                style={{ animationDelay: `${index * 0.08}s` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                <div className="relative flex flex-col items-center">
-                  <div
-                    className={`relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${feature.color} shadow-lg mb-4 transition-transform duration-300 group-hover:scale-110 icon-target`}
-                  >
-                    <span className="text-2xl sm:text-3xl">{feature.emoji}</span>
-                  </div>
-
-                  <h3 className="text-base sm:text-lg font-bold mb-2 group-hover:text-ktv-red transition-colors duration-300">
-                    {feature.title}
-                  </h3>
-                  <p className="text-ktv-text-dim text-xs sm:text-sm leading-relaxed">
-                    {feature.desc}
-                  </p>
-                </div>
-
-                <div className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-ktv-red to-ktv-gold transition-all duration-500" />
-              </div>
-            ))}
-          </div>
-
-          {/* Features CTA */}
-          <div className="mt-8 sm:mt-10 text-center stagger-child" style={{ animationDelay: '0.5s' }}>
-            <a
-              href="#download"
-              className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-ktv-red hover:bg-ktv-red-light text-white font-bold text-sm sm:text-base transition-all duration-300 red-glow-sm hover:scale-105 magnetic-btn"
-            >
-              {lang === 'ar' ? 'جربها بنفسك الآن' : 'Try It Yourself Now'}
-              <ChevronDown className="w-4 h-4 rotate-[-90deg] rtl:rotate-90 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform" />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ==================== HOW IT WORKS SECTION ==================== */}
-      <section ref={revealHowItWorks} className="relative py-16 sm:py-20 md:py-24 scroll-reveal grid-pattern">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/30 to-transparent diagonal-reveal" />
-        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
-
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20 badge-premium">
-              {lang === 'ar' ? 'كيف يعمل' : 'How It Works'}
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-              {lang === 'ar' ? (
-                <>
-                  ابدأ في{' '}
-                  <span className="gradient-text-red glow-highlight">ثلاث خطوات</span>{' '}
-                  بسيطة
-                </>
-              ) : (
-                <>
-                  Get Started in{' '}
-                  <span className="gradient-text-red glow-highlight">3 Simple</span>{' '}
-                  Steps
-                </>
-              )}
-            </h2>
-            <p className="text-ktv-text-muted text-base sm:text-lg max-w-2xl mx-auto">
-              {lang === 'ar'
-                ? 'تجربة KTV Player سهلة وسريعة. حمّل التطبيق وابدأ المشاهدة فوراً'
-                : 'Getting started with KTV Player is quick and easy. Download the app and start watching instantly'}
-            </p>
-          </div>
-
-          {/* Steps Grid */}
-          <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-            <div className="hidden lg:block absolute top-1/2 left-[16.67%] right-[16.67%] h-[2px] -translate-y-1/2 border-t-2 border-dashed border-ktv-border-subtle z-0" />
-
-            {howItWorksSteps.map((step, index) => (
-              <div
-                key={index}
-                className="relative z-10 stagger-child"
-                style={{ animationDelay: `${index * 0.15}s` }}
-              >
-                <div className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center animated-border-glow dl-card-shine tilt-card icon-bounce-hover card-spotlight hover-lift">
-                  <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                  <div className="relative flex flex-col items-center">
-                    <div className="absolute -top-1 -right-1 rtl:-left-1 rtl:right-auto w-7 h-7 rounded-full bg-ktv-red text-white text-xs font-black flex items-center justify-center shadow-lg">
-                      {step.step}
-                    </div>
-
-                    <div
-                      className={`relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${step.color} shadow-lg mb-4 transition-transform duration-300 group-hover:scale-110 icon-target`}
-                    >
-                      <step.icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                    </div>
-
-                    <h3 className="text-base sm:text-lg font-bold mb-2 group-hover:text-ktv-red transition-colors duration-300">
-                      {step.title}
-                    </h3>
-                    <p className="text-ktv-text-dim text-xs sm:text-sm leading-relaxed">
-                      {step.desc}
-                    </p>
-                  </div>
-
-                  <div className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-ktv-red to-ktv-gold transition-all duration-500" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ==================== FAQ ACCORDION SECTION ==================== */}
-      <section ref={revealFaq} className="relative py-16 sm:py-20 md:py-24 scroll-reveal">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent diagonal-reveal" />
-        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/10 to-ktv-bg-dark" />
-
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20 badge-premium">
-              ❓ {t('faqTitle')}
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-              {lang === 'ar' ? (
-                <>
-                  <span className="gradient-text-red glow-highlight">أسئلة شائعة</span>
-                </>
-              ) : (
-                <>
-                  <span className="gradient-text-red glow-highlight">Frequently Asked</span>{' '}
-                  Questions
-                </>
-              )}
-            </h2>
-          </div>
-
-          {/* FAQ Items */}
-          <div className="flex flex-col gap-3">
-            {faqItems.map((item, index) => (
-              <div
-                key={index}
-                className={`faq-item animated-border-glow ${openFaq === index ? 'faq-open' : ''}`}
-              >
-                <button
-                  className="w-full flex items-center justify-between gap-3 p-4 sm:p-5 text-left rtl:text-right cursor-pointer"
-                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  aria-expanded={openFaq === index}
-                >
-                  <span className="text-sm sm:text-base font-semibold text-ktv-text-strong">
-                    {item.q}
-                  </span>
-                  <ChevronDown className="w-5 h-5 text-ktv-text-muted faq-chevron" />
-                </button>
-                <div className="faq-answer">
-                  <p className="text-ktv-text-dim text-sm sm:text-base leading-relaxed">
-                    {item.a}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ==================== COMPARISON TABLE SECTION ==================== */}
-      <section ref={revealComparison} className="relative py-16 sm:py-20 md:py-24 scroll-reveal grid-pattern">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-gold/30 to-transparent diagonal-reveal" />
-        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/10 to-ktv-bg-dark" />
-
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-gold/10 text-ktv-gold text-xs sm:text-sm font-semibold mb-4 border border-ktv-gold/20 badge-premium">
-              ⚡ {t('comparisonTitle')}
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-              {lang === 'ar' ? (
-                <>
-                  <span className="gradient-text-red glow-highlight">قارن بين</span>{' '}
-                  الخيارات
-                </>
-              ) : (
-                <>
-                  <span className="gradient-text-red glow-highlight">Compare</span>{' '}
-                  Options
-                </>
-              )}
-            </h2>
-            <p className="text-ktv-text-muted text-base sm:text-lg max-w-xl mx-auto">
-              {t('comparisonSubtitle')}
-            </p>
-          </div>
-
-          {/* Comparison Table */}
-          <div className="comparison-wrapper animated-border-glow stagger-child">
-            <table className="comparison-table">
-              <thead>
-                <tr>
-                  <th className="text-ktv-text-secondary">{t('comparisonFeature')}</th>
-                  <th className="comparison-highlight">
-                    <div className="flex flex-col items-center gap-1">
-                      <span className="text-ktv-red">{t('comparisonKtv')}</span>
-                      <span className="inline-block px-2 py-0.5 rounded-full bg-ktv-red/20 text-ktv-red text-[10px] font-bold uppercase tracking-wider">
-                        {t('comparisonBest')}
-                      </span>
-                    </div>
-                  </th>
-                  <th className="text-ktv-text-secondary">{t('comparisonCable')}</th>
-                  <th className="text-ktv-text-secondary">{t('comparisonOther')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {comparisonRows.map((row, index) => (
-                  <tr key={index}>
-                    <td className="text-ktv-text-medium text-xs sm:text-sm">{row.feature}</td>
-                    <td className="comparison-highlight text-lg">{row.ktv}</td>
-                    <td className="text-lg">{row.cable}</td>
-                    <td className="text-lg">{row.other}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </div>
       </section>
 
@@ -1160,10 +616,6 @@ function LandingContent() {
             </h2>
             <p className="text-ktv-text-muted text-base sm:text-lg">
               {t('downloadSubtitle')}
-            </p>
-            {/* Urgency Text */}
-            <p className="mt-3 text-ktv-gold text-sm sm:text-base font-semibold">
-              {lang === 'ar' ? '⏰ عرض محدود - اشترك الآن واحصل على شهر مجاني!' : '⏰ Limited Offer - Subscribe now and get 1 month free!'}
             </p>
           </div>
 
@@ -1291,6 +743,191 @@ function LandingContent() {
                 WhatsApp
               </a>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== COMPARISON TABLE SECTION ==================== */}
+      <section ref={revealComparison} className="relative py-16 sm:py-20 md:py-24 scroll-reveal grid-pattern">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-gold/30 to-transparent diagonal-reveal" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/10 to-ktv-bg-dark" />
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center mb-12 sm:mb-16">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-gold/10 text-ktv-gold text-xs sm:text-sm font-semibold mb-4 border border-ktv-gold/20 badge-premium">
+              ⚡ {t('comparisonTitle')}
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+              {lang === 'ar' ? (
+                <>
+                  <span className="gradient-text-red glow-highlight">قارن بين</span>{' '}
+                  الخيارات
+                </>
+              ) : (
+                <>
+                  <span className="gradient-text-red glow-highlight">Compare</span>{' '}
+                  Options
+                </>
+              )}
+            </h2>
+            <p className="text-ktv-text-muted text-base sm:text-lg max-w-xl mx-auto">
+              {t('comparisonSubtitle')}
+            </p>
+          </div>
+
+          {/* Comparison Table */}
+          <div className="comparison-wrapper animated-border-glow stagger-child">
+            <table className="comparison-table">
+              <thead>
+                <tr>
+                  <th className="text-ktv-text-secondary">{t('comparisonFeature')}</th>
+                  <th className="comparison-highlight">
+                    <div className="flex flex-col items-center gap-1">
+                      <span className="text-ktv-red">{t('comparisonKtv')}</span>
+                      <span className="inline-block px-2 py-0.5 rounded-full bg-ktv-red/20 text-ktv-red text-[10px] font-bold uppercase tracking-wider">
+                        {t('comparisonBest')}
+                      </span>
+                    </div>
+                  </th>
+                  <th className="text-ktv-text-secondary">{t('comparisonCable')}</th>
+                  <th className="text-ktv-text-secondary">{t('comparisonOther')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonRows.map((row, index) => (
+                  <tr key={index}>
+                    <td className="text-ktv-text-medium text-xs sm:text-sm">{row.feature}</td>
+                    <td className="comparison-highlight text-lg">{row.ktv}</td>
+                    <td className="text-lg">{row.cable}</td>
+                    <td className="text-lg">{row.other}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== TESTIMONIALS SECTION ==================== */}
+      <section ref={revealTestimonials} id="testimonials" className="relative py-16 sm:py-20 md:py-24 overflow-hidden scroll-reveal">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent diagonal-reveal" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/20 to-ktv-bg-dark" />
+
+        <div ref={spotlightTestimonials} className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 card-spotlight">
+          {/* Section Header */}
+          <div className="text-center mb-12 sm:mb-16">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20 badge-premium">
+              ⭐ {t('testimonialsTitle')}
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+              {lang === 'ar' ? (
+                <>
+                  ماذا يقول{' '}
+                  <span className="gradient-text-red glow-highlight">عملاؤنا</span>
+                </>
+              ) : (
+                <>
+                  What Our{' '}
+                  <span className="gradient-text-red glow-highlight">Customers</span>{' '}
+                  Say
+                </>
+              )}
+            </h2>
+            <p className="text-ktv-text-muted text-base sm:text-lg max-w-2xl mx-auto">
+              {t('testimonialsSubtitle')}
+            </p>
+          </div>
+
+          {/* Testimonial Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {testimonials.map((testimonial, index) => (
+              <div
+                key={index}
+                className="group relative glass-card rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/20 p-6 sm:p-7 transition-all duration-300 animated-border-glow dl-card-shine stagger-child hover-lift"
+                style={{ animationDelay: `${index * 0.08}s` }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-11 h-11 rounded-full overflow-hidden shrink-0 ring-2 ring-ktv-border-subtle group-hover:ring-ktv-red/30 transition-all duration-300">
+                    <img
+                      src={testimonial.avatar}
+                      alt={testimonial.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <div className="font-bold text-sm sm:text-base text-ktv-text flex items-center gap-1.5">
+                      {testimonial.name}
+                      <span className="text-base">{testimonial.country}</span>
+                    </div>
+                    <div className="flex items-center gap-0.5 mt-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-ktv-text-dim text-sm sm:text-base leading-relaxed">
+                  &ldquo;{lang === 'ar' ? testimonial.reviewAr : testimonial.reviewEn}&rdquo;
+                </p>
+
+                <div className="absolute bottom-0 left-0 rtl:left-auto rtl:right-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-ktv-red to-ktv-gold transition-all duration-500" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== FAQ ACCORDION SECTION ==================== */}
+      <section ref={revealFaq} className="relative py-16 sm:py-20 md:py-24 scroll-reveal">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-ktv-red/20 to-transparent diagonal-reveal" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ktv-bg-dark via-ktv-bg-card/10 to-ktv-bg-dark" />
+
+        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center mb-12 sm:mb-16">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-ktv-red/10 text-ktv-red text-xs sm:text-sm font-semibold mb-4 border border-ktv-red/20 badge-premium">
+              ❓ {t('faqTitle')}
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+              {lang === 'ar' ? (
+                <>
+                  <span className="gradient-text-red glow-highlight">أسئلة شائعة</span>
+                </>
+              ) : (
+                <>
+                  <span className="gradient-text-red glow-highlight">Frequently Asked</span>{' '}
+                  Questions
+                </>
+              )}
+            </h2>
+          </div>
+
+          {/* FAQ Items */}
+          <div className="flex flex-col gap-3">
+            {faqItems.map((item, index) => (
+              <div
+                key={index}
+                className={`faq-item animated-border-glow ${openFaq === index ? 'faq-open' : ''}`}
+              >
+                <button
+                  className="w-full flex items-center justify-between gap-3 p-4 sm:p-5 text-left rtl:text-right cursor-pointer"
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  aria-expanded={openFaq === index}
+                >
+                  <span className="text-sm sm:text-base font-semibold text-ktv-text-strong">
+                    {item.q}
+                  </span>
+                  <ChevronDown className="w-5 h-5 text-ktv-text-muted faq-chevron" />
+                </button>
+                <div className="faq-answer">
+                  <p className="text-ktv-text-dim text-sm sm:text-base leading-relaxed">
+                    {item.a}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
