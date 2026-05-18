@@ -13,141 +13,154 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// SITE_URL is now imported from @/lib/config
+// ─── Resolve the real base URL for OG images ──────────────
+// On Vercel, VERCEL_URL gives the actual deployment URL (e.g. ktv-player-landing.vercel.app)
+// Falls back to SITE_URL from config for local dev or custom domains
+function getBaseUrl(): string {
+  const vercelUrl = process.env.VERCEL_URL;
+  if (vercelUrl) {
+    return `https://${vercelUrl}`;
+  }
+  return SITE_URL;
+}
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+// ─── Dynamic metadata (so OG images use the real deployed URL) ──
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = getBaseUrl();
 
-  // ===== Title & Description =====
-  title: {
-    default: "KTV Player — عالم الترفيه بين يديك | Best IPTV Streaming App",
-    template: "%s | KTV Player",
-  },
-  description:
-    "KTV Player - أفضل تطبيق IPTV لمشاهدة القنوات المباشرة، أحدث الأفلام، والمسلسلات بجودة عالية بدون تقطيع. حمّل الآن لأندرويد، آيفون، والسمارت تيفي. Best IPTV app for live TV, movies & series in HD quality.",
-  keywords: [
-    // English
-    "KTV Player",
-    "IPTV",
-    "IPTV app",
-    "live TV",
-    "streaming app",
-    "watch movies online",
-    "TV series streaming",
-    "smart TV app",
-    "free streaming",
-    "live channels",
-    "4K streaming",
-    "Arabic TV",
-    "Arabic IPTV",
-    "Middle East TV",
-    // Arabic
-    "تطبيق مشاهدة",
-    "أفلام أونلاين",
-    "مسلسلات",
-    "قنوات مباشرة",
-    "بث مباشر",
-    "مشاهدة مجانية",
-    "تطبيق ترفيه",
-    "تيفي مباشر",
-    "أندرويد تيفي",
-    "سمارت تيفي",
-  ],
-  authors: [{ name: "KTV Player", url: SITE_URL }],
-  creator: "KTV Player",
-  publisher: "KTV Player",
-  category: "Entertainment",
+  return {
+    metadataBase: new URL(baseUrl),
 
-  // ===== Favicon & Icons =====
-  icons: {
-    icon: [
-      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
-      { url: "/ktv-logo.webp", type: "image/webp" },
-    ],
-    apple: [
-      { url: "/favicon-192.png", sizes: "192x192", type: "image/png" },
-    ],
-    shortcut: "/favicon-32.png",
-  },
-
-  // ===== Open Graph (Facebook, WhatsApp, LinkedIn, etc.) =====
-  openGraph: {
-    title: "KTV Player — عالم الترفيه بين يديك | Entertainment at Your Fingertips",
-    description:
-      "شاهد أفضل القنوات المباشرة، أحدث الأفلام، والمسلسلات بجودة عالية بدون تقطيع. حمّل KTV Player الآن مجاناً! Watch the best live channels, movies & series in HD quality.",
-    url: SITE_URL,
-    siteName: "KTV Player",
-    locale: "ar_SA",
-    localeAlternate: ["en_US"],
-    type: "website",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1344,
-        height: 768,
-        alt: "KTV Player — Best IPTV Streaming App for Live TV, Movies & Series",
-        type: "image/jpeg",
-      },
-    ],
-  },
-
-  // ===== Twitter / X Card =====
-  twitter: {
-    card: "summary_large_image",
-    site: "@ktvplayer",
-    title: "KTV Player — عالم الترفيه بين يديك",
-    description:
-      "شاهد أفضل القنوات المباشرة، أحدث الأفلام، والمسلسلات بجودة عالية. حمّل KTV Player الآن مجاناً!",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1344,
-        height: 768,
-        alt: "KTV Player — Best IPTV Streaming App",
-      },
-    ],
-  },
-
-  // ===== App Links (Mobile deep linking) =====
-  appLinks: {
-    android: {
-      package: "com.ktvplayer.ktv",
-      app_name: "KTV Player",
+    // ===== Title & Description =====
+    title: {
+      default: "KTV Player عالم الترفيه بين يديك | Best IPTV Streaming App",
+      template: "%s | KTV Player",
     },
-    ios: {
-      app_store_id: "6764389973",
-      app_name: "KTV Player",
-    },
-  },
+    description:
+      "KTV Player - أفضل تطبيق IPTV لمشاهدة القنوات المباشرة، أحدث الأفلام، والمسلسلات بجودة عالية بدون تقطيع. حمّل الآن لأندرويد، آيفون، والسمارت تيفي. Best IPTV app for live TV, movies & series in HD quality.",
+    keywords: [
+      // English
+      "KTV Player",
+      "IPTV",
+      "IPTV app",
+      "live TV",
+      "streaming app",
+      "watch movies online",
+      "TV series streaming",
+      "smart TV app",
+      "free streaming",
+      "live channels",
+      "4K streaming",
+      "Arabic TV",
+      "Arabic IPTV",
+      "Middle East TV",
+      // Arabic
+      "تطبيق مشاهدة",
+      "أفلام أونلاين",
+      "مسلسلات",
+      "قنوات مباشرة",
+      "بث مباشر",
+      "مشاهدة مجانية",
+      "تطبيق ترفيه",
+      "تيفي مباشر",
+      "أندرويد تيفي",
+      "سمارت تيفي",
+    ],
+    authors: [{ name: "KTV Player", url: baseUrl }],
+    creator: "KTV Player",
+    publisher: "KTV Player",
+    category: "Entertainment",
 
-  // ===== Robots & Crawling =====
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    // ===== Favicon & Icons =====
+    icons: {
+      icon: [
+        { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+        { url: "/ktv-logo.webp", type: "image/webp" },
+      ],
+      apple: [
+        { url: "/favicon-192.png", sizes: "192x192", type: "image/png" },
+      ],
+      shortcut: "/favicon-32.png",
+    },
+
+    // ===== Open Graph (Facebook, WhatsApp, LinkedIn, etc.) =====
+    openGraph: {
+      title: "KTV Player عالم الترفيه بين يديك | Entertainment at Your Fingertips",
+      description:
+        "شاهد أفضل القنوات المباشرة، أحدث الأفلام، والمسلسلات بجودة عالية بدون تقطيع. حمّل KTV Player الآن مجاناً! Watch the best live channels, movies & series in HD quality.",
+      url: baseUrl,
+      siteName: "KTV Player",
+      locale: "ar_SA",
+      localeAlternate: ["en_US"],
+      type: "website",
+      images: [
+        {
+          url: `${baseUrl}/og-image.jpg`,
+          width: 1344,
+          height: 768,
+          alt: "KTV Player Best IPTV Streaming App for Live TV, Movies & Series",
+          type: "image/jpeg",
+        },
+      ],
+    },
+
+    // ===== Twitter / X Card =====
+    twitter: {
+      card: "summary_large_image",
+      site: "@ktvplayer",
+      title: "KTV Player عالم الترفيه بين يديك",
+      description:
+        "شاهد أفضل القنوات المباشرة، أحدث الأفلام، والمسلسلات بجودة عالية. حمّل KTV Player الآن مجاناً!",
+      images: [
+        {
+          url: `${baseUrl}/og-image.jpg`,
+          width: 1344,
+          height: 768,
+          alt: "KTV Player Best IPTV Streaming App",
+        },
+      ],
+    },
+
+    // ===== App Links (Mobile deep linking) =====
+    appLinks: {
+      android: {
+        package: "com.ktvplayer.ktv",
+        app_name: "KTV Player",
+      },
+      ios: {
+        app_store_id: "6764389973",
+        app_name: "KTV Player",
+      },
+    },
+
+    // ===== Robots & Crawling =====
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
 
-  // ===== Alternates (Canonical + hreflang) =====
-  alternates: {
-    canonical: SITE_URL,
-    languages: {
-      "ar-SA": `${SITE_URL}/`,
-      "en-US": `${SITE_URL}/`,
+    // ===== Alternates (Canonical + hreflang) =====
+    alternates: {
+      canonical: baseUrl,
+      languages: {
+        "ar-SA": `${baseUrl}/`,
+        "en-US": `${baseUrl}/`,
+      },
     },
-  },
 
-  // ===== Verification placeholders (to be filled by client) =====
-  verification: {
-    // google: "GOOGLE_SITE_VERIFICATION_CODE",
-    // yandex: "YANDEX_VERIFICATION_CODE",
-  },
-};
+    // ===== Verification placeholders =====
+    verification: {
+      // google: "GOOGLE_SITE_VERIFICATION_CODE",
+    },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: [
@@ -165,6 +178,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const baseUrl = getBaseUrl();
+
   // JSON-LD Structured Data for the app
   const jsonLd = {
     "@context": "https://schema.org",
@@ -189,12 +204,12 @@ export default function RootLayout({
           worstRating: "1",
         },
         installUrl: APP_LINKS.android,
-        screenshot: `${SITE_URL}/og-image.jpg`,
+        screenshot: `${baseUrl}/og-image.jpg`,
       },
       {
         "@type": "WebSite",
         name: "KTV Player",
-        url: SITE_URL,
+        url: baseUrl,
         potentialAction: {
           "@type": "DownloadAction",
           target: APP_LINKS.android,
@@ -203,8 +218,8 @@ export default function RootLayout({
       {
         "@type": "Organization",
         name: "KTV Player",
-        url: SITE_URL,
-        logo: `${SITE_URL}/ktv-logo.webp`,
+        url: baseUrl,
+        logo: `${baseUrl}/ktv-logo.webp`,
         sameAs: [
           ...Object.values(SOCIAL_LINKS).filter(url => url !== ''),
           WHATSAPP_LINK,

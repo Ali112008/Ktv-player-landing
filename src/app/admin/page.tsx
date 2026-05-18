@@ -46,9 +46,6 @@ const FIELD_GROUPS = [
     titleEn: 'Website',
     fields: [
       { key: 'siteUrl' as keyof SiteConfig, label: 'رابط الموقع', labelEn: 'Site URL', placeholder: 'https://ktvplayer.com', type: 'text', required: true },
-      { key: 'siteTitle' as keyof SiteConfig, label: 'عنوان الموقع', labelEn: 'Site Title', placeholder: 'KTV Player', type: 'text', required: false },
-      { key: 'siteDescription' as keyof SiteConfig, label: 'وصف الموقع', labelEn: 'Site Description', placeholder: '', type: 'textarea', required: false },
-      { key: 'ogImagePath' as keyof SiteConfig, label: 'رابط صورة المعاينة (OG)', labelEn: 'OG Image Path', placeholder: '/og-image.jpg', type: 'text', required: false },
     ],
   },
   {

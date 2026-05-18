@@ -3,7 +3,7 @@ export type Language = 'ar' | 'en';
 export const translations = {
   ar: {
     // Hero Section
-    heroTitle: 'KTV — عالم الترفيه بين يديك',
+    heroTitle: 'KTV عالم الترفيه بين يديك',
     heroSubtitle: 'أكثر من 500 قناة مباشرة، آلاف الأفلام والمسلسلات، بجودة سينمائية وبدون تقطيع. كل هذا في تطبيق واحد!',
     heroCta: 'ابدأ المشاهدة الآن',
     heroContact: 'اشترك عبر واتساب',
@@ -100,7 +100,7 @@ export const translations = {
   },
   en: {
     // Hero Section
-    heroTitle: 'KTV — Entertainment at Your Fingertips',
+    heroTitle: 'KTV Entertainment at Your Fingertips',
     heroSubtitle: 'Over 500 live channels, thousands of movies & series, in cinematic quality with zero buffering. All in one app!',
     heroCta: 'Start Watching Now',
     heroContact: 'Subscribe via WhatsApp',
