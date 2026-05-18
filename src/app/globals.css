@@ -1627,12 +1627,12 @@ html {
 }
 
 .hero-bg-image {
-  opacity: 0.3;
+  opacity: 0.4;
   animation: heroBgPan 20s ease-in-out infinite;
 }
 
 [data-theme="light"] .hero-bg-image {
-  opacity: 0.35;
+  opacity: 0.45;
 }
 
 /* ==================== HERO SUBTITLE BACKGROUND ==================== */
