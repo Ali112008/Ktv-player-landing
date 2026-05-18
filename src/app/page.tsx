@@ -466,7 +466,6 @@ function LandingContent() {
             style={{ animationDelay: '0.2s' }}
           >
             <span className="text-shimmer glitch-text" data-text="KTV">KTV</span>
-            <span className="text-ktv-text"> — </span>
             <br className="sm:hidden" />
             <span className="text-ktv-text-strong">
               {lang === 'ar' ? 'عالم الترفيه بين يديك' : 'Entertainment at Your Fingertips'}
@@ -999,7 +998,7 @@ function LandingContent() {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className={`fixed bottom-24 ${isRTL ? 'left-6' : 'right-6'} z-30 w-11 h-11 rounded-full bg-ktv-surface border border-ktv-border hover:bg-ktv-surface-hover hover:border-ktv-red/30 flex items-center justify-center transition-all duration-300 shadow-lg animate-fade-in magnetic-btn`}
+          className={`fixed bottom-6 ${isRTL ? 'right-6' : 'left-6'} z-30 w-11 h-11 rounded-full bg-ktv-surface border border-ktv-border hover:bg-ktv-surface-hover hover:border-ktv-red/30 flex items-center justify-center transition-all duration-300 shadow-lg animate-fade-in magnetic-btn`}
           aria-label="Scroll to top"
         >
           <ArrowUp className="w-5 h-5 text-ktv-text" />

@@ -3,6 +3,42 @@
 import { useState, useEffect, useCallback } from 'react';
 import { SiteConfig, DEFAULT_CONFIG } from '@/lib/site-config';
 
+// ─── Session constants ──────────────────────────────
+const SESSION_KEY = 'ktv_admin_session';
+const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days in ms
+
+interface AdminSession {
+  password: string;
+  expiresAt: number;
+}
+
+function getStoredSession(): AdminSession | null {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return null;
+    const session: AdminSession = JSON.parse(raw);
+    if (Date.now() > session.expiresAt) {
+      localStorage.removeItem(SESSION_KEY);
+      return null;
+    }
+    return session;
+  } catch {
+    return null;
+  }
+}
+
+function storeSession(password: string) {
+  const session: AdminSession = {
+    password,
+    expiresAt: Date.now() + SESSION_DURATION,
+  };
+  localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+}
+
+function clearSession() {
+  localStorage.removeItem(SESSION_KEY);
+}
+
 // ─── Field definitions for the form ──────────────────────────
 const FIELD_GROUPS = [
   {
@@ -56,6 +92,15 @@ export default function AdminPage() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [lang, setLang] = useState<'ar' | 'en'>('ar');
 
+  // ─── Restore session on mount ─────────────────────────
+  useEffect(() => {
+    const session = getStoredSession();
+    if (session) {
+      setPassword(session.password);
+      setAuthenticated(true);
+    }
+  }, []);
+
   // ─── Load config on mount (if authenticated) ──────────────
   const loadConfig = useCallback(async () => {
     setLoading(true);
@@ -77,10 +122,30 @@ export default function AdminPage() {
   }, [authenticated, loadConfig]);
 
   // ─── Login handler ────────────────────────────────────────
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password.trim()) {
+    if (!password.trim()) return;
+
+    // Verify password by trying to fetch config with it
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${password}`,
+        },
+        body: JSON.stringify({}), // Just verifying, won't overwrite
+      });
+      const data = await res.json();
+      if (res.status === 401) {
+        setMessage({ type: 'error', text: lang === 'ar' ? 'كلمة المرور غلط' : 'Wrong password' });
+        return;
+      }
+      // Password is valid — store session
+      storeSession(password);
       setAuthenticated(true);
+    } catch {
+      setMessage({ type: 'error', text: lang === 'ar' ? 'خطأ في الاتصال' : 'Connection error' });
     }
   };
 
@@ -122,6 +187,13 @@ export default function AdminPage() {
     }
   };
 
+  // ─── Logout ────────────────────────────────────────────
+  const handleLogout = () => {
+    clearSession();
+    setAuthenticated(false);
+    setPassword('');
+  };
+
   // ─── LOGIN SCREEN ─────────────────────────────────────────
   if (!authenticated) {
     return (
@@ -148,6 +220,13 @@ export default function AdminPage() {
               دخول / Login
             </button>
           </form>
+          {message && (
+            <div className={`mt-4 px-4 py-3 rounded-xl text-sm font-medium ${
+              message.type === 'error' ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-green-500/10 text-green-400 border border-green-500/20'
+            }`}>
+              {message.text}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -175,7 +254,7 @@ export default function AdminPage() {
             </button>
             {/* Logout */}
             <button
-              onClick={() => { setAuthenticated(false); setPassword(''); }}
+              onClick={handleLogout}
               className="px-3 py-1.5 rounded-lg bg-[#1a1a25] text-sm text-gray-400 hover:text-red-400 hover:bg-[#252535] transition-colors border border-[rgba(255,255,255,0.06)]"
             >
               {lang === 'ar' ? 'خروج' : 'Logout'}
