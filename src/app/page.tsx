@@ -210,24 +210,6 @@ function LandingContent() {
   // ========== Mobile menu state ==========
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // ========== Announcement bar state ==========
-  const [announcementVisible, setAnnouncementVisible] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return !localStorage.getItem('ktv-announcement-dismissed');
-    }
-    return true;
-  });
-
-  // ========== Live viewer counter state ==========
-  const [viewerCount, setViewerCount] = useState(247);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const delta = Math.floor(Math.random() * 21) - 10; // -10 to +10
-      setViewerCount((prev) => Math.max(180, Math.min(350, prev + delta)));
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
   // ========== FAQ accordion state ==========
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -268,12 +250,6 @@ function LandingContent() {
 
   const scrollToTop = useCallback(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
-  // ========== Dismiss announcement bar ==========
-  const dismissAnnouncement = useCallback(() => {
-    setAnnouncementVisible(false);
-    localStorage.setItem('ktv-announcement-dismissed', 'true');
   }, []);
 
   const features = [
@@ -392,7 +368,6 @@ function LandingContent() {
   ];
 
   const faqItems = [
-    { q: t('faqQ1'), a: t('faqA1') },
     { q: t('faqQ2'), a: t('faqA2') },
     { q: t('faqQ3'), a: t('faqA3') },
     { q: t('faqQ4'), a: t('faqA4') },
@@ -443,38 +418,10 @@ function LandingContent() {
       {/* Scroll Progress Bar */}
       <div className="scroll-progress" id="scroll-progress" />
 
-      {/* ==================== ANNOUNCEMENT BAR ==================== */}
-      <div
-        className={`announcement-bar-dismiss z-50 relative ${
-          announcementVisible ? '' : 'dismissed'
-        }`}
-        style={{ maxHeight: announcementVisible ? '32px' : '0px' }}
-      >
-        <div className="h-8 bg-gradient-to-r from-ktv-red/80 via-ktv-red/60 to-ktv-gold/60 flex items-center announcement-bar">
-          <div className="marquee-content text-white/90 text-xs sm:text-sm font-medium">
-            <span className="mx-8">{t('announcementText')}</span>
-            <span className="mx-8">{t('announcementText')}</span>
-            <span className="mx-8">{t('announcementText')}</span>
-            <span className="mx-8">{t('announcementText')}</span>
-            <span className="mx-8">{t('announcementText')}</span>
-            <span className="mx-8">{t('announcementText')}</span>
-          </div>
-          <button
-            onClick={dismissAnnouncement}
-            className="absolute right-2 rtl:right-auto rtl:left-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors z-10"
-            aria-label={t('announcementDismiss')}
-          >
-            <X className="w-3.5 h-3.5 text-white/80" />
-          </button>
-        </div>
-      </div>
-
       {/* Navigation Bar */}
       <nav
         id="main-nav"
-        className={`fixed left-0 right-0 z-40 bg-ktv-bg-dark/80 backdrop-blur-xl border-b border-ktv-border-faint transition-all duration-300 ${
-          announcementVisible ? 'top-8' : 'top-0'
-        }`}
+        className="fixed left-0 right-0 z-40 bg-ktv-bg-dark/80 backdrop-blur-xl border-b border-ktv-border-faint transition-all duration-300 top-0"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16">
@@ -655,18 +602,13 @@ function LandingContent() {
             <span className={`typing-cursor-blink ${typingDone ? 'cursor-fade' : ''}`} />
           </p>
 
-          {/* Urgency Badge + Live Viewer Counter */}
+          {/* Urgency Badge */}
           <div
-            className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-3 mb-4 sm:mb-6 animate-fade-in-up"
+            className="flex justify-center items-center mb-4 sm:mb-6 animate-fade-in-up"
             style={{ animationDelay: '0.4s' }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ktv-surface/80 backdrop-blur border border-ktv-red/20 text-xs sm:text-sm text-ktv-text-secondary animate-pulse-subtle badge-premium">
               {lang === 'ar' ? '🔥 انضم لأكتر من 50,000 مستخدم نشط' : '🔥 Join 50,000+ Active Users'}
-            </div>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-ktv-surface/80 backdrop-blur border border-green-500/20 text-xs text-ktv-text-secondary">
-              <span className="live-dot" />
-              <span className="font-semibold text-green-400">{viewerCount}</span>
-              <span>{t('liveViewers')}</span>
             </div>
           </div>
 
@@ -767,7 +709,7 @@ function LandingContent() {
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="group relative glass-card rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/20 p-6 sm:p-7 transition-all duration-300 stagger-child hover-lift"
+                className="group relative glass-card rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/20 p-6 sm:p-7 transition-all duration-300 animated-border-glow dl-card-shine stagger-child hover-lift"
                 style={{ animationDelay: `${index * 0.08}s` }}
               >
                 <div className="flex items-center gap-3 mb-4">
@@ -961,7 +903,7 @@ function LandingContent() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center stagger-child tilt-card icon-bounce-hover hover-lift"
+                className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center animated-border-glow dl-card-shine stagger-child tilt-card icon-bounce-hover hover-lift"
                 style={{ animationDelay: `${index * 0.08}s` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -1042,7 +984,7 @@ function LandingContent() {
                 className="relative z-10 stagger-child"
                 style={{ animationDelay: `${index * 0.15}s` }}
               >
-                <div className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center tilt-card icon-bounce-hover card-spotlight hover-lift">
+                <div className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-ktv-red/30 p-6 sm:p-7 transition-all duration-300 overflow-hidden cursor-default text-center animated-border-glow dl-card-shine tilt-card icon-bounce-hover card-spotlight hover-lift">
                   <div className="absolute inset-0 bg-gradient-to-b from-ktv-red/[0.07] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                   <div className="relative flex flex-col items-center">
@@ -1102,7 +1044,7 @@ function LandingContent() {
             {faqItems.map((item, index) => (
               <div
                 key={index}
-                className={`faq-item ${openFaq === index ? 'faq-open' : ''}`}
+                className={`faq-item animated-border-glow ${openFaq === index ? 'faq-open' : ''}`}
               >
                 <button
                   className="w-full flex items-center justify-between gap-3 p-4 sm:p-5 text-left rtl:text-right cursor-pointer"
@@ -1155,7 +1097,7 @@ function LandingContent() {
           </div>
 
           {/* Comparison Table */}
-          <div className="comparison-wrapper stagger-child">
+          <div className="comparison-wrapper animated-border-glow stagger-child">
             <table className="comparison-table">
               <thead>
                 <tr>
@@ -1227,12 +1169,8 @@ function LandingContent() {
           {/* Download Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {/* Android */}
-            <a
-              href="https://play.google.com/store/apps/details?id=com.ktvplayer.ktv"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={triggerConfetti}
-              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-green-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child hover-lift"
+            <div
+              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-green-500/40 p-6 sm:p-7 text-center overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child hover-lift"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-green-500/[0.06] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -1256,20 +1194,22 @@ function LandingContent() {
                 </h3>
                 <p className="text-ktv-text-weak text-xs sm:text-sm mb-4">{lang === 'ar' ? 'لأجهزة أندرويد 5.0+' : 'For Android 5.0+'}</p>
 
-                <div className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-green-500/10 text-green-400 text-sm font-bold border border-green-500/20 group-hover:bg-green-500/20 group-hover:border-green-500/40 transition-all duration-300 magnetic-btn">
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.ktvplayer.ktv"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={triggerConfetti}
+                  className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-green-500/10 text-green-400 text-sm font-bold border border-green-500/20 group-hover:bg-green-500/20 group-hover:border-green-500/40 transition-all duration-300 magnetic-btn"
+                >
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                   {lang === 'ar' ? 'تحميل مجاني' : 'Free Download'}
-                </div>
+                </a>
               </div>
-            </a>
+            </div>
 
             {/* iOS */}
-            <a
-              href="https://apps.apple.com/us/app/ktv-player/id6764389973?l=ar"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={triggerConfetti}
-              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-blue-500/40 p-6 sm:p-7 text-center cursor-pointer block overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child hover-lift"
+            <div
+              className="group relative rounded-2xl bg-ktv-bg-card border border-ktv-border-subtle hover:border-blue-500/40 p-6 sm:p-7 text-center overflow-hidden transition-all duration-300 hover:scale-[1.03] animated-border-glow dl-card-shine stagger-child hover-lift"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-blue-500/[0.06] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -1290,12 +1230,18 @@ function LandingContent() {
                 </h3>
                 <p className="text-ktv-text-weak text-xs sm:text-sm mb-4">{lang === 'ar' ? 'لأجهزة iPhone و iPad' : 'For iPhone & iPad'}</p>
 
-                <div className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-blue-500/10 text-blue-400 text-sm font-bold border border-blue-500/20 group-hover:bg-blue-500/20 group-hover:border-blue-500/40 transition-all duration-300 magnetic-btn">
+                <a
+                  href="https://apps.apple.com/us/app/ktv-player/id6764389973?l=ar"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={triggerConfetti}
+                  className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-blue-500/10 text-blue-400 text-sm font-bold border border-blue-500/20 group-hover:bg-blue-500/20 group-hover:border-blue-500/40 transition-all duration-300 magnetic-btn"
+                >
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                   {lang === 'ar' ? 'تحميل مجاني' : 'Free Download'}
-                </div>
+                </a>
               </div>
-            </a>
+            </div>
 
             {/* TV */}
             <div
